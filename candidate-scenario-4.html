@@ -277,6 +277,34 @@
     font-size: 11px; color: #6b7280; line-height: 1.6;
   }
   .eng-note strong { color: #374151; font-weight: 600; }
+
+  /* ── Floating Scenario Navigator ── */
+  .scenario-nav {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
+    background: #1e1e2d; border-top: 2px solid #0828cc;
+    padding: 8px 16px; display: flex; align-items: center; gap: 6px;
+    font-family: 'Figtree', sans-serif; overflow-x: auto;
+  }
+  .scenario-nav a {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 32px; height: 32px; padding: 0 10px; border-radius: 6px;
+    font-size: 12px; font-weight: 600; color: #9ca3af; background: #2d2d3f;
+    text-decoration: none; white-space: nowrap; transition: all 0.15s;
+    border: 1px solid transparent;
+  }
+  .scenario-nav a:hover { background: #3d3d5c; color: #fff; }
+  .scenario-nav a.active { background: #0828cc; color: #fff; border-color: #4f6dff; }
+  .scenario-nav .nav-label {
+    font-size: 11px; font-weight: 700; color: #6b7280; text-transform: uppercase;
+    letter-spacing: 0.5px; margin-right: 4px; white-space: nowrap;
+  }
+  .scenario-nav .nav-sep {
+    width: 1px; height: 20px; background: #3d3d5c; margin: 0 4px; flex-shrink: 0;
+  }
+  .scenario-nav .nav-home {
+    background: #374151; color: #d1d5db;
+  }
+  .scenario-nav .nav-home:hover { background: #4b5563; color: #fff; }
 </style>
 </head>
 <body>
@@ -300,7 +328,7 @@
     </div>
   </div>
   <div class="header-right">
-    <button class="review-submit-btn" disabled>Review &amp; Submit</button>
+    <button class="review-submit-btn" onclick="window.location.href='candidate-scenario-12-review.html'" style="opacity:0.4;">Review &amp; Submit</button>
   </div>
 </div>
 
@@ -332,7 +360,7 @@
       </div>
 
       <!-- Identity -->
-      <div class="sb-item">
+      <div class="sb-item" onclick="window.location.href='candidate-scenario-1.html'">
         <div class="sb-item-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="2" y="4" width="20" height="16" rx="2" stroke="#101828" stroke-width="1.5"/>
@@ -352,7 +380,7 @@
       </div>
 
       <!-- Education -->
-      <div class="sb-item">
+      <div class="sb-item" onclick="window.location.href='candidate-scenario-2.html'">
         <div class="sb-item-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z" fill="#101828" opacity="0.7"/>
@@ -369,7 +397,7 @@
       </div>
 
       <!-- Address -->
-      <div class="sb-item">
+      <div class="sb-item" onclick="window.location.href='candidate-scenario-7.html'">
         <div class="sb-item-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#101828" opacity="0.6"/>
@@ -531,13 +559,41 @@
 
         <!-- Proceed — ENABLED -->
         <div class="proceed-row">
-          <button class="proceed-btn">Proceed</button>
+          <button class="proceed-btn" onclick="window.location.href='candidate-scenario-12-review.html'">Proceed</button>
         </div>
 
       </div>
     </div>
 
   </div>
+</div>
+
+<div class="scenario-nav">
+  <a href="index.html" class="nav-home" title="Back to Index">&#9776; Index</a>
+  <span class="nav-sep"></span>
+  <span class="nav-label">Identity</span>
+  <a href="candidate-scenario-1.html" title="S1: Identity — Base State">1</a>
+  <a href="candidate-scenario-6.html" title="S6: Identity — Mandatory & Optional">6</a>
+  <span class="nav-sep"></span>
+  <span class="nav-label">Education</span>
+  <a href="candidate-scenario-2.html" title="S2: Education — All 4 Levels">2</a>
+  <a href="candidate-scenario-5.html" title="S5: Education — Mandatory Documents">5</a>
+  <span class="nav-sep"></span>
+  <span class="nav-label">Address</span>
+  <a href="candidate-scenario-7.html" title="S7: Address — Permanent & Current">7</a>
+  <span class="nav-sep"></span>
+  <span class="nav-label">Employment</span>
+  <a href="candidate-scenario-3.html" title="S3: Employment — Hero Uploaded">3</a>
+  <a href="candidate-scenario-4.html" class="active" title="S4: Employment — All Mandatory Done">4</a>
+  <a href="candidate-scenario-10.html" title="S10: Non-Preferred First Warning">10</a>
+  <a href="candidate-scenario-11.html" title="S11: Mandatory Doc — Reason & ETA">11</a>
+  <span class="nav-sep"></span>
+  <span class="nav-label">Exit</span>
+  <a href="candidate-scenario-8.html" title="S8: Exit Flow — Step 1">8</a>
+  <a href="candidate-scenario-9.html" title="S9: Exit Flow — Step 2">9</a>
+  <span class="nav-sep"></span>
+  <span class="nav-label">Review</span>
+  <a href="candidate-scenario-12-review.html" title="S12: Review & Submit">12</a>
 </div>
 
 </body>

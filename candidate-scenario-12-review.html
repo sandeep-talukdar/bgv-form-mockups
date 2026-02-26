@@ -8,7 +8,7 @@
 <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Figtree', sans-serif; background: #f8f8f8; color: #101828; min-width: 1280px; }
+  body { font-family: 'Figtree', sans-serif; background: #f8f8f8; color: #101828; min-width: 1280px; padding-bottom: 60px; }
 
   /* ── PROPOSED DESIGN Banner ── */
   .banner {
@@ -262,6 +262,32 @@
     font-size: 11px; color: #6b7280; line-height: 1.6;
   }
   .eng-note strong { color: #374151; font-weight: 600; }
+
+  /* ── Floating Scenario Navigator ── */
+  .scenario-nav {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
+    background: #1e1e2d; border-top: 2px solid #0828cc;
+    padding: 8px 16px; display: flex; align-items: center; gap: 6px;
+    font-family: 'Figtree', sans-serif; overflow-x: auto;
+  }
+  .scenario-nav a {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 32px; height: 32px; padding: 0 10px; border-radius: 6px;
+    font-size: 12px; font-weight: 600; color: #9ca3af; background: #2d2d3f;
+    text-decoration: none; white-space: nowrap; transition: all 0.15s;
+    border: 1px solid transparent;
+  }
+  .scenario-nav a:hover { background: #3d3d5c; color: #fff; }
+  .scenario-nav a.active { background: #0828cc; color: #fff; border-color: #4f6dff; }
+  .scenario-nav .nav-label {
+    font-size: 11px; font-weight: 700; color: #6b7280; text-transform: uppercase;
+    letter-spacing: 0.5px; margin-right: 4px; white-space: nowrap;
+  }
+  .scenario-nav .nav-sep {
+    width: 1px; height: 20px; background: #3d3d5c; margin: 0 4px; flex-shrink: 0;
+  }
+  .scenario-nav .nav-home { background: #374151; color: #d1d5db; }
+  .scenario-nav .nav-home:hover { background: #4b5563; color: #fff; }
 </style>
 </head>
 <body>
@@ -314,7 +340,7 @@
       </div>
 
       <!-- Identity -->
-      <div class="sb-item">
+      <div class="sb-item" onclick="window.location.href='candidate-scenario-1.html'">
         <div class="sb-item-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
             <rect x="2" y="4" width="20" height="16" rx="2" stroke="#101828" stroke-width="1.5"/>
@@ -332,7 +358,7 @@
       </div>
 
       <!-- Education -->
-      <div class="sb-item">
+      <div class="sb-item" onclick="window.location.href='candidate-scenario-2.html'">
         <div class="sb-item-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z" fill="#101828" opacity="0.7"/>
@@ -347,7 +373,7 @@
       </div>
 
       <!-- Address -->
-      <div class="sb-item">
+      <div class="sb-item" onclick="window.location.href='candidate-scenario-7.html'">
         <div class="sb-item-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#101828" opacity="0.6"/>
@@ -362,7 +388,7 @@
       </div>
 
       <!-- Employment -->
-      <div class="sb-item">
+      <div class="sb-item" onclick="window.location.href='candidate-scenario-3.html'">
         <div class="sb-item-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path d="M20 7H4c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2z" fill="#101828" opacity="0.5"/>
@@ -440,7 +466,7 @@
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="#0f973d"/><path d="M4.5 7l2 2 3.5-3.5" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Complete
           </div>
-          <a class="edit-link">Edit</a>
+          <a class="edit-link" onclick="window.location.href='candidate-scenario-1.html'">Edit</a>
         </div>
       </div>
       <div class="review-card-body">
@@ -504,7 +530,7 @@
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="#0f973d"/><path d="M4.5 7l2 2 3.5-3.5" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Complete
           </div>
-          <a class="edit-link">Edit</a>
+          <a class="edit-link" onclick="window.location.href='candidate-scenario-2.html'">Edit</a>
         </div>
       </div>
       <div class="review-card-body">
@@ -589,7 +615,7 @@
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="#0f973d"/><path d="M4.5 7l2 2 3.5-3.5" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Complete
           </div>
-          <a class="edit-link">Edit</a>
+          <a class="edit-link" onclick="window.location.href='candidate-scenario-7.html'">Edit</a>
         </div>
       </div>
       <div class="review-card-body">
@@ -638,7 +664,7 @@
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="#0f973d"/><path d="M4.5 7l2 2 3.5-3.5" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Complete
           </div>
-          <a class="edit-link">Edit</a>
+          <a class="edit-link" onclick="window.location.href='candidate-scenario-3.html'">Edit</a>
         </div>
       </div>
       <div class="review-card-body">
@@ -705,7 +731,7 @@
         <input type="checkbox" id="confirmCheck" checked>
         <label for="confirmCheck">I confirm that all information provided is true and accurate to the best of my knowledge. I understand that providing false information may lead to disqualification.</label>
       </div>
-      <button class="submit-btn">Submit Background Verification Form</button>
+      <button class="submit-btn" onclick="alert('Form submitted successfully! (This is a mockup.)')">Submit Background Verification Form</button>
       <div class="submit-note">You will not be able to edit your responses after submission.</div>
     </div>
 
@@ -714,6 +740,34 @@
 
 <div class="eng-note">
   <strong>Engineering note:</strong> All sections are complete. The Review &amp; Submit button in the header is always enabled on this page. The Submit button in the content area is also enabled once all sections are complete (checkbox serves as a final confirmation before submit). For the Relieving Letter, the amber box shows the reason and ETA provided by the candidate — this flags the document as pending for the verification team without blocking submission. "Edit" links navigate back to the relevant section.
+</div>
+
+<div class="scenario-nav">
+  <a href="index.html" class="nav-home" title="Back to Index">&#9776; Index</a>
+  <span class="nav-sep"></span>
+  <span class="nav-label">Identity</span>
+  <a href="candidate-scenario-1.html" title="S1: Identity Base">1</a>
+  <a href="candidate-scenario-6.html" title="S6: Identity Mandatory">6</a>
+  <span class="nav-sep"></span>
+  <span class="nav-label">Education</span>
+  <a href="candidate-scenario-2.html" title="S2: Education All Levels">2</a>
+  <a href="candidate-scenario-5.html" title="S5: Education Mandatory">5</a>
+  <span class="nav-sep"></span>
+  <span class="nav-label">Address</span>
+  <a href="candidate-scenario-7.html" title="S7: Address">7</a>
+  <span class="nav-sep"></span>
+  <span class="nav-label">Employment</span>
+  <a href="candidate-scenario-3.html" title="S3: Employment Hero">3</a>
+  <a href="candidate-scenario-4.html" title="S4: Employment Done">4</a>
+  <a href="candidate-scenario-10.html" title="S10: Non-Preferred">10</a>
+  <a href="candidate-scenario-11.html" title="S11: Reason & ETA">11</a>
+  <span class="nav-sep"></span>
+  <span class="nav-label">Exit</span>
+  <a href="candidate-scenario-8.html" title="S8: Exit Step 1">8</a>
+  <a href="candidate-scenario-9.html" title="S9: Exit Step 2">9</a>
+  <span class="nav-sep"></span>
+  <span class="nav-label">Review</span>
+  <a href="candidate-scenario-12-review.html" class="active" title="S12: Review">12</a>
 </div>
 
 </body>
