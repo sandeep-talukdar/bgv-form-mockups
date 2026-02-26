@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=1280">
-<title>BGV Form Config — Candidate Mockup Index</title>
+<title>BGV Form Config — Mockup Index</title>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -15,6 +15,28 @@
   }
   .page-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 6px; }
   .page-header p { font-size: 15px; font-weight: 400; color: rgba(255,255,255,0.8); line-height: 1.6; }
+  .ticket-links {
+    display: flex; gap: 12px; margin-top: 14px; flex-wrap: wrap;
+  }
+  .ticket-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
+    color: #fff; font-size: 13px; font-weight: 600; padding: 6px 14px;
+    border-radius: 6px; text-decoration: none; transition: background 0.2s;
+  }
+  .ticket-link:hover { background: rgba(255,255,255,0.25); }
+  .ticket-link svg { width: 14px; height: 14px; flex-shrink: 0; }
+  .nav-links {
+    display: flex; gap: 10px; margin-top: 16px;
+  }
+  .nav-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25);
+    color: #fff; font-size: 13px; font-weight: 500; padding: 6px 14px;
+    border-radius: 20px; text-decoration: none; transition: background 0.2s;
+  }
+  .nav-pill:hover { background: rgba(255,255,255,0.22); }
+  .nav-pill.active { background: rgba(255,255,255,0.25); border-color: rgba(255,255,255,0.5); }
 
   /* ── Flow Diagram ── */
   .flow-section {
@@ -104,6 +126,22 @@
   .tag.variant { background: #fef9c3; color: #92400e; }
   .tag.modal { background: #f0fdf4; color: #166534; }
   .tag.final { background: #fef2f2; color: #dc2626; }
+  .tag.config { background: #f3e8ff; color: #7c3aed; }
+
+  /* ── Config design note ── */
+  .design-note {
+    background: #fffbeb; border: 1px solid #fcd34d; border-radius: 8px;
+    padding: 12px 16px; font-size: 13px; color: #92400e; line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .design-note strong { font-weight: 700; }
+
+  /* ── Section divider ── */
+  .section-divider {
+    max-width: 1280px; margin: 48px auto 0; padding: 0 60px;
+    border-top: 2px solid #e5e7eb;
+    padding-top: 40px;
+  }
 
   /* ── Shared Patterns ── */
   .patterns-section {
@@ -135,14 +173,29 @@
 
 <!-- ── Page Header ── -->
 <div class="page-header">
-  <h1>Candidate BGV Form — Mockup Index</h1>
-  <p>All candidate-facing form scenarios for the BGV Form Config feature (Ticket #34175). Each scenario shows a specific UI state.<br>
-  Open any scenario to see the full mockup. Scenarios are grouped by form section and ordered by the candidate journey.</p>
+  <h1>BGV Form Config — Mockup Index</h1>
+  <p>All mockups for the Background Verification Form Config feature — both the Candidate BGV Form and the Super Admin Config Portal.<br>
+  Open any scenario to see the full mockup. Use the Developer Guide for annotated walkthroughs.</p>
+  <div class="ticket-links">
+    <a class="ticket-link" href="https://dev.azure.com/SpringworksDev/SpringVerify%20India/_workitems/edit/34175" target="_blank">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm1 12H7V7h2v5zm0-6H7V4h2v2z"/></svg>
+      #34175 — Candidate BGV Form
+    </a>
+    <a class="ticket-link" href="https://dev.azure.com/SpringworksDev/SpringVerify%20India/_workitems/edit/34436" target="_blank">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm1 12H7V7h2v5zm0-6H7V4h2v2z"/></svg>
+      #34436 — Super Admin Config
+    </a>
+  </div>
+  <div class="nav-links">
+    <a class="nav-pill active" href="#candidate-section">Candidate Form (12 Scenarios)</a>
+    <a class="nav-pill" href="#config-section">Super Admin Config (9 Mockups)</a>
+    <a class="nav-pill" href="guide.html">Developer Guide →</a>
+  </div>
 </div>
 
 <!-- ── Flow Diagram ── -->
-<div class="flow-section">
-  <h2>Candidate Journey Flow</h2>
+<div class="flow-section" id="candidate-section">
+  <h2>Candidate BGV Form — Journey Flow</h2>
   <div class="flow-strip">
     <div class="flow-step">
       <div class="flow-step-circle muted">1</div>
@@ -339,6 +392,142 @@
         <div class="scenario-card-title">Review &amp; Submit — All Complete</div>
         <div class="scenario-card-desc">All sections completed. Summary cards for Identity, Education, Address, Employment. One employment has a missing mandatory doc warning. Submit button enabled.</div>
         <div class="scenario-card-tags"><span class="tag final">Final step</span></div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- ══════════════ SUPER ADMIN CONFIG ══════════════════ -->
+<!-- ══════════════════════════════════════════════════════ -->
+
+<div class="section-divider" id="config-section">
+  <h2 style="font-size:22px; font-weight:700; color:#101828; margin-bottom:6px; display:flex; align-items:center; gap:8px;">
+    <span style="display:inline-block; width:4px; height:24px; background:#7c3aed; border-radius:2px;"></span>
+    Super Admin Portal — BGV Form Config
+  </h2>
+  <p class="section-desc">Mockups for the Super Admin config interface (Ticket <a href="https://dev.azure.com/SpringworksDev/SpringVerify%20India/_workitems/edit/34436" target="_blank" style="color:#0828cc; font-weight:600;">#34436</a>). These show how ops configures check types, documents, and candidate form settings per company.</p>
+  <div class="design-note">
+    <strong>Note:</strong> These mockups use an earlier design language (Poppins font, purple accent). The actual implementation should follow the current Super Admin Portal design system. The layout, component structure, and feature specs remain accurate.
+  </div>
+</div>
+
+<!-- ── Config: Overview & Package ── -->
+<div class="section-group">
+  <h2>Config Overview &amp; Package</h2>
+  <p class="section-desc">The main config page showing all check types for a company, and the package override view for premium configurations.</p>
+  <div class="scenario-grid">
+    <a class="scenario-card" href="config-page.html">
+      <div class="scenario-card-thumb"><img src="config-page.png" alt="Config Page"></div>
+      <div class="scenario-card-body">
+        <div class="scenario-card-number">Config Overview</div>
+        <div class="scenario-card-title">All Check Types — Base State</div>
+        <div class="scenario-card-desc">Main config page with all check types listed. Each check has a toggle, expand arrow, and summary of configured settings.</div>
+        <div class="scenario-card-tags"><span class="tag config">Config</span><span class="tag base">Base state</span></div>
+      </div>
+    </a>
+    <a class="scenario-card" href="config-page-option-a.html">
+      <div class="scenario-card-thumb"><img src="config-page-option-a.png" alt="Config Option A"></div>
+      <div class="scenario-card-body">
+        <div class="scenario-card-number">Config Overview — Option A</div>
+        <div class="scenario-card-title">Override Summary View</div>
+        <div class="scenario-card-desc">Alternative layout showing package override summary inline with each check type for quick comparison.</div>
+        <div class="scenario-card-tags"><span class="tag config">Config</span><span class="tag variant">Variant</span></div>
+      </div>
+    </a>
+    <a class="scenario-card" href="config-state-pkg-override.html">
+      <div class="scenario-card-thumb"><img src="config-state-pkg-override.png" alt="Package Override"></div>
+      <div class="scenario-card-body">
+        <div class="scenario-card-number">Package Override</div>
+        <div class="scenario-card-title">Premium Package Override View</div>
+        <div class="scenario-card-desc">Detailed view for configuring per-package overrides for premium clients. Shows document requirements and mandatory/optional toggles.</div>
+        <div class="scenario-card-tags"><span class="tag config">Config</span><span class="tag variant">Variant</span></div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<!-- ── Config: Identity ── -->
+<div class="section-group">
+  <h2>Config — Identity Check</h2>
+  <p class="section-desc">Identity check configuration with document types, mandatory/optional toggles, and comparison panel showing before/after or package-level differences.</p>
+  <div class="scenario-grid">
+    <a class="scenario-card" href="config-state-identity-compare.html">
+      <div class="scenario-card-thumb"><img src="config-state-identity-compare.png" alt="Identity Config"></div>
+      <div class="scenario-card-body">
+        <div class="scenario-card-number">Identity Config</div>
+        <div class="scenario-card-title">Identity — With Comparison Panel</div>
+        <div class="scenario-card-desc">Identity check configuration expanded with a side-by-side comparison panel showing current vs. proposed document settings.</div>
+        <div class="scenario-card-tags"><span class="tag config">Config</span></div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<!-- ── Config: Education ── -->
+<div class="section-group">
+  <h2>Config — Education Check</h2>
+  <p class="section-desc">Education verification configuration with category-based qualification types. Two variants cover different category groupings.</p>
+  <div class="scenario-grid">
+    <a class="scenario-card" href="config-state-education-a.html">
+      <div class="scenario-card-thumb"><img src="config-state-education-a.png" alt="Education Cat A"></div>
+      <div class="scenario-card-body">
+        <div class="scenario-card-number">Education Config A</div>
+        <div class="scenario-card-title">Education — Category A</div>
+        <div class="scenario-card-desc">Education verification configuration for Category A qualification types (post-graduation, graduation levels).</div>
+        <div class="scenario-card-tags"><span class="tag config">Config</span></div>
+      </div>
+    </a>
+    <a class="scenario-card" href="config-state-education-b.html">
+      <div class="scenario-card-thumb"><img src="config-state-education-b.png" alt="Education Cat B"></div>
+      <div class="scenario-card-body">
+        <div class="scenario-card-number">Education Config B</div>
+        <div class="scenario-card-title">Education — Category B</div>
+        <div class="scenario-card-desc">Education verification configuration for Category B qualification types (twelfth, tenth grade levels).</div>
+        <div class="scenario-card-tags"><span class="tag config">Config</span><span class="tag variant">Variant</span></div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<!-- ── Config: Employment ── -->
+<div class="section-group">
+  <h2>Config — Employment Check</h2>
+  <p class="section-desc">Employment check configuration for full-time roles, with document requirements, hero document selection, and comparison panel.</p>
+  <div class="scenario-grid">
+    <a class="scenario-card" href="config-state-employment.html">
+      <div class="scenario-card-thumb"><img src="config-state-employment.png" alt="Employment Config"></div>
+      <div class="scenario-card-body">
+        <div class="scenario-card-number">Employment Config</div>
+        <div class="scenario-card-title">Employment — Full Time</div>
+        <div class="scenario-card-desc">Employment check configuration for full-time roles. Shows hero document selection, mandatory/optional document lists, and collection rules.</div>
+        <div class="scenario-card-tags"><span class="tag config">Config</span></div>
+      </div>
+    </a>
+    <a class="scenario-card" href="config-state-employment-compare.html">
+      <div class="scenario-card-thumb"><img src="config-state-employment-compare.png" alt="Employment Compare"></div>
+      <div class="scenario-card-body">
+        <div class="scenario-card-number">Employment Comparison</div>
+        <div class="scenario-card-title">Employment — With Comparison Panel</div>
+        <div class="scenario-card-desc">Employment check with side-by-side comparison panel showing current settings vs. proposed changes or package-level overrides.</div>
+        <div class="scenario-card-tags"><span class="tag config">Config</span><span class="tag variant">Variant</span></div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<!-- ── Config: Address ── -->
+<div class="section-group">
+  <h2>Config — Address Check</h2>
+  <p class="section-desc">Address verification configuration with document preferences and digital verification settings.</p>
+  <div class="scenario-grid">
+    <a class="scenario-card" href="config-state-address.html">
+      <div class="scenario-card-thumb"><img src="config-state-address.png" alt="Address Config"></div>
+      <div class="scenario-card-body">
+        <div class="scenario-card-number">Address Config</div>
+        <div class="scenario-card-title">Address — Document Settings</div>
+        <div class="scenario-card-desc">Address check configuration showing acceptable document list, digital verification toggles, and preferred document settings.</div>
+        <div class="scenario-card-tags"><span class="tag config">Config</span></div>
       </div>
     </a>
   </div>
