@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Candidate BGV Form — Developer Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Figtree', sans-serif;
+    background: #f4f5f7;
+    color: #1e1e2d;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page-wrapper {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 32px 80px;
+  }
+
+  /* ── Back link ── */
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 24px 0 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: #0828cc;
+    text-decoration: none;
+  }
+  .back-link:hover { text-decoration: underline; }
+  .back-link svg { width: 16px; height: 16px; }
+
+  /* ── Header ── */
+  .page-header {
+    padding: 48px 0 24px;
+    border-bottom: 1px solid #e0e3ea;
+    margin-bottom: 0;
+  }
+  .page-header h1 {
+    font-size: 36px;
+    font-weight: 800;
+    color: #0828cc;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+  }
+  .page-header p {
+    font-size: 16px;
+    color: #5e6278;
+    max-width: 720px;
+  }
+
+  /* ── Sticky nav ── */
+  .sticky-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #fff;
+    border-bottom: 1px solid #e0e3ea;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    margin: 0 -32px;
+    padding: 0 32px;
+  }
+  .sticky-nav-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .sticky-nav-inner::-webkit-scrollbar { display: none; }
+
+  .nav-group {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 0;
+    position: relative;
+  }
+  .nav-group:not(:last-child)::after {
+    content: '';
+    width: 1px;
+    height: 20px;
+    background: #d5d8e0;
+    margin: 0 4px;
+    flex-shrink: 0;
+  }
+
+  .nav-group-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #8b8fa8;
+    padding: 14px 10px 14px 12px;
+    white-space: nowrap;
+    user-select: none;
+  }
+
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: #5e6278;
+    text-decoration: none;
+    padding: 14px 10px;
+    white-space: nowrap;
+    transition: color 0.15s;
+    position: relative;
+  }
+  .nav-link:hover { color: #0828cc; }
+  .nav-link .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #eef0f6;
+    color: #5e6278;
+    font-size: 11px;
+    font-weight: 700;
+    margin-right: 4px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .nav-link:hover .num {
+    background: #0828cc;
+    color: #fff;
+  }
+
+  /* ── Scenario section ── */
+  .scenario-section {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #e0e3ea;
+    margin-top: 40px;
+    overflow: hidden;
+    scroll-margin-top: 70px;
+  }
+
+  .scenario-header {
+    padding: 32px 40px 24px;
+    border-bottom: 1px solid #f0f1f5;
+  }
+  .scenario-number {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #0828cc;
+    background: #eef1ff;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+  .scenario-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1e1e2d;
+    margin-bottom: 6px;
+  }
+  .scenario-state {
+    font-size: 15px;
+    color: #5e6278;
+    margin-bottom: 16px;
+  }
+
+  .scenario-meta {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .meta-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 14px;
+    color: #3f4254;
+    background: #f8f9fc;
+    padding: 10px 16px;
+    border-radius: 8px;
+    flex: 1;
+    min-width: 280px;
+  }
+  .meta-item .meta-label {
+    font-weight: 700;
+    color: #1e1e2d;
+    white-space: nowrap;
+  }
+
+  /* ── Mockup container ── */
+  .mockup-container {
+    position: relative;
+    margin: 0;
+    border-bottom: 1px solid #f0f1f5;
+    background: #fafbfc;
+    padding: 24px;
+  }
+  .mockup-image-wrapper {
+    position: relative;
+    border: 1px solid #d5d8e0;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .mockup-image-wrapper img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* ── Annotation markers ── */
+  .annotation-marker {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #0828cc;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(8,40,204,0.35), 0 0 0 3px rgba(255,255,255,0.9);
+    cursor: default;
+    z-index: 10;
+    transition: transform 0.15s;
+    user-select: none;
+    transform: translate(-50%, -50%);
+  }
+  .annotation-marker:hover {
+    transform: translate(-50%, -50%) scale(1.15);
+    box-shadow: 0 2px 12px rgba(8,40,204,0.5), 0 0 0 3px rgba(255,255,255,0.95);
+  }
+
+  /* ── Spec breakdown ── */
+  .spec-breakdown {
+    padding: 32px 40px 40px;
+  }
+  .spec-breakdown-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1e1e2d;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .spec-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .spec-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .spec-item-num {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #0828cc;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+  }
+  .spec-item-body {
+    flex: 1;
+    min-width: 0;
+  }
+  .spec-item-name {
+    font-weight: 700;
+    color: #1e1e2d;
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+  .spec-item-desc {
+    font-size: 14px;
+    color: #3f4254;
+    line-height: 1.65;
+  }
+  .spec-item-states {
+    margin-top: 6px;
+    font-size: 13px;
+    color: #5e6278;
+    line-height: 1.6;
+  }
+  .spec-item-states strong {
+    color: #3f4254;
+  }
+  .spec-token {
+    display: inline-block;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 12px;
+    background: #f0f1f5;
+    color: #0828cc;
+    padding: 1px 6px;
+    border-radius: 4px;
+    margin: 0 2px;
+  }
+
+  /* ── Footer ── */
+  .page-footer {
+    text-align: center;
+    padding: 40px 0 0;
+    color: #8b8fa8;
+    font-size: 13px;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+  <!-- Back to index -->
+  <a href="index.html" class="back-link">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
+    Back to index
+  </a>
+
+  <!-- Header -->
+  <header class="page-header">
+    <h1>Candidate BGV Form — Developer Guide</h1>
+    <p>Detailed annotations for each scenario. Scroll through or use the navigation to jump to a section.</p>
+  </header>
+</div>
+
+<!-- Sticky navigation bar -->
+<nav class="sticky-nav">
+  <div class="sticky-nav-inner">
+
+    <div class="nav-group">
+      <span class="nav-group-label">Identity</span>
+      <a href="#scenario-1" class="nav-link"><span class="num">1</span></a>
+      <a href="#scenario-6" class="nav-link"><span class="num">6</span></a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-group-label">Education</span>
+      <a href="#scenario-2" class="nav-link"><span class="num">2</span></a>
+      <a href="#scenario-5" class="nav-link"><span class="num">5</span></a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-group-label">Address</span>
+      <a href="#scenario-7" class="nav-link"><span class="num">7</span></a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-group-label">Employment</span>
+      <a href="#scenario-3" class="nav-link"><span class="num">3</span></a>
+      <a href="#scenario-4" class="nav-link"><span class="num">4</span></a>
+      <a href="#scenario-10" class="nav-link"><span class="num">10</span></a>
+      <a href="#scenario-11" class="nav-link"><span class="num">11</span></a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-group-label">Exit Flow</span>
+      <a href="#scenario-8" class="nav-link"><span class="num">8</span></a>
+      <a href="#scenario-9" class="nav-link"><span class="num">9</span></a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-group-label">Review</span>
+      <a href="#scenario-12" class="nav-link"><span class="num">12</span></a>
+    </div>
+
+  </div>
+</nav>
+
+<div class="page-wrapper">
+
+<!-- ════════════════════════════════════════════════════════════════════
+     SCENARIO 1 — Identity: Base State
+     ════════════════════════════════════════════════════════════════════ -->
+<section class="scenario-section" id="scenario-1">
+  <div class="scenario-header">
+    <span class="scenario-number">Scenario 1</span>
+    <h2 class="scenario-title">Identity: Base State</h2>
+    <p class="scenario-state">The candidate has just completed Basic Details and lands on the Identity section for the first time. PAN and Aadhaar sub-sections are both incomplete.</p>
+    <div class="scenario-meta">
+      <div class="meta-item">
+        <span class="meta-label">Triggered by:</span>
+        Candidate completes Basic Details step
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">What happens next:</span>
+        Complete all identity sub-sections, then move to Education
+      </div>
+    </div>
+  </div>
+
+  <div class="mockup-container">
+    <div class="mockup-image-wrapper">
+      <img src="candidate-scenario-1.png" alt="Scenario 1 — Identity: Base State">
+      <div class="annotation-marker" style="left: 10%; top: 22%;">1</div>
+      <div class="annotation-marker" style="left: 18%; top: 52%;">2</div>
+      <div class="annotation-marker" style="left: 55%; top: 18%;">3</div>
+      <div class="annotation-marker" style="left: 55%; top: 32%;">4</div>
+      <div class="annotation-marker" style="left: 42%; top: 46%;">5</div>
+      <div class="annotation-marker" style="left: 42%; top: 55%;">6</div>
+      <div class="annotation-marker" style="left: 78%; top: 60%;">7</div>
+    </div>
+  </div>
+
+  <div class="spec-breakdown">
+    <h3 class="spec-breakdown-title">Spec Breakdown</h3>
+    <ol class="spec-list">
+      <li class="spec-item">
+        <span class="spec-item-num">1</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Sidebar active item</div>
+          <div class="spec-item-desc">"Identity" is highlighted with a blue left border and light blue background. Shows 2 grey status dots indicating PAN and Aadhaar are both incomplete.</div>
+          <div class="spec-item-states"><strong>Key states:</strong> Active section has blue left border + bg. Completed sections show green check. Upcoming sections are default grey.<br><strong>Design tokens:</strong> Border color <span class="spec-token">#1e40af</span>, Background <span class="spec-token">#f5f7ff</span></div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">2</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Progress bar</div>
+          <div class="spec-item-desc">Completed items show a green 140px progress bar with a green check icon. "Basic details" is marked complete here. Each sidebar item can transition from incomplete (grey) to complete (green bar + check).</div>
+          <div class="spec-item-states"><strong>Design tokens:</strong> Progress bar width <span class="spec-token">140px</span>, green fill for completed state</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">3</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Section title card</div>
+          <div class="spec-item-desc">"Identity" section header displaying 2 inline status dots representing PAN and Aadhaar sub-sections. Dots are grey when incomplete, green when done.</div>
+          <div class="spec-item-states"><strong>Design tokens:</strong> Card height <span class="spec-token">72px</span>, Border <span class="spec-token">#d9d9d9</span>, Border radius <span class="spec-token">12px</span></div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">4</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Upload zone</div>
+          <div class="spec-item-desc">Dashed border area containing the DigiLocker button, an "or" text divider, and a manual upload icon. This is the primary document upload interaction zone.</div>
+          <div class="spec-item-states"><strong>Key states:</strong> Default (dashed border), Drag-over (highlighted border), Uploading (progress indicator)<br><strong>Design tokens:</strong> Border <span class="spec-token">1.5px dashed rgba(8,40,204,0.4)</span>, Height <span class="spec-token">140px</span>. DigiLocker button: <span class="spec-token">231x44px</span>, Background <span class="spec-token">#6334fa</span></div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">5</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Document card</div>
+          <div class="spec-item-desc">"PAN Card" uploaded document card. Shows uploaded file preview. When selected/active, the border turns blue to indicate current focus.</div>
+          <div class="spec-item-states"><strong>Key states:</strong> Default (grey border), Selected (blue border), Uploaded (shows file details)<br><strong>Design tokens:</strong> Size <span class="spec-token">233x160px</span>, Header bg <span class="spec-token">#f1f5fc</span>, Default border <span class="spec-token">#e5e7eb</span>, Selected border <span class="spec-token">#0828cc</span></div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">6</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">"I don't have this document" link</div>
+          <div class="spec-item-desc">Blue underlined text link. Clicking this triggers the Exit Flow modal (Scenarios 8-9), allowing the candidate to provide a reason and upload alternate documents.</div>
+          <div class="spec-item-states"><strong>Key states:</strong> Default (blue underlined), Hover (darker blue)</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">7</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Proceed button</div>
+          <div class="spec-item-desc">Located INSIDE the PAN subsection card. Disabled (low opacity) because not all sub-sections are complete. Only becomes active when the current sub-section's requirements are met.</div>
+          <div class="spec-item-states"><strong>Key states:</strong> Disabled (opacity 0.4, not clickable), Enabled (full opacity, clickable)<br><strong>Design tokens:</strong> Size <span class="spec-token">168x44px</span>, Background <span class="spec-token">#0828cc</span>, Border radius <span class="spec-token">8px</span></div>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════════════
+     SCENARIO 2 — Education: All 4 Levels
+     ════════════════════════════════════════════════════════════════════ -->
+<section class="scenario-section" id="scenario-2">
+  <div class="scenario-header">
+    <span class="scenario-number">Scenario 2</span>
+    <h2 class="scenario-title">Education: All 4 Levels</h2>
+    <p class="scenario-state">The candidate sees all four education levels (Graduation, Post-graduation, Twelfth, Tenth) as sub-sections. DigiLocker integration is available for Twelfth and Tenth.</p>
+    <div class="scenario-meta">
+      <div class="meta-item">
+        <span class="meta-label">Triggered by:</span>
+        Candidate completes Identity step
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">What happens next:</span>
+        Complete education sub-sections, then move to Address
+      </div>
+    </div>
+  </div>
+
+  <div class="mockup-container">
+    <div class="mockup-image-wrapper">
+      <img src="candidate-scenario-2.png" alt="Scenario 2 — Education: All 4 Levels">
+      <div class="annotation-marker" style="left: 82%; top: 10%;">1</div>
+      <div class="annotation-marker" style="left: 55%; top: 14%;">2</div>
+      <div class="annotation-marker" style="left: 55%; top: 18%;">3</div>
+      <div class="annotation-marker" style="left: 45%; top: 22%;">4</div>
+      <div class="annotation-marker" style="left: 55%; top: 28%;">5</div>
+      <div class="annotation-marker" style="left: 42%; top: 33%;">6</div>
+      <div class="annotation-marker" style="left: 65%; top: 70%;">7</div>
+      <div class="annotation-marker" style="left: 55%; top: 65%;">8</div>
+    </div>
+  </div>
+
+  <div class="spec-breakdown">
+    <h3 class="spec-breakdown-title">Spec Breakdown</h3>
+    <ol class="spec-list">
+      <li class="spec-item">
+        <span class="spec-item-num">1</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">"I don't have this education" checkbox</div>
+          <div class="spec-item-desc">Positioned on the right side of the subsection header. Allows the candidate to skip an entire education level (e.g., if they don't have a Post-graduation). When checked, the entire sub-section collapses and is marked as "Not applicable".</div>
+          <div class="spec-item-states"><strong>Key states:</strong> Unchecked (default — sub-section expanded), Checked (sub-section collapses, skipped)</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">2</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">University/school name dropdown</div>
+          <div class="spec-item-desc">Required field. A searchable dropdown populated from API. The candidate types to search and selects their institution from the results.</div>
+          <div class="spec-item-states"><strong>Key states:</strong> Empty (placeholder text), Searching (loading spinner), Populated (selected value displayed)</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">3</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Passing year dropdown</div>
+          <div class="spec-item-desc">Required field. Year selection dropdown for when the candidate completed this education level.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">4</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Preferred doc label + Mandatory badge</div>
+          <div class="spec-item-desc">Shows which document is preferred for this education level. When configured by the company admin, a red "Mandatory" badge appears next to the label, indicating this specific document must be uploaded.</div>
+          <div class="spec-item-states"><strong>Key states:</strong> Preferred only (no badge — any document accepted), Preferred + Mandatory (red badge — this specific document required). Driven by BGV Form Config API.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">5</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Upload zone</div>
+          <div class="spec-item-desc">Same pattern as Identity. Contains DigiLocker button and manual upload option for education documents.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">6</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">"I don't have preferred documents" link</div>
+          <div class="spec-item-desc">Blue underlined text link. Clicking triggers the Exit Flow modal (Scenarios 8-9) where the candidate provides a reason and can upload alternate documents.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">7</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">DigiLocker action buttons</div>
+          <div class="spec-item-desc">Two side-by-side buttons: "Proceed without DigiLocker" (outlined/ghost style) and "Fetch from DigiLocker" (filled green). These appear specifically in the Twelfth and Tenth sub-sections where DigiLocker integration is supported.</div>
+          <div class="spec-item-states"><strong>Design tokens:</strong> "Fetch from DigiLocker" background <span class="spec-token">#0f973d</span></div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">8</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">DigiLocker tooltip</div>
+          <div class="spec-item-desc">Dark tooltip explaining the benefits of using DigiLocker for document retrieval. Appears on hover or focus near the DigiLocker buttons. Provides helpful context about why DigiLocker is recommended.</div>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════════════
+     SCENARIO 3 — Employment: Hero Uploaded
+     ════════════════════════════════════════════════════════════════════ -->
+<section class="scenario-section" id="scenario-3">
+  <div class="scenario-header">
+    <span class="scenario-number">Scenario 3</span>
+    <h2 class="scenario-title">Employment: Hero Uploaded</h2>
+    <p class="scenario-state">The candidate has uploaded the hero document (Experience Letter). Remaining mandatory documents are shown in a red-bordered group. Optional documents are listed separately below.</p>
+    <div class="scenario-meta">
+      <div class="meta-item">
+        <span class="meta-label">Triggered by:</span>
+        Candidate uploads the hero document (Experience Letter)
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">What happens next:</span>
+        Upload remaining mandatory docs, then Proceed becomes enabled (Scenario 4)
+      </div>
+    </div>
+  </div>
+
+  <div class="mockup-container">
+    <div class="mockup-image-wrapper">
+      <img src="candidate-scenario-3.png" alt="Scenario 3 — Employment: Hero Uploaded">
+      <div class="annotation-marker" style="left: 55%; top: 18%;">1</div>
+      <div class="annotation-marker" style="left: 45%; top: 24%;">2</div>
+      <div class="annotation-marker" style="left: 55%; top: 28%;">3</div>
+      <div class="annotation-marker" style="left: 45%; top: 33%;">4</div>
+      <div class="annotation-marker" style="left: 55%; top: 42%;">5</div>
+      <div class="annotation-marker" style="left: 55%; top: 50%;">6</div>
+      <div class="annotation-marker" style="left: 55%; top: 62%;">7</div>
+      <div class="annotation-marker" style="left: 78%; top: 72%;">8</div>
+    </div>
+  </div>
+
+  <div class="spec-breakdown">
+    <h3 class="spec-breakdown-title">Spec Breakdown</h3>
+    <ol class="spec-list">
+      <li class="spec-item">
+        <span class="spec-item-num">1</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Employment type dropdown</div>
+          <div class="spec-item-desc">"Full time" selected. This is a required field that determines the type of employment being verified. Options typically include Full time, Part time, Contract, Internship.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">2</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Preferred doc label</div>
+          <div class="spec-item-desc">"Preferred: Experience Letter" with a red "Mandatory" badge. Indicates that this specific document is the company admin's preferred proof of employment and is required.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">3</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Uploaded file row</div>
+          <div class="spec-item-desc">Replaces the upload zone after the hero document is uploaded. Shows file name, file size, upload timestamp, a green check icon confirming success, and a delete button to remove the upload.</div>
+          <div class="spec-item-states"><strong>Key states:</strong> Uploading (progress bar), Uploaded (file details + green check + delete), Error (red border + retry)</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">4</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">"Preferred document uploaded" success</div>
+          <div class="spec-item-desc">Green check icon with a success message confirming the preferred/hero document has been uploaded. This visual confirmation appears after the hero document upload completes.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">5</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Mandatory documents group (red)</div>
+          <div class="spec-item-desc">A visually distinct group with a red border containing remaining mandatory documents. The header shows "Other mandatory documents" with a count badge indicating how many are left. Each document inside has a Pending or Uploaded status pill.</div>
+          <div class="spec-item-states"><strong>Design tokens:</strong> Border <span class="spec-token">#fca5a5</span> (red-300). Transitions to green when all mandatory docs are uploaded (see Scenario 4).</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">6</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Upload zone for remaining doc</div>
+          <div class="spec-item-desc">Inside the mandatory group. Same DigiLocker + manual upload pattern as other upload zones. Allows uploading the next required document (e.g., Relieving Letter).</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">7</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Optional documents list</div>
+          <div class="spec-item-desc">Listed below the mandatory group. Each optional document has a "+ Upload" button. These documents never block the Proceed button — they are nice-to-have but not required.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">8</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Proceed button (disabled)</div>
+          <div class="spec-item-desc">Located inside the subsection card. Disabled because Relieving Letter (a mandatory document) is still Pending. The button only becomes enabled when all mandatory documents are uploaded.</div>
+          <div class="spec-item-states"><strong>Key states:</strong> Disabled (opacity 0.4) — at least one mandatory doc is Pending. Enabled (full opacity) — all mandatory docs uploaded.</div>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════════════
+     SCENARIO 4 — Employment: All Mandatory Done
+     ════════════════════════════════════════════════════════════════════ -->
+<section class="scenario-section" id="scenario-4">
+  <div class="scenario-header">
+    <span class="scenario-number">Scenario 4</span>
+    <h2 class="scenario-title">Employment: All Mandatory Done</h2>
+    <p class="scenario-state">All mandatory documents for Employment 1 have been uploaded. The mandatory group turns green, and the Proceed button becomes active.</p>
+    <div class="scenario-meta">
+      <div class="meta-item">
+        <span class="meta-label">Triggered by:</span>
+        All mandatory documents uploaded for Employment 1
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">What happens next:</span>
+        Click Proceed to move to Employment 2 or next section
+      </div>
+    </div>
+  </div>
+
+  <div class="mockup-container">
+    <div class="mockup-image-wrapper">
+      <img src="candidate-scenario-4.png" alt="Scenario 4 — Employment: All Mandatory Done">
+      <div class="annotation-marker" style="left: 55%; top: 42%;">1</div>
+      <div class="annotation-marker" style="left: 75%; top: 48%;">2</div>
+      <div class="annotation-marker" style="left: 78%; top: 72%;">3</div>
+      <div class="annotation-marker" style="left: 18%; top: 20%;">4</div>
+    </div>
+  </div>
+
+  <div class="spec-breakdown">
+    <h3 class="spec-breakdown-title">Spec Breakdown</h3>
+    <ol class="spec-list">
+      <li class="spec-item">
+        <span class="spec-item-num">1</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Mandatory group (green)</div>
+          <div class="spec-item-desc">The mandatory documents group transitions from red to green. Border turns green, header background turns light green. Title changes to "All mandatory documents uploaded" with a green check icon and green count badge.</div>
+          <div class="spec-item-states"><strong>Design tokens:</strong> Border <span class="spec-token">#86efac</span> (green-300), Header bg <span class="spec-token">#f0fdf4</span> (green-50). Transition from red state: border <span class="spec-token">#fca5a5</span> to <span class="spec-token">#86efac</span></div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">2</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">"Uploaded" status pill</div>
+          <div class="spec-item-desc">Green pill that replaces the grey "Pending" pill when a document is uploaded. Shows the document is complete and verified.</div>
+          <div class="spec-item-states"><strong>Key states:</strong> Pending (grey pill) to Uploaded (green pill)</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">3</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Proceed button (ENABLED)</div>
+          <div class="spec-item-desc">Full opacity and clickable. All mandatory documents have been uploaded, so the candidate can now proceed to the next employment sub-section or the next section.</div>
+          <div class="spec-item-states"><strong>Key states:</strong> Enabled (full opacity, cursor: pointer). Clicking advances to Employment 2 if it exists, or the next form section.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">4</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Sidebar status dot</div>
+          <div class="spec-item-desc">The first dot (Employment 1) is now a green check, indicating completion. The second dot (Employment 2) remains grey, indicating it is still pending.</div>
+          <div class="spec-item-states"><strong>Key states:</strong> Grey dot (incomplete), Green check (complete)</div>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════════════
+     SCENARIO 5 — Education: Mandatory Documents
+     ════════════════════════════════════════════════════════════════════ -->
+<section class="scenario-section" id="scenario-5">
+  <div class="scenario-header">
+    <span class="scenario-number">Scenario 5</span>
+    <h2 class="scenario-title">Education: Mandatory Documents</h2>
+    <p class="scenario-state">The company admin has configured Degree Certificate as a mandatory document for an education level. The candidate must upload it or use the Exit Flow.</p>
+    <div class="scenario-meta">
+      <div class="meta-item">
+        <span class="meta-label">Triggered by:</span>
+        Company admin configures Degree Certificate as mandatory for education
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">What happens next:</span>
+        Upload degree certificate or use Exit Flow
+      </div>
+    </div>
+  </div>
+
+  <div class="mockup-container">
+    <div class="mockup-image-wrapper">
+      <img src="candidate-scenario-5.png" alt="Scenario 5 — Education: Mandatory Documents">
+      <div class="annotation-marker" style="left: 45%; top: 30%;">1</div>
+      <div class="annotation-marker" style="left: 55%; top: 38%;">2</div>
+      <div class="annotation-marker" style="left: 78%; top: 48%;">3</div>
+      <div class="annotation-marker" style="left: 12%; top: 55%;">4</div>
+    </div>
+  </div>
+
+  <div class="spec-breakdown">
+    <h3 class="spec-breakdown-title">Spec Breakdown</h3>
+    <ol class="spec-list">
+      <li class="spec-item">
+        <span class="spec-item-num">1</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Preferred doc label with Mandatory badge</div>
+          <div class="spec-item-desc">"Preferred: Degree Certificate" with a red "Mandatory" badge. This configuration is driven by the BGV Form Config API — the company admin sets which documents are mandatory for each education level.</div>
+          <div class="spec-item-states"><strong>Key states:</strong> Badge appearance is determined at form load time from the API configuration. Cannot be changed by the candidate.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">2</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Upload zone</div>
+          <div class="spec-item-desc">DigiLocker + manual upload zone for the mandatory Degree Certificate document. Standard upload pattern.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">3</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Proceed button (disabled)</div>
+          <div class="spec-item-desc">Cannot proceed without uploading the mandatory document. The button remains disabled (opacity 0.4) until the Degree Certificate is uploaded or the candidate completes the Exit Flow.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">4</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Completed sidebar items</div>
+          <div class="spec-item-desc">Basic Details and Identity sections show green progress bars and green check icons in the sidebar, indicating they are fully complete. The candidate has progressed past these steps.</div>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════════════
+     SCENARIO 6 — Identity: Mandatory & Optional
+     ════════════════════════════════════════════════════════════════════ -->
+<section class="scenario-section" id="scenario-6">
+  <div class="scenario-header">
+    <span class="scenario-number">Scenario 6</span>
+    <h2 class="scenario-title">Identity: Mandatory & Optional</h2>
+    <p class="scenario-state">Company admin has configured PAN as mandatory, and Aadhaar and Driving License as optional. The Proceed button behavior differs for mandatory vs optional sub-sections.</p>
+    <div class="scenario-meta">
+      <div class="meta-item">
+        <span class="meta-label">Triggered by:</span>
+        Company admin configures PAN as mandatory, Aadhaar and DL as optional
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">What happens next:</span>
+        Upload PAN (required), optionally upload others
+      </div>
+    </div>
+  </div>
+
+  <div class="mockup-container">
+    <div class="mockup-image-wrapper">
+      <img src="candidate-scenario-6.png" alt="Scenario 6 — Identity: Mandatory & Optional">
+      <div class="annotation-marker" style="left: 52%; top: 22%;">1</div>
+      <div class="annotation-marker" style="left: 52%; top: 50%;">2</div>
+      <div class="annotation-marker" style="left: 78%; top: 58%;">3</div>
+      <div class="annotation-marker" style="left: 55%; top: 65%;">4</div>
+      <div class="annotation-marker" style="left: 78%; top: 38%;">5</div>
+    </div>
+  </div>
+
+  <div class="spec-breakdown">
+    <h3 class="spec-breakdown-title">Spec Breakdown</h3>
+    <ol class="spec-list">
+      <li class="spec-item">
+        <span class="spec-item-num">1</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Mandatory badge on PAN</div>
+          <div class="spec-item-desc">Red "Mandatory" badge displayed in the PAN subsection header. This document MUST be uploaded before the candidate can proceed past Identity.</div>
+          <div class="spec-item-states"><strong>Visual:</strong> Red badge with white text. Positioned inline with the subsection title.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">2</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Optional badge on Aadhaar</div>
+          <div class="spec-item-desc">Grey "Optional" badge displayed in the Aadhaar subsection header. The candidate can proceed even without uploading this document.</div>
+          <div class="spec-item-states"><strong>Visual:</strong> Grey badge. The Proceed button for this sub-section is enabled regardless of upload status.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">3</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Proceed enabled (optional section)</div>
+          <div class="spec-item-desc">Aadhaar's Proceed button is at full opacity and clickable because the section is optional. The candidate can skip this document and move on.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">4</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Collapsed card (Driving License)</div>
+          <div class="spec-item-desc">The Driving License card is shown in a collapsed state with reduced opacity. Only the header is visible — no upload zone or content is shown. The candidate hasn't opened/expanded it yet.</div>
+          <div class="spec-item-states"><strong>Design tokens:</strong> Opacity <span class="spec-token">0.6</span> when collapsed. Full opacity when expanded. Click on header to expand.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">5</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Proceed disabled (mandatory section)</div>
+          <div class="spec-item-desc">PAN's Proceed button is disabled (opacity 0.4) because the mandatory document has not been uploaded yet. The candidate must upload PAN before they can complete this sub-section.</div>
+          <div class="spec-item-states"><strong>Key behavior:</strong> Mandatory sub-sections block Proceed until the document is uploaded. Optional sub-sections allow Proceed at any time.</div>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════════════
+     SCENARIO 7 — Address: Permanent & Current
+     ════════════════════════════════════════════════════════════════════ -->
+<section class="scenario-section" id="scenario-7">
+  <div class="scenario-header">
+    <span class="scenario-number">Scenario 7</span>
+    <h2 class="scenario-title">Address: Permanent & Current</h2>
+    <p class="scenario-state">The candidate is on the Address section with sub-sections for Permanent and Current addresses. A digital verification warning banner is shown. A checkbox allows copying permanent address to current.</p>
+    <div class="scenario-meta">
+      <div class="meta-item">
+        <span class="meta-label">Triggered by:</span>
+        Candidate completes Education step
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">What happens next:</span>
+        Upload address proof, fill address details
+      </div>
+    </div>
+  </div>
+
+  <div class="mockup-container">
+    <div class="mockup-image-wrapper">
+      <img src="candidate-scenario-7.png" alt="Scenario 7 — Address: Permanent & Current">
+      <div class="annotation-marker" style="left: 55%; top: 25%;">1</div>
+      <div class="annotation-marker" style="left: 55%; top: 32%;">2</div>
+      <div class="annotation-marker" style="left: 55%; top: 42%;">3</div>
+      <div class="annotation-marker" style="left: 42%; top: 52%;">4</div>
+      <div class="annotation-marker" style="left: 78%; top: 58%;">5</div>
+      <div class="annotation-marker" style="left: 75%; top: 68%;">6</div>
+    </div>
+  </div>
+
+  <div class="spec-breakdown">
+    <h3 class="spec-breakdown-title">Spec Breakdown</h3>
+    <ol class="spec-list">
+      <li class="spec-item">
+        <span class="spec-item-num">1</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Digital verification warning</div>
+          <div class="spec-item-desc">Yellow informational banner stating "This address will be verified digitally..." Provides context to the candidate about the verification method. This banner is not dismissible.</div>
+          <div class="spec-item-states"><strong>Visual:</strong> Yellow/amber background, informational icon. Always visible — no close button.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">2</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Acceptable documents list</div>
+          <div class="spec-item-desc">Lists the documents accepted for address proof: "Aadhaar (front and back), Driving License..." with a "+13 more" expandable link that reveals the full list of accepted documents when clicked.</div>
+          <div class="spec-item-states"><strong>Key states:</strong> Collapsed (shows first few + "+N more" link), Expanded (shows full list)</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">3</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Upload zone</div>
+          <div class="spec-item-desc">Same DigiLocker + manual upload pattern. Allows the candidate to upload their address proof document.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">4</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">"I don't have preferred documents" link</div>
+          <div class="spec-item-desc">Blue underlined link. Triggers the Exit Flow modal (Scenarios 8-9) for the address section, allowing the candidate to explain why they cannot provide the preferred address proof.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">5</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Proceed button</div>
+          <div class="spec-item-desc">Inside the Permanent address card. Disabled until the address proof document has been uploaded.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">6</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">"Current address is same as permanent" checkbox</div>
+          <div class="spec-item-desc">Positioned on the right side of the Current address header. When checked, auto-copies all permanent address details (address fields and uploaded documents) to the Current address sub-section, saving the candidate from re-entering the same information.</div>
+          <div class="spec-item-states"><strong>Key behavior:</strong> Checking copies all fields and marks Current address as complete. Unchecking clears the copied data and requires manual entry.</div>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════════════
+     SCENARIO 8 — Exit Flow Step 1: Reasoning
+     ════════════════════════════════════════════════════════════════════ -->
+<section class="scenario-section" id="scenario-8">
+  <div class="scenario-header">
+    <span class="scenario-number">Scenario 8</span>
+    <h2 class="scenario-title">Exit Flow Step 1: Reasoning</h2>
+    <p class="scenario-state">A modal appears when the candidate clicks "I don't have this document" or "I don't have preferred documents." Step 1 collects the reason, optional details, and an expected date for the document.</p>
+    <div class="scenario-meta">
+      <div class="meta-item">
+        <span class="meta-label">Triggered by:</span>
+        Clicking "I don't have this document" or "I don't have preferred documents"
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">What happens next:</span>
+        Click "Next" to go to Step 2 (Scenario 9)
+      </div>
+    </div>
+  </div>
+
+  <div class="mockup-container">
+    <div class="mockup-image-wrapper">
+      <img src="candidate-scenario-8.png" alt="Scenario 8 — Exit Flow Step 1: Reasoning">
+      <div class="annotation-marker" style="left: 50%; top: 25%;">1</div>
+      <div class="annotation-marker" style="left: 50%; top: 32%;">2</div>
+      <div class="annotation-marker" style="left: 50%; top: 38%;">3</div>
+      <div class="annotation-marker" style="left: 50%; top: 47%;">4</div>
+      <div class="annotation-marker" style="left: 50%; top: 55%;">5</div>
+      <div class="annotation-marker" style="left: 50%; top: 67%;">6</div>
+      <div class="annotation-marker" style="left: 50%; top: 78%;">7</div>
+    </div>
+  </div>
+
+  <div class="spec-breakdown">
+    <h3 class="spec-breakdown-title">Spec Breakdown</h3>
+    <ol class="spec-list">
+      <li class="spec-item">
+        <span class="spec-item-num">1</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Modal header</div>
+          <div class="spec-item-desc">"Preferred documents not available" title with a close (x) button. Closing the modal discards any unsaved changes and returns to the form.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">2</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Stepper</div>
+          <div class="spec-item-desc">Two-step stepper: Step 1 "Reasoning" (active, blue circle) connected by a dashed line to Step 2 "Add alternate documents" (inactive, grey circle). Visually communicates the two-part process.</div>
+          <div class="spec-item-states"><strong>Key states:</strong> Active step (blue circle + blue text), Completed step (green check), Upcoming step (grey circle + grey text). Dashed connector between steps.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">3</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Note box</div>
+          <div class="spec-item-desc">Blue informational box explaining that the preferred document is the most reliable form of verification. Warns that using alternate documents may cause delays in the verification process.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">4</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Reason dropdown (required)</div>
+          <div class="spec-item-desc">"Why do you not have the documents?" — a required dropdown (red asterisk). Pre-defined options: Lost, Serving notice period, Company shut down, Never issued, Other.</div>
+          <div class="spec-item-states"><strong>Validation:</strong> Required field. The "Next" button is disabled until a reason is selected.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">5</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Detail textarea (optional)</div>
+          <div class="spec-item-desc">"Explain the reason in detail" with hint/placeholder text. This is an optional field that allows the candidate to provide additional context about why they don't have the document.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">6</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">ETA date picker with validation error</div>
+          <div class="spec-item-desc">"When can you expect the documents?" date picker field. In this scenario, the candidate has selected a past date, triggering a red border and error message: "ETA cannot be in past".</div>
+          <div class="spec-item-states"><strong>Key states:</strong> Empty (default), Valid date (green/normal border), Past date error (red border + error message "ETA cannot be in past")</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">7</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Modal footer</div>
+          <div class="spec-item-desc">Cancel (text/ghost button) on the left and Next (blue filled button) on the right. Cancel closes the modal. Next advances to Step 2 (Scenario 9).</div>
+          <div class="spec-item-states"><strong>Key states:</strong> Next disabled (reason not selected or validation error), Next enabled (valid form data)</div>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════════════
+     SCENARIO 9 — Exit Flow Step 2: Alternate Docs
+     ════════════════════════════════════════════════════════════════════ -->
+<section class="scenario-section" id="scenario-9">
+  <div class="scenario-header">
+    <span class="scenario-number">Scenario 9</span>
+    <h2 class="scenario-title">Exit Flow Step 2: Alternate Docs</h2>
+    <p class="scenario-state">Step 1 is completed (green check). Step 2 allows the candidate to upload alternate documents that can be used instead of the preferred document.</p>
+    <div class="scenario-meta">
+      <div class="meta-item">
+        <span class="meta-label">Triggered by:</span>
+        Clicking "Next" on Step 1
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">What happens next:</span>
+        Upload alternate docs, then Submit to close the modal
+      </div>
+    </div>
+  </div>
+
+  <div class="mockup-container">
+    <div class="mockup-image-wrapper">
+      <img src="candidate-scenario-9.png" alt="Scenario 9 — Exit Flow Step 2: Alternate Docs">
+      <div class="annotation-marker" style="left: 50%; top: 20%;">1</div>
+      <div class="annotation-marker" style="left: 50%; top: 40%;">2</div>
+      <div class="annotation-marker" style="left: 50%; top: 50%;">3</div>
+      <div class="annotation-marker" style="left: 65%; top: 75%;">4</div>
+    </div>
+  </div>
+
+  <div class="spec-breakdown">
+    <h3 class="spec-breakdown-title">Spec Breakdown</h3>
+    <ol class="spec-list">
+      <li class="spec-item">
+        <span class="spec-item-num">1</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Stepper</div>
+          <div class="spec-item-desc">Step 1 "Reasoning" now shows a green check (completed). Step 2 "Add alternate documents" is active (blue circle). The dashed connector reflects the progression.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">2</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Alternate documents list</div>
+          <div class="spec-item-desc">A list of acceptable alternate documents. Each document has its name and an upload button or an uploaded status indicator. The list is determined by the BGV Form Config API based on the section type.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">3</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Uploaded alternate doc</div>
+          <div class="spec-item-desc">Shows a file preview row for an already-uploaded alternate document. Includes file name, size, timestamp, and delete option. Confirms the alternate doc is ready.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">4</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Submit button</div>
+          <div class="spec-item-desc">Closes the modal and saves the exit flow data (reason, details, ETA, and uploaded alternate documents) to the backend. The form section is then marked as "completed with alternate documents."</div>
+          <div class="spec-item-states"><strong>Key behavior:</strong> On submit, the sub-section updates to show that alternate docs were provided. The Proceed button in the sub-section becomes enabled.</div>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════════════
+     SCENARIO 10 — Non-Preferred First Warning
+     ════════════════════════════════════════════════════════════════════ -->
+<section class="scenario-section" id="scenario-10">
+  <div class="scenario-header">
+    <span class="scenario-number">Scenario 10</span>
+    <h2 class="scenario-title">Non-Preferred First Warning</h2>
+    <p class="scenario-state">The candidate has uploaded a non-preferred document first (e.g., Offer Letter instead of the preferred Experience Letter). A warning banner prompts them to upload the preferred document.</p>
+    <div class="scenario-meta">
+      <div class="meta-item">
+        <span class="meta-label">Triggered by:</span>
+        Candidate uploads a non-preferred document (e.g., Offer Letter instead of Experience Letter)
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">What happens next:</span>
+        Upload the preferred doc, or proceed with non-preferred
+      </div>
+    </div>
+  </div>
+
+  <div class="mockup-container">
+    <div class="mockup-image-wrapper">
+      <img src="candidate-scenario-10.png" alt="Scenario 10 — Non-Preferred First Warning">
+      <div class="annotation-marker" style="left: 55%; top: 30%;">1</div>
+      <div class="annotation-marker" style="left: 55%; top: 38%;">2</div>
+      <div class="annotation-marker" style="left: 55%; top: 45%;">3</div>
+      <div class="annotation-marker" style="left: 78%; top: 60%;">4</div>
+    </div>
+  </div>
+
+  <div class="spec-breakdown">
+    <h3 class="spec-breakdown-title">Spec Breakdown</h3>
+    <ol class="spec-list">
+      <li class="spec-item">
+        <span class="spec-item-num">1</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Warning banner</div>
+          <div class="spec-item-desc">Yellow/orange warning banner informing the candidate that the uploaded document is not the preferred one. Prompts the candidate to upload the preferred document (Experience Letter) for faster verification.</div>
+          <div class="spec-item-states"><strong>Visual:</strong> Amber/yellow background, warning icon. Not dismissible — persists until the preferred document is uploaded.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">2</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Uploaded non-preferred file</div>
+          <div class="spec-item-desc">File row showing the Offer Letter that was uploaded. Displays file name, size, timestamp, and delete button. The file is accepted but not ideal.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">3</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Preferred doc still needed</div>
+          <div class="spec-item-desc">Visual indication that the Experience Letter (preferred document) is still required or strongly recommended. The upload zone remains available for the preferred document.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">4</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Proceed button</div>
+          <div class="spec-item-desc">May be disabled or enabled depending on the configuration. If the preferred document is mandatory, Proceed remains disabled until it is uploaded. If the preferred document is only recommended (not mandatory), Proceed may be enabled with the non-preferred upload.</div>
+          <div class="spec-item-states"><strong>Key behavior:</strong> Depends on mandatory vs recommended configuration from the BGV Form Config API.</div>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════════════
+     SCENARIO 11 — Mandatory Doc: Reason & ETA
+     ════════════════════════════════════════════════════════════════════ -->
+<section class="scenario-section" id="scenario-11">
+  <div class="scenario-header">
+    <span class="scenario-number">Scenario 11</span>
+    <h2 class="scenario-title">Mandatory Doc: Reason & ETA (Inline)</h2>
+    <p class="scenario-state">The candidate clicks "I don't have this" on a mandatory document. Instead of a modal, an inline form appears within the subsection card for the candidate to provide a reason and expected date.</p>
+    <div class="scenario-meta">
+      <div class="meta-item">
+        <span class="meta-label">Triggered by:</span>
+        Candidate clicks "I don't have this" on a mandatory document (inline flow, not modal)
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">What happens next:</span>
+        Fill reason + ETA, then proceed
+      </div>
+    </div>
+  </div>
+
+  <div class="mockup-container">
+    <div class="mockup-image-wrapper">
+      <img src="candidate-scenario-11.png" alt="Scenario 11 — Mandatory Doc: Reason & ETA (Inline)">
+      <div class="annotation-marker" style="left: 55%; top: 45%;">1</div>
+      <div class="annotation-marker" style="left: 55%; top: 55%;">2</div>
+      <div class="annotation-marker" style="left: 55%; top: 40%;">3</div>
+    </div>
+  </div>
+
+  <div class="spec-breakdown">
+    <h3 class="spec-breakdown-title">Spec Breakdown</h3>
+    <ol class="spec-list">
+      <li class="spec-item">
+        <span class="spec-item-num">1</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Reason dropdown (inline)</div>
+          <div class="spec-item-desc">Same dropdown options as the Exit Flow modal (Lost, Serving notice period, Company shut down, Never issued, Other) but displayed inline within the subsection card rather than in a separate modal. Required field.</div>
+          <div class="spec-item-states"><strong>Key difference from Scenarios 8-9:</strong> This is an inline flow — no modal is opened. The fields appear directly in the card, below or replacing the upload zone.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">2</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">ETA date field (inline)</div>
+          <div class="spec-item-desc">Date picker for when the candidate expects to have the document. Same validation as the modal version — past dates trigger an error. Displayed inline in the subsection card.</div>
+          <div class="spec-item-states"><strong>Validation:</strong> Cannot select past dates. Error message: "ETA cannot be in past"</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">3</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Expanded inline form</div>
+          <div class="spec-item-desc">The reason and ETA fields appear directly inside the subsection card, replacing or appearing below the upload zone. This inline approach is used for mandatory documents where the exit flow is simpler (no alternate documents step).</div>
+          <div class="spec-item-states"><strong>Key behavior:</strong> After filling reason + ETA, the Proceed button becomes enabled. The sub-section is marked as "completed with reason" rather than "completed with document."</div>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════════════
+     SCENARIO 12 — Review & Submit
+     ════════════════════════════════════════════════════════════════════ -->
+<section class="scenario-section" id="scenario-12">
+  <div class="scenario-header">
+    <span class="scenario-number">Scenario 12</span>
+    <h2 class="scenario-title">Review & Submit</h2>
+    <p class="scenario-state">All sections are completed (or marked with reasons). The candidate reviews a summary of everything they have submitted and provides consent before final submission.</p>
+    <div class="scenario-meta">
+      <div class="meta-item">
+        <span class="meta-label">Triggered by:</span>
+        All sections completed (or marked with reasons)
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">What happens next:</span>
+        Submit the form
+      </div>
+    </div>
+  </div>
+
+  <div class="mockup-container">
+    <div class="mockup-image-wrapper">
+      <img src="candidate-scenario-12.png" alt="Scenario 12 — Review & Submit">
+      <div class="annotation-marker" style="left: 10%; top: 75%;">1</div>
+      <div class="annotation-marker" style="left: 55%; top: 25%;">2</div>
+      <div class="annotation-marker" style="left: 55%; top: 70%;">3</div>
+      <div class="annotation-marker" style="left: 55%; top: 80%;">4</div>
+      <div class="annotation-marker" style="left: 55%; top: 88%;">5</div>
+    </div>
+  </div>
+
+  <div class="spec-breakdown">
+    <h3 class="spec-breakdown-title">Spec Breakdown</h3>
+    <ol class="spec-list">
+      <li class="spec-item">
+        <span class="spec-item-num">1</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Sidebar "Final Step"</div>
+          <div class="spec-item-desc">"Review & Submit" item in the sidebar, marked as the final step. All previous sections (Identity, Education, Address, Employment) show green checks indicating completion.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">2</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Section summary cards</div>
+          <div class="spec-item-desc">Each section (Identity, Education, Address, Employment) is displayed as a summary card showing: uploaded documents with their names, status indicators (uploaded, alternate provided, reason given), and "Edit" links that take the candidate back to that section to make changes.</div>
+          <div class="spec-item-states"><strong>Key behavior:</strong> Clicking "Edit" navigates back to the specific section. Changes made there are reflected in the review summary when the candidate returns.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">3</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Missing doc warning</div>
+          <div class="spec-item-desc">Yellow warning banner for any section where a mandatory document was not uploaded. Shows the reason and ETA provided by the candidate (from the Exit Flow or inline form). This is informational — it does not block submission.</div>
+          <div class="spec-item-states"><strong>Visual:</strong> Amber/yellow background with warning icon. Displays: document name, reason text, ETA date.</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">4</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Consent checkbox</div>
+          <div class="spec-item-desc">Required checkbox the candidate must check before submitting. Confirms that all information provided is accurate and truthful. The Submit button remains disabled until this checkbox is checked.</div>
+          <div class="spec-item-states"><strong>Key states:</strong> Unchecked (Submit disabled), Checked (Submit enabled)</div>
+        </div>
+      </li>
+      <li class="spec-item">
+        <span class="spec-item-num">5</span>
+        <div class="spec-item-body">
+          <div class="spec-item-name">Submit button</div>
+          <div class="spec-item-desc">Green "Submit Background Verification Form" button. Full width, prominent styling. This is the final action that submits the entire form.</div>
+          <div class="spec-item-states"><strong>Key states:</strong> Disabled (consent not checked — opacity 0.4), Enabled (consent checked — full green, clickable), Submitting (loading spinner, disabled). On success: redirect to confirmation page.</div>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+
+  <!-- Footer -->
+  <div class="page-footer">
+    Candidate Background Verification Form — Developer Guide
+  </div>
+
+</div>
+
+</body>
+</html>
