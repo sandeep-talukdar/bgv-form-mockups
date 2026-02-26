@@ -9,16 +9,56 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Poppins', sans-serif; background: #f8f9fa; color: #1a1a2e; }
 
+  /* ── SA Portal Sidebar ── */
+  .sa-layout { display: flex; min-height: 100vh; }
+  .sa-sidebar {
+    width: 290px; background: #0844a6; color: #fff; display: flex;
+    flex-direction: column; flex-shrink: 0; min-height: 100vh;
+    font-family: 'Poppins', sans-serif;
+  }
+  .sa-sidebar-header {
+    padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.15);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .sa-logo { font-size: 18px; font-weight: 800; }
+  .sa-badge {
+    background: #088077; color: #fff; font-size: 10px; font-weight: 600;
+    padding: 2px 8px; border-radius: 10px;
+  }
+  .sa-sidebar-nav { flex: 1; padding: 12px 0; overflow-y: auto; }
+  .sa-nav-item {
+    padding: 10px 20px; font-size: 13px; font-weight: 400; color: rgba(255,255,255,0.7);
+    cursor: pointer; transition: all 0.15s;
+  }
+  .sa-nav-item:hover { background: rgba(255,255,255,0.1); color: #fff; }
+  .sa-nav-active {
+    background: #088077 !important; color: #fff !important; font-weight: 600;
+    border-radius: 4px; margin: 0 8px; padding: 10px 12px;
+  }
+  .sa-sidebar-footer {
+    padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.15);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .sa-user { font-size: 13px; font-weight: 600; }
+  .sa-role {
+    background: #f59e0b; color: #fff; font-size: 10px; font-weight: 600;
+    padding: 1px 8px; border-radius: 8px;
+  }
+
+  /* ── SA Main area ── */
+  .sa-main { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
+
   .banner {
     background: #fef9c3; border: 1px solid #f59e0b; padding: 10px 20px;
     font-size: 13px; font-weight: 600; color: #92400e; text-align: center;
   }
 
   .topbar {
-    background: #fff; border-bottom: 1px solid #e5e7eb; padding: 12px 24px;
+    background: #fff; border-bottom: 1px solid #ccc; padding: 16px 24px;
     display: flex; align-items: center; gap: 12px; font-size: 13px; color: #6b7280;
+    position: sticky; top: 0; z-index: 99;
   }
-  .topbar .breadcrumb-link { color: #4f46e5; text-decoration: none; cursor: pointer; }
+  .topbar .breadcrumb-link { color: #0844a6; text-decoration: none; cursor: pointer; }
   .topbar .breadcrumb-sep { color: #d1d5db; }
 
   .page-container { display: flex; min-height: calc(100vh - 90px); }
@@ -33,7 +73,7 @@
   }
   .company-sidebar .tab-item:hover { background: #f9fafb; }
   .company-sidebar .tab-item.active {
-    color: #4f46e5; font-weight: 600; background: #eef2ff; border-left-color: #4f46e5;
+    color: #088077; font-weight: 600; background: #e6f7f5; border-left-color: #088077;
   }
 
   .main-content { flex: 1; overflow-y: auto; padding: 20px 24px; }
@@ -46,7 +86,7 @@
     border-bottom: 2px solid transparent; margin-bottom: -2px; white-space: nowrap;
   }
   .settings-tab:hover { color: #374151; }
-  .settings-tab.active { color: #4f46e5; border-bottom-color: #4f46e5; font-weight: 600; }
+  .settings-tab.active { color: #088077; border-bottom-color: #088077; font-weight: 600; }
 
   .page-header { margin-bottom: 16px; }
   .page-title { font-size: 17px; font-weight: 600; margin-bottom: 4px; }
@@ -65,7 +105,7 @@
     background-repeat: no-repeat; background-position: right 10px center;
     cursor: pointer; min-width: 300px;
   }
-  .scope-dropdown:focus { outline: none; border-color: #4f46e5; box-shadow: 0 0 0 2px rgba(79,70,229,0.1); }
+  .scope-dropdown:focus { outline: none; border-color: #0844a6; box-shadow: 0 0 0 2px rgba(8,68,166,0.1); }
   .scope-badge {
     display: inline-flex; align-items: center; padding: 3px 8px;
     border-radius: 4px; font-size: 11px; font-weight: 500;
@@ -95,8 +135,8 @@
   }
   .check-nav-item:hover { background: #f3f4f6; }
   .check-nav-item.active {
-    color: #4f46e5; font-weight: 600; background: #eef2ff;
-    border-left-color: #4f46e5;
+    color: #088077; font-weight: 600; background: #e6f7f5;
+    border-left-color: #088077;
   }
   .check-nav-icon {
     width: 22px; height: 22px; border-radius: 4px; display: flex;
@@ -123,7 +163,7 @@
     padding: 8px 14px; font-size: 11px; color: #6b7280; cursor: pointer;
     border-bottom: 2px solid transparent; margin-bottom: -1px; font-weight: 500;
   }
-  .subcategory-tab.active { color: #4f46e5; border-bottom-color: #4f46e5; }
+  .subcategory-tab.active { color: #088077; border-bottom-color: #088077; }
   .subcategory-tab:hover { color: #374151; }
 
   .doc-list-header {
@@ -140,12 +180,12 @@
     padding: 8px 16px; border-bottom: 1px solid #f3f4f6; align-items: center;
     transition: background 0.15s, opacity 0.2s; cursor: default;
   }
-  .doc-row:hover { background: #fafbfc; }
+  .doc-row:hover { background: #f0f4ff; }
   .doc-row.hero-row { background: #fefce8; }
   .doc-row.hero-row:hover { background: #fef9c3; }
   .doc-row.uncollected { opacity: 0.4; }
-  .doc-row.dragging { opacity: 0.4; background: #eef2ff; }
-  .doc-row.drag-over { border-top: 2px solid #4f46e5; }
+  .doc-row.dragging { opacity: 0.4; background: #e8efff; }
+  .doc-row.drag-over { border-top: 2px solid #0844a6; }
 
   .drag-handle {
     color: #d1d5db; cursor: grab; display: flex; align-items: center;
@@ -172,12 +212,12 @@
     cursor: pointer; display: flex; align-items: center; justify-content: center;
     background: #fff; transition: all 0.15s; flex-shrink: 0;
   }
-  .cb:hover { border-color: #4f46e5; }
-  .cb.checked { background: #4f46e5; border-color: #4f46e5; }
+  .cb:hover { border-color: #0844a6; }
+  .cb.checked { background: #0844a6; border-color: #0844a6; }
   .cb.checked::after { content: '✓'; color: #fff; font-size: 11px; font-weight: 700; line-height: 1; }
-  .cb.locked { background: #4f46e5; border-color: #4f46e5; cursor: not-allowed; }
+  .cb.locked { background: #0844a6; border-color: #0844a6; cursor: not-allowed; }
   .cb.locked::after { content: '✓'; color: #fff; font-size: 11px; font-weight: 700; line-height: 1; }
-  .cb.locked:hover { border-color: #4f46e5; }
+  .cb.locked:hover { border-color: #0844a6; }
   .cb.disabled { background: #f3f4f6; border-color: #e5e7eb; cursor: not-allowed; }
   .cb.disabled:hover { border-color: #e5e7eb; }
 
@@ -194,8 +234,8 @@
   }
   .btn-secondary { background: #fff; border: 1px solid #d1d5db; color: #374151; }
   .btn-secondary:hover { background: #f9fafb; }
-  .btn-primary { background: #4f46e5; color: #fff; }
-  .btn-primary:hover { background: #4338ca; }
+  .btn-primary { background: #0844a6; color: #fff; }
+  .btn-primary:hover { background: #063785; }
 
   /* ========== PACKAGE OVERRIDE SUMMARY ========== */
   .override-summary {
@@ -255,7 +295,7 @@
   .diff-tag.reorder { background: #ede9fe; color: #6d28d9; }
 
   .override-item-action {
-    color: #4f46e5; font-size: 11px; font-weight: 500;
+    color: #0844a6; font-size: 11px; font-weight: 500;
     display: flex; align-items: center; gap: 4px; flex-shrink: 0;
     margin-top: 6px;
   }
@@ -328,141 +368,172 @@
 
 <div class="banner">PROPOSED DESIGN (Option A) — BGV Form Config with Package Override Summary below (#34436 + #34175)</div>
 
-<div class="topbar">
-  <a class="breadcrumb-link">Companies</a>
-  <span class="breadcrumb-sep">›</span>
-  <a class="breadcrumb-link">Google India Pvt Ltd</a>
-  <span class="breadcrumb-sep">›</span>
-  <span>Settings</span>
-</div>
-
-<div class="page-container">
-  <div class="company-sidebar">
-    <div class="tab-item">Overview</div>
-    <div class="tab-item">Candidates</div>
-    <div class="tab-item">Insufficiency Review</div>
-    <div class="tab-item">Packages</div>
-    <div class="tab-item">Credits &amp; Billing</div>
-    <div class="tab-item">ADC Review</div>
-    <div class="tab-item">Integrations</div>
-    <div class="tab-item">Alumni Verification</div>
-    <div class="tab-item">Company Admins</div>
-    <div class="tab-item">Analytics &amp; Logs</div>
-    <div class="tab-item active">Settings</div>
+<div class="sa-layout">
+  <!-- SA Portal Main Sidebar -->
+  <div class="sa-sidebar">
+    <div class="sa-sidebar-header">
+      <span class="sa-logo">SpringVerify</span>
+      <span class="sa-badge">Super Admin Portal</span>
+    </div>
+    <div class="sa-sidebar-nav">
+      <div class="sa-nav-item">Dashboard</div>
+      <div class="sa-nav-item">Tasks</div>
+      <div class="sa-nav-item">Performance</div>
+      <div class="sa-nav-item">Analytics</div>
+      <div class="sa-nav-item sa-nav-active">Companies</div>
+      <div class="sa-nav-item">Candidates</div>
+      <div class="sa-nav-item">Credit &amp; Billing</div>
+      <div class="sa-nav-item">Employment</div>
+      <div class="sa-nav-item">Vendors</div>
+      <div class="sa-nav-item">Settings</div>
+    </div>
+    <div class="sa-sidebar-footer">
+      <span class="sa-user">Sandeep T.</span>
+      <span class="sa-role">Product</span>
+    </div>
   </div>
 
-  <div class="main-content">
-    <div class="settings-tabs">
-      <div class="settings-tab">Security</div>
-      <div class="settings-tab">Brand and Communication</div>
-      <div class="settings-tab">Reference Check Questions</div>
-      <div class="settings-tab">DAV Configuration</div>
-      <div class="settings-tab">Automations</div>
-      <div class="settings-tab">Status Colors</div>
-      <div class="settings-tab active">BGV Form Config</div>
+  <!-- SA Main content area -->
+  <div class="sa-main">
+
+    <div class="topbar">
+      <a class="breadcrumb-link">Companies</a>
+      <span class="breadcrumb-sep">›</span>
+      <a class="breadcrumb-link">Google India Pvt Ltd</a>
+      <span class="breadcrumb-sep">›</span>
+      <span>Settings</span>
     </div>
 
-    <div class="page-header">
-      <div class="page-title">Background Verification Form Document Configuration</div>
-      <div class="page-subtitle">Configure which documents to collect from candidates and mark specific documents as mandatory per check type.</div>
-    </div>
-
-    <!-- Scope selector -->
-    <div class="scope-selector">
-      <span class="scope-label">Scope:</span>
-      <select class="scope-dropdown" id="scopeSelect">
-        <option value="company">Company Default</option>
-        <option value="pkg-standard">Package: Standard Background Check</option>
-        <option value="pkg-premium">Package: Premium Background Check</option>
-        <option value="pkg-bluecollar">Package: Blue Collar</option>
-      </select>
-      <span class="scope-badge company" id="scopeBadge">Company Default</span>
-      <button class="reset-btn" id="resetBtn" style="display:none">Reset to company default</button>
-    </div>
-
-    <!-- Main config panel -->
-    <div class="config-panel">
-      <div class="check-nav">
-        <div class="check-nav-item" onclick="selectCheck('identity')">
-          <div class="check-nav-icon identity">ID</div>
-          Identity check
-        </div>
-        <div class="check-nav-item" onclick="selectCheck('address')">
-          <div class="check-nav-icon address">AD</div>
-          Address check
-        </div>
-        <div class="check-nav-item" onclick="selectCheck('education')">
-          <div class="check-nav-icon education">ED</div>
-          Education check
-        </div>
-        <div class="check-nav-item active" onclick="selectCheck('employment')">
-          <div class="check-nav-icon employment">EM</div>
-          Employment check
-        </div>
+    <div class="page-container">
+      <div class="company-sidebar">
+        <div class="tab-item">Overview</div>
+        <div class="tab-item">Candidates</div>
+        <div class="tab-item">Insufficiency Review</div>
+        <div class="tab-item">Packages</div>
+        <div class="tab-item">Credits &amp; Billing</div>
+        <div class="tab-item">ADC Review</div>
+        <div class="tab-item">Integrations</div>
+        <div class="tab-item">Alumni Verification</div>
+        <div class="tab-item">Company Admins</div>
+        <div class="tab-item">Analytics &amp; Logs</div>
+        <div class="tab-item active">Settings</div>
       </div>
 
-      <div class="doc-panel">
-        <div class="doc-panel-header">
-          <div class="doc-panel-title" id="panelTitle">Employment Check Documents</div>
-          <div class="doc-panel-subtitle">Drag to reorder document hierarchy. The topmost selected document is the hero document.</div>
+      <div class="main-content">
+        <div class="settings-tabs">
+          <div class="settings-tab">Security</div>
+          <div class="settings-tab">Brand and Communication</div>
+          <div class="settings-tab">Reference Check Questions</div>
+          <div class="settings-tab">DAV Configuration</div>
+          <div class="settings-tab">Automations</div>
+          <div class="settings-tab">Status Colors</div>
+          <div class="settings-tab active">BGV Form Config</div>
         </div>
 
-        <div class="subcategory-tabs" id="subcategoryTabs">
-          <div class="subcategory-tab active" onclick="selectSubcat('fulltime')">Full Time</div>
-          <div class="subcategory-tab" onclick="selectSubcat('internship')">Internship</div>
-          <div class="subcategory-tab" onclick="selectSubcat('contract')">Contract</div>
+        <div class="page-header">
+          <div class="page-title">Background Verification Form Document Configuration</div>
+          <div class="page-subtitle">Configure which documents to collect from candidates and mark specific documents as mandatory per check type.</div>
         </div>
 
-        <div class="doc-list-header">
-          <div></div>
-          <div>Document</div>
-          <div style="text-align:center">Collect</div>
-          <div style="text-align:center">Mandatory</div>
+        <!-- Scope selector -->
+        <div class="scope-selector">
+          <span class="scope-label">Scope:</span>
+          <select class="scope-dropdown" id="scopeSelect">
+            <option value="company">Company Default</option>
+            <option value="pkg-standard">Package: Standard Background Check</option>
+            <option value="pkg-premium">Package: Premium Background Check</option>
+            <option value="pkg-bluecollar">Package: Blue Collar</option>
+          </select>
+          <span class="scope-badge company" id="scopeBadge">Company Default</span>
+          <button class="reset-btn" id="resetBtn" style="display:none">Reset to company default</button>
         </div>
 
-        <div class="doc-list-wrap">
-          <ul id="doc-list"></ul>
-        </div>
+        <!-- Main config panel -->
+        <div class="config-panel">
+          <div class="check-nav">
+            <div class="check-nav-item" onclick="selectCheck('identity')">
+              <div class="check-nav-icon identity">ID</div>
+              Identity check
+            </div>
+            <div class="check-nav-item" onclick="selectCheck('address')">
+              <div class="check-nav-icon address">AD</div>
+              Address check
+            </div>
+            <div class="check-nav-item" onclick="selectCheck('education')">
+              <div class="check-nav-icon education">ED</div>
+              Education check
+            </div>
+            <div class="check-nav-item active" onclick="selectCheck('employment')">
+              <div class="check-nav-icon employment">EM</div>
+              Employment check
+            </div>
+          </div>
 
-        <!-- Empty state for packages with no override -->
-        <div class="empty-state" id="emptyState">
-          <div class="empty-state-icon">📄</div>
-          <div class="empty-state-title">This package uses the company default configuration</div>
-          <div class="empty-state-text">Candidates in this package see the company default document list. Create a custom override to change it.</div>
-          <button class="btn btn-primary" onclick="createOverride()">Customise for this package</button>
-        </div>
+          <div class="doc-panel">
+            <div class="doc-panel-header">
+              <div class="doc-panel-title" id="panelTitle">Employment Check Documents</div>
+              <div class="doc-panel-subtitle">Drag to reorder document hierarchy. The topmost selected document is the hero document.</div>
+            </div>
 
-        <div class="action-bar" id="actionBar">
-          <div class="change-count" id="changeCount">No changes</div>
-          <div class="action-buttons">
-            <button class="btn btn-secondary" onclick="cancelChanges()">Cancel</button>
-            <button class="btn btn-primary" onclick="saveChanges()">Save</button>
+            <div class="subcategory-tabs" id="subcategoryTabs">
+              <div class="subcategory-tab active" onclick="selectSubcat('fulltime')">Full Time</div>
+              <div class="subcategory-tab" onclick="selectSubcat('internship')">Internship</div>
+              <div class="subcategory-tab" onclick="selectSubcat('contract')">Contract</div>
+            </div>
+
+            <div class="doc-list-header">
+              <div></div>
+              <div>Document</div>
+              <div style="text-align:center">Collect</div>
+              <div style="text-align:center">Mandatory</div>
+            </div>
+
+            <div class="doc-list-wrap">
+              <ul id="doc-list"></ul>
+            </div>
+
+            <!-- Empty state for packages with no override -->
+            <div class="empty-state" id="emptyState">
+              <div class="empty-state-icon">📄</div>
+              <div class="empty-state-title">This package uses the company default configuration</div>
+              <div class="empty-state-text">Candidates in this package see the company default document list. Create a custom override to change it.</div>
+              <button class="btn btn-primary" onclick="createOverride()">Customise for this package</button>
+            </div>
+
+            <div class="action-bar" id="actionBar">
+              <div class="change-count" id="changeCount">No changes</div>
+              <div class="action-buttons">
+                <button class="btn btn-secondary" onclick="cancelChanges()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveChanges()">Save</button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <!-- ========== PACKAGE OVERRIDE SUMMARY (Option A) ========== -->
-    <div class="override-summary" id="overrideSummary">
-      <div class="override-summary-header">
-        <div>
-          <div class="override-summary-title">
-            Package Overrides
-            <span class="override-count-badge" id="overrideCountBadge">2 packages</span>
+        <!-- ========== PACKAGE OVERRIDE SUMMARY (Option A) ========== -->
+        <div class="override-summary" id="overrideSummary">
+          <div class="override-summary-header">
+            <div>
+              <div class="override-summary-title">
+                Package Overrides
+                <span class="override-count-badge" id="overrideCountBadge">2 packages</span>
+              </div>
+              <div class="override-summary-subtitle">Packages with custom document configurations for this check type</div>
+            </div>
           </div>
-          <div class="override-summary-subtitle">Packages with custom document configurations for this check type</div>
+
+          <ul class="override-list" id="overrideList"></ul>
+
+          <div class="default-packages" id="defaultPackages">
+            <span class="default-packages-label">Using company default:</span>
+          </div>
         </div>
-      </div>
 
-      <ul class="override-list" id="overrideList"></ul>
-
-      <div class="default-packages" id="defaultPackages">
-        <span class="default-packages-label">Using company default:</span>
       </div>
     </div>
 
-  </div>
-</div>
+  </div><!-- /.sa-main -->
+</div><!-- /.sa-layout -->
 
 <!-- Warning Modal -->
 <div class="modal-overlay" id="warningModal">
