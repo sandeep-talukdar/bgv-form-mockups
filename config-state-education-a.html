@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BGV Form Config - Education Category A</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Poppins', sans-serif; background: #f8f9fa; color: #1a1a2e; }
+
+  .banner {
+    background: #fef9c3; border: 1px solid #f59e0b; padding: 10px 20px;
+    font-size: 13px; font-weight: 600; color: #92400e; text-align: center;
+  }
+  .topbar {
+    background: #fff; border-bottom: 1px solid #e5e7eb; padding: 12px 24px;
+    display: flex; align-items: center; gap: 12px; font-size: 13px; color: #6b7280;
+  }
+  .topbar .breadcrumb-link { color: #4f46e5; text-decoration: none; cursor: pointer; }
+  .topbar .breadcrumb-sep { color: #d1d5db; }
+
+  .page-container { display: flex; min-height: calc(100vh - 90px); }
+
+  .company-sidebar {
+    width: 180px; background: #fff; border-right: 1px solid #e5e7eb;
+    padding: 16px 0; overflow-y: auto; flex-shrink: 0;
+  }
+  .company-sidebar .tab-item {
+    padding: 8px 14px; font-size: 12px; color: #6b7280; cursor: pointer;
+    border-left: 3px solid transparent;
+  }
+  .company-sidebar .tab-item:hover { background: #f9fafb; }
+  .company-sidebar .tab-item.active {
+    color: #4f46e5; font-weight: 600; background: #eef2ff; border-left-color: #4f46e5;
+  }
+
+  .main-content { flex: 1; overflow-y: auto; padding: 20px 24px; }
+
+  .config-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .config-header h2 { font-size: 18px; font-weight: 600; }
+  .config-header p { font-size: 12px; color: #6b7280; margin-top: 2px; }
+
+  .scope-bar {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+    padding: 12px 16px; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px;
+  }
+  .scope-bar label { font-size: 12px; font-weight: 600; color: #374151; }
+  .scope-bar select {
+    padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px;
+    font-size: 12px; font-family: inherit; background: #fff; cursor: pointer;
+  }
+  .scope-tag {
+    font-size: 11px; padding: 3px 10px; border-radius: 12px; font-weight: 500;
+  }
+  .scope-tag.default { background: #dbeafe; color: #1e40af; }
+  .scope-tag.override { background: #fef3c7; color: #92400e; }
+
+  .override-strip {
+    display: none; padding: 10px 16px; margin-bottom: 12px; border-radius: 8px;
+    background: #fffbeb; border: 1px solid #fbbf24; font-size: 12px; color: #92400e;
+    align-items: center; gap: 8px;
+  }
+  .override-strip.visible { display: flex; }
+  .override-strip .pkg-chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: #fff; border: 1px solid #fbbf24; border-radius: 12px;
+    padding: 2px 10px; font-size: 11px; font-weight: 500; cursor: pointer;
+    color: #92400e; transition: all .15s;
+  }
+  .override-strip .pkg-chip:hover { background: #fef3c7; }
+  .override-strip .compare-btn {
+    margin-left: auto; background: #4f46e5; color: #fff; border: none;
+    padding: 5px 14px; border-radius: 6px; font-size: 11px; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+  }
+  .override-strip .compare-btn:hover { background: #4338ca; }
+
+  .config-body { display: flex; gap: 0; }
+  .config-left { flex: 1; min-width: 0; }
+  .config-right {
+    width: 0; overflow: hidden; transition: width .3s ease, opacity .3s ease;
+    opacity: 0; border-left: 1px solid #e5e7eb; background: #fafbfc;
+  }
+  .config-right.open { width: 420px; opacity: 1; padding: 0 16px; }
+
+  .check-nav {
+    display: flex; background: #fff; border: 1px solid #e5e7eb;
+    border-radius: 8px 8px 0 0; overflow: hidden;
+  }
+  .check-nav-item {
+    padding: 10px 16px; font-size: 12px; font-weight: 500; color: #6b7280;
+    cursor: pointer; border-bottom: 2px solid transparent; position: relative;
+    display: flex; align-items: center; gap: 6px; white-space: nowrap;
+  }
+  .check-nav-item:hover { background: #f9fafb; color: #374151; }
+  .check-nav-item.active {
+    color: #4f46e5; border-bottom-color: #4f46e5; font-weight: 600; background: #eef2ff;
+  }
+  .check-nav-item .badge {
+    font-size: 9px; background: #f59e0b; color: #fff; border-radius: 8px;
+    padding: 1px 6px; font-weight: 700; line-height: 1.4;
+  }
+
+  .sub-tabs {
+    display: flex; background: #f9fafb; border: 1px solid #e5e7eb; border-top: none;
+    padding: 0 8px;
+  }
+  .sub-tab {
+    padding: 8px 14px; font-size: 11px; font-weight: 500; color: #6b7280;
+    cursor: pointer; border-bottom: 2px solid transparent;
+  }
+  .sub-tab:hover { color: #374151; }
+  .sub-tab.active { color: #4f46e5; border-bottom-color: #4f46e5; font-weight: 600; }
+
+  .cat-toggle-row {
+    display: flex; align-items: center; gap: 12px; padding: 10px 16px;
+    background: #f0f4ff; border: 1px solid #e5e7eb; border-top: none;
+    font-size: 12px; font-weight: 600; color: #374151;
+  }
+  .cat-toggle-row .cat-cb {
+    width: 16px; height: 16px; accent-color: #4f46e5; cursor: pointer;
+  }
+  .cat-toggle-row .cat-label { flex: 1; }
+  .cat-toggle-row .cat-desc { font-size: 11px; color: #6b7280; font-weight: 400; }
+
+  .doc-table {
+    width: 100%; background: #fff; border: 1px solid #e5e7eb; border-top: none;
+    border-collapse: collapse;
+  }
+  .doc-table th {
+    text-align: left; padding: 8px 16px; font-size: 11px; font-weight: 600;
+    color: #6b7280; text-transform: uppercase; letter-spacing: .5px;
+    background: #f9fafb; border-bottom: 1px solid #e5e7eb;
+  }
+  .doc-table th.ctr { text-align: center; width: 90px; }
+  .doc-table td { padding: 10px 16px; font-size: 13px; border-bottom: 1px solid #f3f4f6; }
+  .doc-table td.ctr { text-align: center; }
+  .doc-table tr:hover { background: #fafbff; }
+  .doc-table tr.hero-row { background: #fffbeb; }
+  .doc-table tr.hero-row td:first-child { font-weight: 600; }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: #fef3c7; color: #92400e; font-size: 10px; font-weight: 600;
+    padding: 2px 8px; border-radius: 10px; margin-left: 8px;
+  }
+  .drag-handle {
+    color: #d1d5db; cursor: grab; margin-right: 8px; font-size: 14px;
+    user-select: none;
+  }
+  .drag-handle:hover { color: #9ca3af; }
+
+  .cb {
+    width: 16px; height: 16px; border: 2px solid #d1d5db; border-radius: 4px;
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all .15s; flex-shrink: 0;
+  }
+  .cb.checked { background: #4f46e5; border-color: #4f46e5; }
+  .cb.checked::after { content: '\2713'; color: #fff; font-size: 11px; font-weight: 700; }
+  .cb.locked {
+    background: #e5e7eb; border-color: #d1d5db; cursor: not-allowed; opacity: .7;
+  }
+  .cb.locked.checked { background: #818cf8; border-color: #818cf8; }
+  .cb.disabled { opacity: .4; cursor: not-allowed; }
+
+  .cb-wrap { position: relative; display: inline-flex; align-items: center; justify-content: center; }
+  .cb-wrap .cb-tooltip {
+    display: none; position: absolute; top: calc(100% + 8px); right: -4px;
+    background: #1f2937; color: #fff; font-size: 11px; font-weight: 500;
+    padding: 6px 10px; border-radius: 6px; white-space: nowrap; z-index: 50;
+    pointer-events: none;
+  }
+  .cb-wrap .cb-tooltip::before {
+    content: ''; position: absolute; bottom: 100%; right: 10px;
+    border: 5px solid transparent; border-bottom-color: #1f2937;
+  }
+  .cb-wrap:hover .cb-tooltip { display: block; }
+
+  .cmp-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 0; border-bottom: 1px solid #e5e7eb; margin-bottom: 12px;
+    position: sticky; top: 0; background: #fafbfc; z-index: 5;
+  }
+  .cmp-header h3 { font-size: 14px; font-weight: 600; color: #374151; }
+  .cmp-close {
+    width: 24px; height: 24px; border-radius: 50%; border: 1px solid #d1d5db;
+    background: #fff; cursor: pointer; display: flex; align-items: center;
+    justify-content: center; font-size: 14px; color: #6b7280;
+  }
+  .cmp-close:hover { background: #f3f4f6; }
+  .cmp-pkg-select {
+    padding: 6px 10px; border: 1px solid #d1d5db; border-radius: 6px;
+    font-size: 12px; font-family: inherit; background: #fff; width: 100%;
+    margin-bottom: 12px;
+  }
+  .cmp-doc-row {
+    display: flex; align-items: center; padding: 8px 0;
+    border-bottom: 1px solid #f3f4f6; font-size: 12px;
+  }
+  .cmp-doc-row .doc-name { flex: 1; }
+  .cmp-doc-row .diff-tag {
+    font-size: 10px; padding: 2px 6px; border-radius: 8px; font-weight: 600; margin-left: 6px;
+  }
+  .diff-tag.removed { background: #fee2e2; color: #991b1b; }
+  .diff-tag.added { background: #d1fae5; color: #065f46; }
+  .diff-tag.mandatory { background: #ede9fe; color: #5b21b6; }
+  .diff-tag.hero { background: #fef3c7; color: #92400e; }
+  .diff-tag.reorder { background: #dbeafe; color: #1e40af; }
+
+  .save-bar {
+    display: none; position: fixed; bottom: 0; left: 0; right: 0;
+    background: #fff; border-top: 1px solid #e5e7eb; padding: 12px 24px;
+    justify-content: flex-end; gap: 12px; z-index: 100;
+    box-shadow: 0 -2px 8px rgba(0,0,0,.06);
+  }
+  .save-bar.visible { display: flex; }
+  .save-bar button {
+    padding: 8px 20px; border-radius: 6px; font-size: 13px; font-weight: 600;
+    cursor: pointer; font-family: inherit; border: 1px solid #d1d5db;
+  }
+  .btn-secondary { background: #fff; color: #374151; }
+  .btn-secondary:hover { background: #f9fafb; }
+  .btn-primary { background: #4f46e5; color: #fff; border-color: #4f46e5; }
+  .btn-primary:hover { background: #4338ca; }
+
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,.4);
+    z-index: 200; align-items: center; justify-content: center;
+  }
+  .modal-overlay.visible { display: flex; }
+  .modal-box {
+    background: #fff; border-radius: 12px; padding: 24px; width: 440px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.15);
+  }
+  .modal-box h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+  .modal-box p { font-size: 13px; color: #6b7280; margin-bottom: 16px; line-height: 1.5; }
+  .modal-box .pkg-list { margin-bottom: 16px; }
+  .modal-box .pkg-list li {
+    font-size: 12px; color: #374151; padding: 4px 0;
+    list-style: disc; margin-left: 20px;
+  }
+  .modal-actions { display: flex; justify-content: flex-end; gap: 10px; }
+
+  .reset-btn {
+    font-size: 11px; color: #dc2626; background: none; border: 1px solid #fca5a5;
+    padding: 4px 12px; border-radius: 6px; cursor: pointer; font-family: inherit;
+    font-weight: 500;
+  }
+  .reset-btn:hover { background: #fef2f2; }
+
+  .empty-state {
+    text-align: center; padding: 40px 20px; color: #9ca3af;
+  }
+  .empty-state .icon { font-size: 36px; margin-bottom: 12px; }
+  .empty-state h3 { font-size: 14px; font-weight: 600; color: #6b7280; margin-bottom: 4px; }
+  .empty-state p { font-size: 12px; }
+
+  .info-callout {
+    background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 8px;
+    padding: 10px 14px; font-size: 12px; color: #4338ca; margin-bottom: 16px;
+    line-height: 1.5;
+  }
+  .info-callout strong { font-weight: 600; }
+</style>
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</head>
+<body>
+
+<div class="banner">PROPOSED DESIGN — Super Admin Portal: BGV Form Config — Education Category A</div>
+
+<div class="topbar">
+  <a class="breadcrumb-link">Companies</a>
+  <span class="breadcrumb-sep">›</span>
+  <a class="breadcrumb-link">Jaguar Pvt Ltd</a>
+  <span class="breadcrumb-sep">›</span>
+  <span style="color:#374151;font-weight:500;">Settings</span>
+</div>
+
+<div class="page-container">
+  <div class="company-sidebar">
+    <div class="tab-item">General</div>
+    <div class="tab-item">Packages</div>
+    <div class="tab-item">Custom Fields</div>
+    <div class="tab-item active">BGV Form Config</div>
+    <div class="tab-item">Webhooks</div>
+    <div class="tab-item">Billing</div>
+  </div>
+
+  <div class="main-content">
+    <div class="config-header">
+      <div>
+        <h2>BGV Form Config</h2>
+        <p>Configure which documents to collect and which are mandatory for each check type</p>
+      </div>
+    </div>
+
+    <div class="scope-bar">
+      <label>Scope:</label>
+      <select id="scopeSelect" onchange="handleScopeChange()">
+        <option value="company">Company Default</option>
+        <option value="pkg-standard">Standard Package (override)</option>
+        <option value="pkg-premium">Premium Package (override)</option>
+        <option value="pkg-bluecollar">Blue Collar Package</option>
+        <option value="pkg-enterprise">Enterprise Package</option>
+        <option value="pkg-contractor">Contractor Screening</option>
+      </select>
+      <span class="scope-tag default" id="scopeTag">Company Default</span>
+    </div>
+
+    <div class="override-strip" id="overrideStrip">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#92400e" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span id="overrideText"></span>
+      <button class="compare-btn" id="compareBtn" onclick="toggleCompare()">Compare</button>
+    </div>
+
+    <div class="config-body">
+      <div class="config-left">
+        <div class="check-nav" id="checkNav"></div>
+        <div class="sub-tabs" id="subTabs" style="display:none;"></div>
+        <div class="cat-toggle-row" id="catToggleRow" style="display:none;">
+          <input type="checkbox" class="cat-cb" id="catToggleCb" checked onchange="handleCatToggle()">
+          <div>
+            <div class="cat-label" id="catToggleLabel">Category A — Completion Documents</div>
+            <div class="cat-desc" id="catToggleDesc">Toggle all documents in this category</div>
+          </div>
+        </div>
+        <table class="doc-table" id="docTable">
+          <thead>
+            <tr>
+              <th style="width:40px;"></th>
+              <th>Document</th>
+              <th class="ctr">Collect</th>
+              <th class="ctr">Mandatory</th>
+            </tr>
+          </thead>
+          <tbody id="docBody"></tbody>
+        </table>
+        <div class="save-bar" id="saveBar">
+          <button class="btn-secondary" onclick="handleDiscard()">Discard</button>
+          <button class="btn-primary" onclick="handleSave()">Save Changes</button>
+        </div>
+      </div>
+      <div class="config-right" id="configRight">
+        <div class="cmp-header">
+          <h3>Package Comparison</h3>
+          <button class="cmp-close" onclick="closeCompare()">&times;</button>
+        </div>
+        <select class="cmp-pkg-select" id="cmpPkgSelect" onchange="renderComparison()">
+          <option value="pkg-standard">Standard Package</option>
+          <option value="pkg-premium">Premium Package</option>
+        </select>
+        <div id="cmpBody"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="saveModal">
+  <div class="modal-box">
+    <h3>Save changes to company default?</h3>
+    <p>Changing the company default will affect all packages that <strong>do not</strong> have their own override. The following packages use the company default:</p>
+    <ul class="pkg-list" id="modalPkgList"></ul>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeSaveModal()">Cancel</button>
+      <button class="btn-primary" onclick="confirmSave()">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const CHECK_TYPES = {
+  identity: { label: 'Identity', type: 'flat', docs: ['PAN Card','Driving License','Voter ID','Aadhaar','Passport'] },
+  address: { label: 'Address', type: 'flat', docs: ['Aadhaar (front and back)','Driving License (front and back)','Voter ID (front and back)','Passport (front and back)','Rental Agreement','Leave and License Agreement','Sale Deed','Gas Bill','Electricity Bill','Internet Bill','Telephone Bill','Water Bill','Ration Card','Bank Passbook','Vehicle Registration Certificate','Society Maintenance Bill','Rent Receipts'] },
+  education: { label: 'Education', type: 'categories', categories: { 'cat-a': { label: 'Category A', description: 'Documents proving education completion', docs: ['Degree Certificate','Consolidated Marksheet','Provisional Certificate','Course Completion Certificate','Passing Certificate','Grade Sheet'] }, 'cat-b': { label: 'Category B', description: 'Documents proving registration number', docs: ['First Semester Marksheet','Second Semester Marksheet','Third Semester Marksheet','Fourth Semester Marksheet','Fifth Semester Marksheet','Sixth Semester Marksheet','First Year Marksheet','Second Year Marksheet','Third Year Marksheet','Class 10 Marksheet','Class 12 Marksheet'] } } },
+  employment: { label: 'Employment', type: 'subcategories', subcategories: { 'full-time': { label: 'Full Time', docs: ['Experience Letter','Relieving Letter','Offer Letter','Appointment Letter','Payslips','Resignation Acceptance Letter','Full and Final Settlement','Form 16','Form 26AS','Bank Statement'] }, 'internship': { label: 'Internship', docs: ['Internship Experience Letter','Internship Offer Letter','Stipend Receipts','Internship Completion Certificate'] }, 'contract': { label: 'Contract', docs: ['Employment Contract or Agreement','Contract Completion','Freelancer Invoice','GST Certificate','Company Registration Document'] } } }
+};
+
+const COMPANY_DEFAULT = {
+  'identity': { '_': { collected: [0,1,2,3,4], mandatory: [], order: [0,1,2,3,4] } },
+  'address': { '_': { collected: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16], mandatory: [], order: null } },
+  'education': { 'cat-a': { collected: [0,1,2,3,4,5], mandatory: [0], order: [0,1,2,3,4,5] }, 'cat-b': { collected: [0,1,2,3,4,5,6,7,8,9,10], mandatory: [], order: null } },
+  'employment': { 'full-time': { collected: [0,1,2,3,4,5,6,7,8,9], mandatory: [0], order: [0,1,2,3,4,5,6,7,8,9] }, 'internship': { collected: [0,1,2,3], mandatory: [0], order: [0,1,2,3] }, 'contract': { collected: [0,1,2,3,4], mandatory: [0], order: [0,1,2,3,4] } }
+};
+
+const PKG_OVERRIDES = {
+  'pkg-standard': { 'employment': { 'full-time': { collected: [0,1,2,3,4,7], mandatory: [0,1], order: [0,1,2,3,4,7] } }, 'education': { 'cat-a': { collected: [0,1,2], mandatory: [0], order: [0,1,2] } } },
+  'pkg-premium': { 'employment': { 'full-time': { collected: [0,1,2,3,4,5,6,7,8,9], mandatory: [0,1,2], order: [0,2,1,3,4,5,6,7,8,9] } }, 'identity': { '_': { collected: [0,1,3,4], mandatory: [0], order: [0,1,3,4] } } }
+};
+
+const PACKAGES_USING_DEFAULT = ['Blue Collar Package', 'Enterprise Package', 'Contractor Screening'];
+
+// ── State ─────────────────────────────────────────
+var activeCheck = 'education';
+var activeSub = 'cat-a';
+var currentScope = 'company';
+var dirty = false;
+var compareOpen = false;
+
+// ── Render functions ──────────────────────────────
+
+function renderCheckNav() {
+  const nav = document.getElementById('checkNav');
+  nav.innerHTML = '';
+  for (const [key, check] of Object.entries(CHECK_TYPES)) {
+    const item = document.createElement('div');
+    item.className = 'check-nav-item' + (key === activeCheck ? ' active' : '');
+    item.onclick = () => { activeCheck = key; activeSub = getDefaultSub(key); renderAll(); };
+    let badge = '';
+    if (currentScope === 'company') {
+      const count = getOverrideCountForCheck(key);
+      if (count > 0) badge = `<span class="badge">${count}</span>`;
+    }
+    item.innerHTML = check.label + badge;
+    nav.appendChild(item);
+  }
+}
+
+function getDefaultSub(checkKey) {
+  const check = CHECK_TYPES[checkKey];
+  if (check.type === 'flat') return '_';
+  if (check.type === 'categories') return Object.keys(check.categories)[0];
+  if (check.type === 'subcategories') return Object.keys(check.subcategories)[0];
+  return '_';
+}
+
+function getOverrideCountForCheck(checkKey) {
+  let count = 0;
+  for (const pkg of Object.values(PKG_OVERRIDES)) { if (pkg[checkKey]) count++; }
+  return count;
+}
+
+function renderSubTabs() {
+  const check = CHECK_TYPES[activeCheck];
+  const container = document.getElementById('subTabs');
+  if (check.type === 'flat') { container.style.display = 'none'; return; }
+  container.style.display = 'flex';
+  container.innerHTML = '';
+  const items = check.type === 'categories' ? check.categories : check.subcategories;
+  for (const [key, sub] of Object.entries(items)) {
+    const tab = document.createElement('div');
+    tab.className = 'sub-tab' + (key === activeSub ? ' active' : '');
+    tab.textContent = sub.label;
+    tab.onclick = () => { activeSub = key; renderAll(); };
+    container.appendChild(tab);
+  }
+}
+
+function renderCatToggle() {
+  const check = CHECK_TYPES[activeCheck];
+  const row = document.getElementById('catToggleRow');
+  if (check.type !== 'categories') { row.style.display = 'none'; return; }
+  row.style.display = 'flex';
+  const cat = check.categories[activeSub];
+  document.getElementById('catToggleLabel').textContent = cat.label + ' \u2014 ' + cat.description;
+  document.getElementById('catToggleDesc').textContent = 'Toggle collection for all documents in this category';
+  const cfg = getActiveConfig();
+  const docs = getDocs();
+  const allCollected = docs.every((_, i) => cfg.collected.includes(i));
+  document.getElementById('catToggleCb').checked = allCollected;
+}
+
+function getDocs() {
+  const check = CHECK_TYPES[activeCheck];
+  if (check.type === 'flat') return check.docs;
+  if (check.type === 'categories') return check.categories[activeSub].docs;
+  if (check.type === 'subcategories') return check.subcategories[activeSub].docs;
+  return [];
+}
+
+function getActiveConfig() {
+  if (currentScope !== 'company') {
+    const pkgCfg = PKG_OVERRIDES[currentScope];
+    if (pkgCfg && pkgCfg[activeCheck] && pkgCfg[activeCheck][activeSub]) return pkgCfg[activeCheck][activeSub];
+  }
+  const def = COMPANY_DEFAULT[activeCheck];
+  if (def && def[activeSub]) return def[activeSub];
+  const docs = getDocs();
+  return { collected: docs.map((_, i) => i), mandatory: [], order: null };
+}
+
+function renderDocTable() {
+  const docs = getDocs();
+  const cfg = getActiveConfig();
+  const tbody = document.getElementById('docBody');
+  tbody.innerHTML = '';
+  let displayOrder = cfg.order ? [...cfg.order] : docs.map((_, i) => i);
+  for (const idx of cfg.collected) { if (!displayOrder.includes(idx)) displayOrder.push(idx); }
+  for (let i = 0; i < docs.length; i++) { if (!displayOrder.includes(i)) displayOrder.push(i); }
+
+  for (let pos = 0; pos < displayOrder.length; pos++) {
+    const idx = displayOrder[pos];
+    const doc = docs[idx];
+    if (!doc) continue;
+    const isCollected = cfg.collected.includes(idx);
+    const isMandatory = cfg.mandatory.includes(idx);
+    const isHero = pos === 0 && isCollected && cfg.order;
+    const tr = document.createElement('tr');
+    if (isHero) tr.className = 'hero-row';
+
+    const tdDrag = document.createElement('td');
+    tdDrag.innerHTML = cfg.order ? '<span class="drag-handle">&#x2630;</span>' : '';
+    tr.appendChild(tdDrag);
+
+    const tdName = document.createElement('td');
+    tdName.innerHTML = doc + (isHero ? '<span class="hero-badge">\u2B50 Hero</span>' : '');
+    tr.appendChild(tdName);
+
+    const tdCol = document.createElement('td');
+    tdCol.className = 'ctr';
+    const colClass = isHero ? 'cb checked locked' : (isCollected ? 'cb checked' : 'cb');
+    if (isHero) {
+      tdCol.innerHTML = `<div class="cb-wrap"><div class="${colClass}"></div><span class="cb-tooltip">Hero document is always collected</span></div>`;
+    } else {
+      tdCol.innerHTML = `<div class="${colClass}" data-action="collect" data-idx="${idx}" onclick="toggleCollect(${idx})"></div>`;
+    }
+    tr.appendChild(tdCol);
+
+    const tdMand = document.createElement('td');
+    tdMand.className = 'ctr';
+    if (isHero) {
+      tdMand.innerHTML = `<div class="cb-wrap"><div class="cb checked locked"></div><span class="cb-tooltip">Hero document is always mandatory</span></div>`;
+    } else if (!isCollected) {
+      tdMand.innerHTML = `<div class="cb-wrap"><div class="cb disabled"></div><span class="cb-tooltip">Enable collection first</span></div>`;
+    } else {
+      const mc = isMandatory ? 'cb checked' : 'cb';
+      tdMand.innerHTML = `<div class="${mc}" data-action="mandatory" data-idx="${idx}" onclick="toggleMandatory(${idx})"></div>`;
+    }
+    tr.appendChild(tdMand);
+    tbody.appendChild(tr);
+  }
+}
+
+function renderOverrideStrip() {
+  const strip = document.getElementById('overrideStrip');
+  const text = document.getElementById('overrideText');
+  if (currentScope !== 'company') { strip.classList.remove('visible'); return; }
+  const overridePkgs = [];
+  for (const [pkgId, pkgCfg] of Object.entries(PKG_OVERRIDES)) {
+    if (pkgCfg[activeCheck]) {
+      const name = pkgId.replace('pkg-', '').replace(/^\w/, c => c.toUpperCase()) + ' Package';
+      overridePkgs.push({ id: pkgId, name });
+    }
+  }
+  if (overridePkgs.length === 0) { strip.classList.remove('visible'); return; }
+  strip.classList.add('visible');
+  const chips = overridePkgs.map(p => `<span class="pkg-chip" onclick="openCompareFor('${p.id}')">${p.name}</span>`).join(' ');
+  text.innerHTML = `<strong>${overridePkgs.length} package${overridePkgs.length > 1 ? 's' : ''}</strong> override this check\u2019s config: ${chips}`;
+}
+
+function renderComparison() {
+  const body = document.getElementById('cmpBody');
+  const pkgId = document.getElementById('cmpPkgSelect').value;
+  const pkgCfg = PKG_OVERRIDES[pkgId];
+  const docs = getDocs();
+  const companyCfg = getCompanyConfig();
+  if (!pkgCfg || !pkgCfg[activeCheck] || !pkgCfg[activeCheck][activeSub]) {
+    body.innerHTML = `<div class="empty-state"><div class="icon">\u2714\uFE0F</div><h3>Using company default</h3><p>This package has no overrides for ${CHECK_TYPES[activeCheck].label}${activeSub !== '_' ? ' \u203A ' + getSubLabel() : ''}.</p></div>`;
+    return;
+  }
+  const pkgSubCfg = pkgCfg[activeCheck][activeSub];
+  let html = '<div class="info-callout"><strong>Differences from company default</strong> are highlighted below.</div>';
+  const pkgOrder = pkgSubCfg.order ? [...pkgSubCfg.order] : [...pkgSubCfg.collected];
+  const seen = new Set(pkgOrder);
+  for (const idx of (companyCfg.order || companyCfg.collected)) { if (!seen.has(idx)) { pkgOrder.push(idx); seen.add(idx); } }
+  for (const idx of pkgOrder) {
+    const doc = docs[idx]; if (!doc) continue;
+    const inPkg = pkgSubCfg.collected.includes(idx);
+    const inCompany = companyCfg.collected.includes(idx);
+    const mandPkg = pkgSubCfg.mandatory.includes(idx);
+    const mandCompany = companyCfg.mandatory.includes(idx);
+    const isHeroPkg = pkgSubCfg.order && pkgSubCfg.order[0] === idx && inPkg;
+    let tags = '';
+    if (inCompany && !inPkg) tags += '<span class="diff-tag removed">Removed</span>';
+    if (!inCompany && inPkg) tags += '<span class="diff-tag added">Added</span>';
+    if (mandPkg && !mandCompany) tags += '<span class="diff-tag mandatory">Mandatory</span>';
+    if (isHeroPkg) tags += '<span class="diff-tag hero">Hero</span>';
+    if (!inPkg && !inCompany) continue;
+    const opacity = !inPkg ? 'opacity:.4;text-decoration:line-through;' : '';
+    html += `<div class="cmp-doc-row" style="${opacity}"><span class="doc-name">${doc}</span>${tags}</div>`;
+  }
+  body.innerHTML = html;
+}
+
+function getCompanyConfig() {
+  const def = COMPANY_DEFAULT[activeCheck];
+  if (def && def[activeSub]) return def[activeSub];
+  const docs = getDocs();
+  return { collected: docs.map((_, i) => i), mandatory: [], order: null };
+}
+
+function getSubLabel() {
+  const check = CHECK_TYPES[activeCheck];
+  if (check.type === 'categories') return check.categories[activeSub]?.label || '';
+  if (check.type === 'subcategories') return check.subcategories[activeSub]?.label || '';
+  return '';
+}
+
+function handleScopeChange() {
+  const sel = document.getElementById('scopeSelect');
+  currentScope = sel.value;
+  const tag = document.getElementById('scopeTag');
+  if (currentScope === 'company') { tag.className = 'scope-tag default'; tag.textContent = 'Company Default'; }
+  else {
+    const name = sel.options[sel.selectedIndex].text;
+    const isOverride = PKG_OVERRIDES[currentScope] !== undefined;
+    tag.className = 'scope-tag ' + (isOverride ? 'override' : 'default');
+    tag.textContent = isOverride ? 'Has Override' : 'Using Company Default';
+  }
+  renderAll();
+}
+
+function toggleCollect(idx) { dirty = true; document.getElementById('saveBar').classList.add('visible'); const el = document.querySelector(`[data-action="collect"][data-idx="${idx}"]`); if (el) el.classList.toggle('checked'); }
+function toggleMandatory(idx) { dirty = true; document.getElementById('saveBar').classList.add('visible'); const el = document.querySelector(`[data-action="mandatory"][data-idx="${idx}"]`); if (el) el.classList.toggle('checked'); }
+function handleCatToggle() { dirty = true; document.getElementById('saveBar').classList.add('visible'); }
+function handleDiscard() { dirty = false; document.getElementById('saveBar').classList.remove('visible'); renderAll(); }
+function handleSave() {
+  if (currentScope === 'company') {
+    const list = document.getElementById('modalPkgList');
+    list.innerHTML = PACKAGES_USING_DEFAULT.map(p => `<li>${p}</li>`).join('');
+    document.getElementById('saveModal').classList.add('visible');
+  } else { confirmSave(); }
+}
+function closeSaveModal() { document.getElementById('saveModal').classList.remove('visible'); }
+function confirmSave() { closeSaveModal(); dirty = false; document.getElementById('saveBar').classList.remove('visible'); }
+
+function toggleCompare() {
+  compareOpen = !compareOpen;
+  const panel = document.getElementById('configRight');
+  const btn = document.getElementById('compareBtn');
+  if (compareOpen) { panel.classList.add('open'); btn.textContent = 'Hide'; renderComparison(); }
+  else { panel.classList.remove('open'); btn.textContent = 'Compare'; }
+}
+function openCompareFor(pkgId) {
+  document.getElementById('cmpPkgSelect').value = pkgId;
+  if (!compareOpen) { compareOpen = true; document.getElementById('configRight').classList.add('open'); document.getElementById('compareBtn').textContent = 'Hide'; }
+  renderComparison();
+}
+function closeCompare() { compareOpen = false; document.getElementById('configRight').classList.remove('open'); document.getElementById('compareBtn').textContent = 'Compare'; }
+
+function renderAll() {
+  renderCheckNav(); renderSubTabs(); renderCatToggle(); renderDocTable(); renderOverrideStrip();
+  if (compareOpen) renderComparison();
+}
+
+renderAll();
+</script>
+</body>
+</html>

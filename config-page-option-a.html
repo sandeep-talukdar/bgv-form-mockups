@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BGV Form Config - Option A: Override Summary</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Poppins', sans-serif; background: #f8f9fa; color: #1a1a2e; }
+
+  .banner {
+    background: #fef9c3; border: 1px solid #f59e0b; padding: 10px 20px;
+    font-size: 13px; font-weight: 600; color: #92400e; text-align: center;
+  }
+
+  .topbar {
+    background: #fff; border-bottom: 1px solid #e5e7eb; padding: 12px 24px;
+    display: flex; align-items: center; gap: 12px; font-size: 13px; color: #6b7280;
+  }
+  .topbar .breadcrumb-link { color: #4f46e5; text-decoration: none; cursor: pointer; }
+  .topbar .breadcrumb-sep { color: #d1d5db; }
+
+  .page-container { display: flex; min-height: calc(100vh - 90px); }
+
+  .company-sidebar {
+    width: 180px; background: #fff; border-right: 1px solid #e5e7eb;
+    padding: 16px 0; overflow-y: auto; flex-shrink: 0;
+  }
+  .company-sidebar .tab-item {
+    padding: 8px 14px; font-size: 12px; color: #6b7280; cursor: pointer;
+    border-left: 3px solid transparent;
+  }
+  .company-sidebar .tab-item:hover { background: #f9fafb; }
+  .company-sidebar .tab-item.active {
+    color: #4f46e5; font-weight: 600; background: #eef2ff; border-left-color: #4f46e5;
+  }
+
+  .main-content { flex: 1; overflow-y: auto; padding: 20px 24px; }
+
+  .settings-tabs {
+    display: flex; gap: 0; border-bottom: 2px solid #e5e7eb; margin-bottom: 20px;
+  }
+  .settings-tab {
+    padding: 10px 14px; font-size: 12px; color: #6b7280; cursor: pointer;
+    border-bottom: 2px solid transparent; margin-bottom: -2px; white-space: nowrap;
+  }
+  .settings-tab:hover { color: #374151; }
+  .settings-tab.active { color: #4f46e5; border-bottom-color: #4f46e5; font-weight: 600; }
+
+  .page-header { margin-bottom: 16px; }
+  .page-title { font-size: 17px; font-weight: 600; margin-bottom: 4px; }
+  .page-subtitle { font-size: 12px; color: #6b7280; }
+
+  .scope-selector {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+    padding: 12px 16px; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px;
+    flex-wrap: wrap;
+  }
+  .scope-label { font-size: 13px; font-weight: 500; color: #374151; }
+  .scope-dropdown {
+    padding: 6px 32px 6px 12px; border: 1px solid #d1d5db; border-radius: 6px;
+    font-size: 13px; font-family: 'Poppins', sans-serif; background: #fff;
+    appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 10px center;
+    cursor: pointer; min-width: 300px;
+  }
+  .scope-dropdown:focus { outline: none; border-color: #4f46e5; box-shadow: 0 0 0 2px rgba(79,70,229,0.1); }
+  .scope-badge {
+    display: inline-flex; align-items: center; padding: 3px 8px;
+    border-radius: 4px; font-size: 11px; font-weight: 500;
+  }
+  .scope-badge.company { background: #dbeafe; color: #1d4ed8; }
+  .scope-badge.package { background: #ede9fe; color: #6d28d9; }
+  .reset-btn {
+    padding: 6px 12px; border: 1px solid #ef4444; border-radius: 6px;
+    font-size: 12px; color: #ef4444; cursor: pointer; background: #fff;
+    font-family: 'Poppins', sans-serif; margin-left: auto;
+  }
+  .reset-btn:hover { background: #fef2f2; }
+
+  .config-panel {
+    display: flex; gap: 0; background: #fff; border: 1px solid #e5e7eb;
+    border-radius: 8px; overflow: hidden;
+  }
+
+  .check-nav {
+    width: 180px; border-right: 1px solid #e5e7eb; padding: 8px 0;
+    background: #fafbfc; flex-shrink: 0;
+  }
+  .check-nav-item {
+    padding: 10px 14px; font-size: 12px; color: #6b7280; cursor: pointer;
+    display: flex; align-items: center; gap: 8px;
+    border-left: 3px solid transparent;
+  }
+  .check-nav-item:hover { background: #f3f4f6; }
+  .check-nav-item.active {
+    color: #4f46e5; font-weight: 600; background: #eef2ff;
+    border-left-color: #4f46e5;
+  }
+  .check-nav-icon {
+    width: 22px; height: 22px; border-radius: 4px; display: flex;
+    align-items: center; justify-content: center; font-size: 9px; font-weight: 600;
+    flex-shrink: 0;
+  }
+  .check-nav-icon.identity { background: #dbeafe; color: #2563eb; }
+  .check-nav-icon.address { background: #dcfce7; color: #16a34a; }
+  .check-nav-icon.education { background: #fef3c7; color: #d97706; }
+  .check-nav-icon.employment { background: #ede9fe; color: #7c3aed; }
+
+  .doc-panel { flex: 1; display: flex; flex-direction: column; }
+
+  .doc-panel-header {
+    padding: 16px 20px 12px; border-bottom: 1px solid #f3f4f6;
+  }
+  .doc-panel-title { font-size: 15px; font-weight: 600; }
+  .doc-panel-subtitle { font-size: 11px; color: #6b7280; margin-top: 2px; }
+
+  .subcategory-tabs {
+    display: flex; gap: 0; padding: 0 20px; border-bottom: 1px solid #e5e7eb;
+  }
+  .subcategory-tab {
+    padding: 8px 14px; font-size: 11px; color: #6b7280; cursor: pointer;
+    border-bottom: 2px solid transparent; margin-bottom: -1px; font-weight: 500;
+  }
+  .subcategory-tab.active { color: #4f46e5; border-bottom-color: #4f46e5; }
+  .subcategory-tab:hover { color: #374151; }
+
+  .doc-list-header {
+    display: grid; grid-template-columns: 28px 1fr 60px 75px;
+    padding: 7px 16px; font-size: 10px; font-weight: 600; color: #9ca3af;
+    text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #e5e7eb;
+  }
+
+  .doc-list-wrap { flex: 1; overflow-y: auto; }
+  .doc-list-wrap ul { list-style: none; }
+
+  .doc-row {
+    display: grid; grid-template-columns: 28px 1fr 60px 75px;
+    padding: 8px 16px; border-bottom: 1px solid #f3f4f6; align-items: center;
+    transition: background 0.15s, opacity 0.2s; cursor: default;
+  }
+  .doc-row:hover { background: #fafbfc; }
+  .doc-row.hero-row { background: #fefce8; }
+  .doc-row.hero-row:hover { background: #fef9c3; }
+  .doc-row.uncollected { opacity: 0.4; }
+  .doc-row.dragging { opacity: 0.4; background: #eef2ff; }
+  .doc-row.drag-over { border-top: 2px solid #4f46e5; }
+
+  .drag-handle {
+    color: #d1d5db; cursor: grab; display: flex; align-items: center;
+    justify-content: center; font-size: 14px; user-select: none;
+  }
+  .drag-handle:hover { color: #6b7280; }
+  .drag-handle:active { cursor: grabbing; }
+
+  .doc-name-cell { display: flex; align-items: center; gap: 6px; min-width: 0; }
+  .doc-name {
+    font-size: 13px; color: #374151; white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 2px;
+    background: #fef3c7; color: #d97706; font-size: 9px; font-weight: 600;
+    padding: 2px 7px; border-radius: 8px; white-space: nowrap; flex-shrink: 0;
+  }
+  .lock-icon { font-size: 10px; color: #9ca3af; flex-shrink: 0; }
+
+  .checkbox-cell { display: flex; align-items: center; justify-content: center; }
+  .cb {
+    width: 17px; height: 17px; border: 2px solid #d1d5db; border-radius: 3px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    background: #fff; transition: all 0.15s; flex-shrink: 0;
+  }
+  .cb:hover { border-color: #4f46e5; }
+  .cb.checked { background: #4f46e5; border-color: #4f46e5; }
+  .cb.checked::after { content: '✓'; color: #fff; font-size: 11px; font-weight: 700; line-height: 1; }
+  .cb.locked { background: #4f46e5; border-color: #4f46e5; cursor: not-allowed; }
+  .cb.locked::after { content: '✓'; color: #fff; font-size: 11px; font-weight: 700; line-height: 1; }
+  .cb.locked:hover { border-color: #4f46e5; }
+  .cb.disabled { background: #f3f4f6; border-color: #e5e7eb; cursor: not-allowed; }
+  .cb.disabled:hover { border-color: #e5e7eb; }
+
+  .action-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 20px; border-top: 1px solid #f3f4f6;
+  }
+  .change-count { font-size: 11px; color: #6b7280; }
+  .change-count.has-changes { color: #d97706; font-weight: 500; }
+  .action-buttons { display: flex; gap: 8px; }
+  .btn {
+    padding: 7px 16px; border-radius: 5px; font-size: 12px; cursor: pointer;
+    font-family: 'Poppins', sans-serif; font-weight: 500; border: none;
+  }
+  .btn-secondary { background: #fff; border: 1px solid #d1d5db; color: #374151; }
+  .btn-secondary:hover { background: #f9fafb; }
+  .btn-primary { background: #4f46e5; color: #fff; }
+  .btn-primary:hover { background: #4338ca; }
+
+  /* ========== PACKAGE OVERRIDE SUMMARY ========== */
+  .override-summary {
+    margin-top: 20px; background: #fff; border: 1px solid #e5e7eb;
+    border-radius: 8px; overflow: hidden;
+  }
+  .override-summary-header {
+    padding: 14px 20px; border-bottom: 1px solid #e5e7eb;
+    display: flex; align-items: center; justify-content: space-between;
+    background: #fafbfc;
+  }
+  .override-summary-title {
+    font-size: 14px; font-weight: 600; color: #374151;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .override-count-badge {
+    background: #ede9fe; color: #6d28d9; font-size: 11px; font-weight: 600;
+    padding: 2px 8px; border-radius: 10px;
+  }
+  .override-summary-subtitle {
+    font-size: 11px; color: #9ca3af;
+  }
+
+  .override-list { list-style: none; }
+
+  .override-item {
+    padding: 12px 20px; border-bottom: 1px solid #f3f4f6;
+    display: flex; align-items: flex-start; gap: 12px;
+    cursor: pointer; transition: background 0.15s;
+  }
+  .override-item:last-child { border-bottom: none; }
+  .override-item:hover { background: #f9fafb; }
+
+  .override-item-icon {
+    width: 32px; height: 32px; border-radius: 6px; background: #ede9fe;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; flex-shrink: 0; margin-top: 2px;
+  }
+
+  .override-item-content { flex: 1; min-width: 0; }
+
+  .override-item-name {
+    font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 4px;
+  }
+
+  .override-item-diffs {
+    display: flex; flex-wrap: wrap; gap: 6px;
+  }
+
+  .diff-tag {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 500;
+  }
+  .diff-tag.removed { background: #fef2f2; color: #dc2626; }
+  .diff-tag.mandatory { background: #fffbeb; color: #d97706; }
+  .diff-tag.hero { background: #fef3c7; color: #92400e; }
+  .diff-tag.reorder { background: #ede9fe; color: #6d28d9; }
+
+  .override-item-action {
+    color: #4f46e5; font-size: 11px; font-weight: 500;
+    display: flex; align-items: center; gap: 4px; flex-shrink: 0;
+    margin-top: 6px;
+  }
+  .override-item-action:hover { text-decoration: underline; }
+
+  /* No overrides state */
+  .no-overrides {
+    padding: 30px 20px; text-align: center;
+  }
+  .no-overrides-text {
+    font-size: 12px; color: #9ca3af; margin-bottom: 4px;
+  }
+  .no-overrides-subtext {
+    font-size: 11px; color: #d1d5db;
+  }
+
+  /* Default packages list */
+  .default-packages {
+    padding: 8px 20px 14px; border-top: 1px solid #f3f4f6;
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
+  .default-packages-label {
+    font-size: 11px; color: #9ca3af; font-style: italic;
+  }
+  .default-pkg-tag {
+    padding: 2px 8px; background: #f3f4f6; border-radius: 4px;
+    font-size: 10px; color: #6b7280;
+  }
+
+  /* Empty state */
+  .empty-state {
+    display: none; flex-direction: column; align-items: center; justify-content: center;
+    padding: 50px 20px; text-align: center;
+  }
+  .empty-state.show { display: flex; }
+  .empty-state-icon { font-size: 40px; margin-bottom: 14px; opacity: 0.35; }
+  .empty-state-title { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  .empty-state-text { font-size: 12px; color: #6b7280; margin-bottom: 16px; max-width: 340px; }
+
+  /* Modal overlay */
+  .modal-overlay {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.4); display: none; align-items: center;
+    justify-content: center; z-index: 100;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal {
+    background: #fff; border-radius: 12px; padding: 24px; max-width: 420px;
+    width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  }
+  .modal-icon { font-size: 28px; margin-bottom: 10px; }
+  .modal-title { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  .modal-text { font-size: 12px; color: #6b7280; line-height: 1.6; margin-bottom: 16px; }
+  .modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    padding: 10px 20px; border-radius: 8px; font-size: 12px; font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 200;
+    transition: opacity 0.3s; opacity: 0; pointer-events: none;
+  }
+  .toast.show { opacity: 1; }
+  .toast.success { background: #065f46; color: #fff; }
+  .toast.error { background: #991b1b; color: #fff; }
+  .toast.info { background: #1e40af; color: #fff; }
+</style>
+</head>
+<body>
+
+<div class="banner">PROPOSED DESIGN (Option A) — BGV Form Config with Package Override Summary below (#34436 + #34175)</div>
+
+<div class="topbar">
+  <a class="breadcrumb-link">Companies</a>
+  <span class="breadcrumb-sep">›</span>
+  <a class="breadcrumb-link">Google India Pvt Ltd</a>
+  <span class="breadcrumb-sep">›</span>
+  <span>Settings</span>
+</div>
+
+<div class="page-container">
+  <div class="company-sidebar">
+    <div class="tab-item">Overview</div>
+    <div class="tab-item">Candidates</div>
+    <div class="tab-item">Insufficiency Review</div>
+    <div class="tab-item">Packages</div>
+    <div class="tab-item">Credits &amp; Billing</div>
+    <div class="tab-item">ADC Review</div>
+    <div class="tab-item">Integrations</div>
+    <div class="tab-item">Alumni Verification</div>
+    <div class="tab-item">Company Admins</div>
+    <div class="tab-item">Analytics &amp; Logs</div>
+    <div class="tab-item active">Settings</div>
+  </div>
+
+  <div class="main-content">
+    <div class="settings-tabs">
+      <div class="settings-tab">Security</div>
+      <div class="settings-tab">Brand and Communication</div>
+      <div class="settings-tab">Reference Check Questions</div>
+      <div class="settings-tab">DAV Configuration</div>
+      <div class="settings-tab">Automations</div>
+      <div class="settings-tab">Status Colors</div>
+      <div class="settings-tab active">BGV Form Config</div>
+    </div>
+
+    <div class="page-header">
+      <div class="page-title">Background Verification Form Document Configuration</div>
+      <div class="page-subtitle">Configure which documents to collect from candidates and mark specific documents as mandatory per check type.</div>
+    </div>
+
+    <!-- Scope selector -->
+    <div class="scope-selector">
+      <span class="scope-label">Scope:</span>
+      <select class="scope-dropdown" id="scopeSelect">
+        <option value="company">Company Default</option>
+        <option value="pkg-standard">Package: Standard Background Check</option>
+        <option value="pkg-premium">Package: Premium Background Check</option>
+        <option value="pkg-bluecollar">Package: Blue Collar</option>
+      </select>
+      <span class="scope-badge company" id="scopeBadge">Company Default</span>
+      <button class="reset-btn" id="resetBtn" style="display:none">Reset to company default</button>
+    </div>
+
+    <!-- Main config panel -->
+    <div class="config-panel">
+      <div class="check-nav">
+        <div class="check-nav-item" onclick="selectCheck('identity')">
+          <div class="check-nav-icon identity">ID</div>
+          Identity check
+        </div>
+        <div class="check-nav-item" onclick="selectCheck('address')">
+          <div class="check-nav-icon address">AD</div>
+          Address check
+        </div>
+        <div class="check-nav-item" onclick="selectCheck('education')">
+          <div class="check-nav-icon education">ED</div>
+          Education check
+        </div>
+        <div class="check-nav-item active" onclick="selectCheck('employment')">
+          <div class="check-nav-icon employment">EM</div>
+          Employment check
+        </div>
+      </div>
+
+      <div class="doc-panel">
+        <div class="doc-panel-header">
+          <div class="doc-panel-title" id="panelTitle">Employment Check Documents</div>
+          <div class="doc-panel-subtitle">Drag to reorder document hierarchy. The topmost selected document is the hero document.</div>
+        </div>
+
+        <div class="subcategory-tabs" id="subcategoryTabs">
+          <div class="subcategory-tab active" onclick="selectSubcat('fulltime')">Full Time</div>
+          <div class="subcategory-tab" onclick="selectSubcat('internship')">Internship</div>
+          <div class="subcategory-tab" onclick="selectSubcat('contract')">Contract</div>
+        </div>
+
+        <div class="doc-list-header">
+          <div></div>
+          <div>Document</div>
+          <div style="text-align:center">Collect</div>
+          <div style="text-align:center">Mandatory</div>
+        </div>
+
+        <div class="doc-list-wrap">
+          <ul id="doc-list"></ul>
+        </div>
+
+        <!-- Empty state for packages with no override -->
+        <div class="empty-state" id="emptyState">
+          <div class="empty-state-icon">📄</div>
+          <div class="empty-state-title">This package uses the company default configuration</div>
+          <div class="empty-state-text">Candidates in this package see the company default document list. Create a custom override to change it.</div>
+          <button class="btn btn-primary" onclick="createOverride()">Customise for this package</button>
+        </div>
+
+        <div class="action-bar" id="actionBar">
+          <div class="change-count" id="changeCount">No changes</div>
+          <div class="action-buttons">
+            <button class="btn btn-secondary" onclick="cancelChanges()">Cancel</button>
+            <button class="btn btn-primary" onclick="saveChanges()">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== PACKAGE OVERRIDE SUMMARY (Option A) ========== -->
+    <div class="override-summary" id="overrideSummary">
+      <div class="override-summary-header">
+        <div>
+          <div class="override-summary-title">
+            Package Overrides
+            <span class="override-count-badge" id="overrideCountBadge">2 packages</span>
+          </div>
+          <div class="override-summary-subtitle">Packages with custom document configurations for this check type</div>
+        </div>
+      </div>
+
+      <ul class="override-list" id="overrideList"></ul>
+
+      <div class="default-packages" id="defaultPackages">
+        <span class="default-packages-label">Using company default:</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Warning Modal -->
+<div class="modal-overlay" id="warningModal">
+  <div class="modal">
+    <div class="modal-icon">⚠️</div>
+    <div class="modal-title">Remove hero document?</div>
+    <div class="modal-text" id="warningText"></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('warningModal')">Cancel</button>
+      <button class="btn btn-primary" style="background:#f59e0b" onclick="confirmRemoveHero()">Proceed</button>
+    </div>
+  </div>
+</div>
+
+<!-- Error Modal -->
+<div class="modal-overlay" id="errorModal">
+  <div class="modal">
+    <div class="modal-icon">🚫</div>
+    <div class="modal-title">Cannot deselect</div>
+    <div class="modal-text">You must select at least one document for this check type.</div>
+    <div class="modal-actions">
+      <button class="btn btn-primary" onclick="closeModal('errorModal')">OK</button>
+    </div>
+  </div>
+</div>
+
+<!-- Reset Modal -->
+<div class="modal-overlay" id="resetModal">
+  <div class="modal">
+    <div class="modal-icon">🔄</div>
+    <div class="modal-title">Reset to company default?</div>
+    <div class="modal-text">This will remove the custom override for this package. Candidates will see the company default document list.</div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('resetModal')">Cancel</button>
+      <button class="btn btn-primary" style="background:#ef4444" onclick="resetToDefault()">Reset</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ==================== DATA ====================
+const EMPLOYMENT_DOCS_FULLTIME = [
+  'Experience letter', 'Relieving letter', 'Payslips',
+  'Full and final settlement document', 'Resignation acceptance letter',
+  'Appointment letter', 'Offer letter', 'Employment contract or agreement',
+  'Contract completion', 'Termination letter'
+];
+
+const EMPLOYMENT_DOCS_INTERNSHIP = [
+  'Internship experience letter', 'Payslips', 'Internship offer letter',
+  'Resignation acceptance letter', 'Termination letter'
+];
+
+const EMPLOYMENT_DOCS_CONTRACT = [
+  'Employment contract or agreement', 'Contract completion',
+  'Termination letter', 'Invoice issued'
+];
+
+function makeConfig(order, collected, mandatory) {
+  return { order: [...order], collected: new Set(collected), mandatory: new Set(mandatory) };
+}
+
+const configs = {
+  company: {
+    fulltime: makeConfig(EMPLOYMENT_DOCS_FULLTIME, EMPLOYMENT_DOCS_FULLTIME, []),
+    internship: makeConfig(EMPLOYMENT_DOCS_INTERNSHIP, EMPLOYMENT_DOCS_INTERNSHIP, []),
+    contract: makeConfig(EMPLOYMENT_DOCS_CONTRACT, EMPLOYMENT_DOCS_CONTRACT, [])
+  },
+  'pkg-standard': {
+    fulltime: makeConfig(
+      EMPLOYMENT_DOCS_FULLTIME,
+      EMPLOYMENT_DOCS_FULLTIME.filter(d => d !== 'Termination letter' && d !== 'Contract completion'),
+      ['Payslips', 'Resignation acceptance letter']
+    ),
+    internship: makeConfig(EMPLOYMENT_DOCS_INTERNSHIP, EMPLOYMENT_DOCS_INTERNSHIP, []),
+    contract: makeConfig(EMPLOYMENT_DOCS_CONTRACT, EMPLOYMENT_DOCS_CONTRACT, [])
+  },
+  'pkg-premium': {
+    fulltime: makeConfig(
+      ['Payslips', 'Experience letter', 'Relieving letter',
+       'Full and final settlement document', 'Resignation acceptance letter',
+       'Appointment letter', 'Offer letter', 'Employment contract or agreement',
+       'Contract completion', 'Termination letter'],
+      EMPLOYMENT_DOCS_FULLTIME,
+      ['Payslips', 'Relieving letter', 'Resignation acceptance letter']
+    ),
+    internship: makeConfig(EMPLOYMENT_DOCS_INTERNSHIP, EMPLOYMENT_DOCS_INTERNSHIP, ['Payslips']),
+    contract: makeConfig(EMPLOYMENT_DOCS_CONTRACT, EMPLOYMENT_DOCS_CONTRACT, [])
+  },
+  'pkg-bluecollar': null
+};
+
+const PACKAGE_NAMES = {
+  'pkg-standard': 'Standard Background Check',
+  'pkg-premium': 'Premium Background Check',
+  'pkg-bluecollar': 'Blue Collar',
+  'pkg-enterprise': 'Enterprise',
+  'pkg-contractor': 'Contractor Screening'
+};
+
+function cloneConfig(cfg) {
+  if (!cfg) return null;
+  const out = {};
+  for (const key of Object.keys(cfg)) {
+    out[key] = {
+      order: [...cfg[key].order],
+      collected: new Set(cfg[key].collected),
+      mandatory: new Set(cfg[key].mandatory)
+    };
+  }
+  return out;
+}
+
+let savedConfigs = {};
+for (const k of Object.keys(configs)) {
+  savedConfigs[k] = configs[k] ? cloneConfig(configs[k]) : null;
+}
+
+let currentScope = 'company';
+let currentSubcat = 'fulltime';
+let currentCheck = 'employment';
+const hasHero = { employment: true, education: true, identity: false, address: false };
+let changesMade = false;
+let pendingHeroRemove = null;
+
+// ==================== RENDERING ====================
+function findHero(subcatCfg) {
+  if (!hasHero[currentCheck]) return null;
+  for (const doc of subcatCfg.order) {
+    if (subcatCfg.collected.has(doc)) return doc;
+  }
+  return null;
+}
+
+function render() {
+  const cfg = configs[currentScope];
+  const scopeBadge = document.getElementById('scopeBadge');
+  const resetBtn = document.getElementById('resetBtn');
+  const emptyState = document.getElementById('emptyState');
+  const docList = document.getElementById('doc-list');
+  const actionBar = document.getElementById('actionBar');
+  const overrideSummary = document.getElementById('overrideSummary');
+
+  // Scope UI
+  if (currentScope === 'company') {
+    scopeBadge.textContent = 'Company Default';
+    scopeBadge.className = 'scope-badge company';
+    resetBtn.style.display = 'none';
+    overrideSummary.style.display = '';
+  } else {
+    scopeBadge.textContent = cfg ? 'Custom Override' : 'No Override';
+    scopeBadge.className = 'scope-badge package';
+    resetBtn.style.display = cfg ? '' : 'none';
+    overrideSummary.style.display = 'none';
+  }
+
+  // Subcategory tabs
+  document.getElementById('subcategoryTabs').style.display =
+    currentCheck === 'employment' ? 'flex' : 'none';
+
+  // Empty state for package with no override
+  if (!cfg) {
+    emptyState.classList.add('show');
+    docList.innerHTML = '';
+    actionBar.style.display = 'none';
+    return;
+  }
+  emptyState.classList.remove('show');
+  actionBar.style.display = 'flex';
+
+  const subcatCfg = cfg[currentSubcat];
+  const hero = findHero(subcatCfg);
+
+  docList.innerHTML = '';
+  subcatCfg.order.forEach((doc, idx) => {
+    const isCollected = subcatCfg.collected.has(doc);
+    const isMandatory = subcatCfg.mandatory.has(doc);
+    const isHero = doc === hero;
+
+    const li = document.createElement('li');
+    li.className = 'doc-row' + (isHero ? ' hero-row' : '') + (!isCollected ? ' uncollected' : '');
+    li.draggable = true;
+    li.dataset.doc = doc;
+    li.dataset.idx = idx;
+
+    const dragHandle = `<div class="drag-handle">⠿</div>`;
+
+    let nameParts = `<span class="doc-name">${doc}</span>`;
+    if (isHero) {
+      nameParts += `<span class="hero-badge">★ Hero</span><span class="lock-icon">🔒</span>`;
+    }
+    const nameCell = `<div class="doc-name-cell">${nameParts}</div>`;
+
+    let collectClass = 'cb';
+    if (isHero) collectClass += ' locked';
+    else if (isCollected) collectClass += ' checked';
+    const collectCell = `<div class="checkbox-cell"><div class="${collectClass}" data-action="collect" data-doc="${doc}"></div></div>`;
+
+    let mandatoryClass = 'cb';
+    if (isHero) mandatoryClass += ' locked';
+    else if (!isCollected) mandatoryClass += ' disabled';
+    else if (isMandatory) mandatoryClass += ' checked';
+    const mandatoryCell = `<div class="checkbox-cell"><div class="${mandatoryClass}" data-action="mandatory" data-doc="${doc}"></div></div>`;
+
+    li.innerHTML = dragHandle + nameCell + collectCell + mandatoryCell;
+    docList.appendChild(li);
+
+    li.querySelector('[data-action="collect"]').addEventListener('click', () => toggleCollect(doc));
+    li.querySelector('[data-action="mandatory"]').addEventListener('click', () => toggleMandatory(doc));
+
+    li.addEventListener('dragstart', handleDragStart);
+    li.addEventListener('dragover', handleDragOver);
+    li.addEventListener('dragenter', handleDragEnter);
+    li.addEventListener('dragleave', handleDragLeave);
+    li.addEventListener('drop', handleDrop);
+    li.addEventListener('dragend', handleDragEnd);
+  });
+
+  updateChangeCount();
+  if (currentScope === 'company') renderOverrideSummary();
+}
+
+// ==================== OVERRIDE SUMMARY ====================
+function renderOverrideSummary() {
+  const listEl = document.getElementById('overrideList');
+  const defaultPkgsEl = document.getElementById('defaultPackages');
+  const countBadge = document.getElementById('overrideCountBadge');
+  const companyCfg = configs.company;
+
+  listEl.innerHTML = '';
+  const overridePkgs = [];
+  const defaultPkgs = [];
+
+  for (const [key, name] of Object.entries(PACKAGE_NAMES)) {
+    const pkgCfg = configs[key];
+    if (pkgCfg) {
+      overridePkgs.push({ key, name, cfg: pkgCfg });
+    } else {
+      defaultPkgs.push({ key, name });
+    }
+  }
+
+  countBadge.textContent = overridePkgs.length > 0
+    ? `${overridePkgs.length} package${overridePkgs.length > 1 ? 's' : ''}`
+    : 'None';
+
+  if (overridePkgs.length === 0) {
+    listEl.innerHTML = `
+      <div class="no-overrides">
+        <div class="no-overrides-text">No packages have custom overrides for this check type.</div>
+        <div class="no-overrides-subtext">All packages use the company default configuration.</div>
+      </div>
+    `;
+  } else {
+    overridePkgs.forEach(pkg => {
+      const diffs = computeDiffs(pkg.cfg, companyCfg);
+      const li = document.createElement('li');
+      li.className = 'override-item';
+      li.onclick = () => {
+        document.getElementById('scopeSelect').value = pkg.key;
+        currentScope = pkg.key;
+        currentSubcat = 'fulltime';
+        document.querySelectorAll('.subcategory-tab').forEach((t, i) => {
+          t.classList.toggle('active', i === 0);
+        });
+        render();
+      };
+
+      let diffTags = '';
+      diffs.forEach(d => {
+        diffTags += `<span class="diff-tag ${d.type}">${d.label}</span>`;
+      });
+
+      li.innerHTML = `
+        <div class="override-item-icon">📦</div>
+        <div class="override-item-content">
+          <div class="override-item-name">${pkg.name}</div>
+          <div class="override-item-diffs">${diffTags}</div>
+        </div>
+        <div class="override-item-action">View & edit →</div>
+      `;
+      listEl.appendChild(li);
+    });
+  }
+
+  // Default packages
+  defaultPkgsEl.innerHTML = '<span class="default-packages-label">Using company default:</span>';
+  defaultPkgs.forEach(pkg => {
+    defaultPkgsEl.innerHTML += `<span class="default-pkg-tag">${pkg.name}</span>`;
+  });
+}
+
+function computeDiffs(pkgCfg, companyCfg) {
+  const diffs = [];
+  // Check across all subcategories
+  const subcats = ['fulltime', 'internship', 'contract'];
+
+  let totalRemoved = 0;
+  let totalMandatory = 0;
+  let heroChanged = false;
+  let orderChanged = false;
+
+  subcats.forEach(subcat => {
+    const pkg = pkgCfg[subcat];
+    const co = companyCfg[subcat];
+
+    const removed = [...co.collected].filter(d => !pkg.collected.has(d));
+    totalRemoved += removed.length;
+
+    // Mandatory diffs (excluding hero)
+    const pkgHero = findHeroForCfg(pkg);
+    const mandatoryAdded = [...pkg.mandatory].filter(d => !co.mandatory.has(d) && d !== pkgHero);
+    totalMandatory += mandatoryAdded.length;
+
+    // Hero change
+    const coHero = findHeroForCfg(co);
+    if (pkgHero !== coHero) heroChanged = true;
+
+    // Order change
+    const coOrder = co.order.filter(d => co.collected.has(d));
+    const pkgOrder = pkg.order.filter(d => pkg.collected.has(d));
+    const common = coOrder.filter(d => pkg.collected.has(d));
+    const pkgCommon = pkgOrder.filter(d => co.collected.has(d));
+    if (JSON.stringify(common) !== JSON.stringify(pkgCommon)) orderChanged = true;
+  });
+
+  if (heroChanged) diffs.push({ type: 'hero', label: 'Different hero document' });
+  if (totalRemoved > 0) diffs.push({ type: 'removed', label: `${totalRemoved} doc${totalRemoved > 1 ? 's' : ''} removed` });
+  if (totalMandatory > 0) diffs.push({ type: 'mandatory', label: `${totalMandatory} doc${totalMandatory > 1 ? 's' : ''} marked mandatory` });
+  if (orderChanged && !heroChanged) diffs.push({ type: 'reorder', label: 'Order changed' });
+
+  return diffs;
+}
+
+function findHeroForCfg(subcatCfg) {
+  for (const doc of subcatCfg.order) {
+    if (subcatCfg.collected.has(doc)) return doc;
+  }
+  return null;
+}
+
+// ==================== INTERACTIONS ====================
+function toggleCollect(doc) {
+  const subcatCfg = configs[currentScope][currentSubcat];
+  const hero = findHero(subcatCfg);
+
+  if (doc === hero) {
+    pendingHeroRemove = doc;
+    const nextHero = subcatCfg.order.find(d => d !== doc && subcatCfg.collected.has(d));
+    document.getElementById('warningText').innerHTML = `
+      Removing <strong>${doc}</strong> may affect the completion of background verification.
+      ${nextHero ? `<strong>${nextHero}</strong> will become the new hero document.` : '<strong>No other documents are collected.</strong>'}
+    `;
+    document.getElementById('warningModal').classList.add('show');
+    return;
+  }
+
+  if (subcatCfg.collected.has(doc)) {
+    if (subcatCfg.collected.size <= 1) {
+      document.getElementById('errorModal').classList.add('show');
+      return;
+    }
+    subcatCfg.collected.delete(doc);
+    subcatCfg.mandatory.delete(doc);
+  } else {
+    subcatCfg.collected.add(doc);
+  }
+  changesMade = true;
+  render();
+}
+
+function toggleMandatory(doc) {
+  const subcatCfg = configs[currentScope][currentSubcat];
+  const hero = findHero(subcatCfg);
+  if (doc === hero) return;
+  if (!subcatCfg.collected.has(doc)) return;
+
+  if (subcatCfg.mandatory.has(doc)) {
+    subcatCfg.mandatory.delete(doc);
+  } else {
+    subcatCfg.mandatory.add(doc);
+  }
+  changesMade = true;
+  render();
+}
+
+function confirmRemoveHero() {
+  if (!pendingHeroRemove) return;
+  const subcatCfg = configs[currentScope][currentSubcat];
+  if (subcatCfg.collected.size <= 1) {
+    closeModal('warningModal');
+    document.getElementById('errorModal').classList.add('show');
+    pendingHeroRemove = null;
+    return;
+  }
+  subcatCfg.collected.delete(pendingHeroRemove);
+  subcatCfg.mandatory.delete(pendingHeroRemove);
+  pendingHeroRemove = null;
+  changesMade = true;
+  closeModal('warningModal');
+  showToast('Hero document changed', 'info');
+  render();
+}
+
+// ==================== DRAG AND DROP ====================
+let dragSrcIdx = null;
+
+function handleDragStart(e) {
+  dragSrcIdx = parseInt(this.dataset.idx);
+  this.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+}
+function handleDragOver(e) { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; }
+function handleDragEnter() { this.classList.add('drag-over'); }
+function handleDragLeave() { this.classList.remove('drag-over'); }
+function handleDrop(e) {
+  e.preventDefault();
+  this.classList.remove('drag-over');
+  const targetIdx = parseInt(this.dataset.idx);
+  if (dragSrcIdx === null || dragSrcIdx === targetIdx) return;
+  const subcatCfg = configs[currentScope][currentSubcat];
+  const [moved] = subcatCfg.order.splice(dragSrcIdx, 1);
+  subcatCfg.order.splice(targetIdx, 0, moved);
+  changesMade = true;
+  render();
+}
+function handleDragEnd() {
+  document.querySelectorAll('.doc-row').forEach(r => r.classList.remove('dragging', 'drag-over'));
+  dragSrcIdx = null;
+}
+
+// ==================== SCOPE ====================
+document.getElementById('scopeSelect').addEventListener('change', function() {
+  if (changesMade) {
+    if (!confirm('You have unsaved changes. Discard them?')) {
+      this.value = currentScope;
+      return;
+    }
+    cancelChanges();
+  }
+  currentScope = this.value;
+  currentSubcat = 'fulltime';
+  document.querySelectorAll('.subcategory-tab').forEach((t, i) => t.classList.toggle('active', i === 0));
+  render();
+});
+
+// ==================== SUBCATEGORY ====================
+function selectSubcat(subcat) {
+  currentSubcat = subcat;
+  document.querySelectorAll('#subcategoryTabs .subcategory-tab').forEach(t => {
+    t.classList.toggle('active', t.textContent.toLowerCase().replace(' ', '') === subcat);
+  });
+  render();
+}
+
+// ==================== CHECK NAV ====================
+function selectCheck(check) {
+  currentCheck = check;
+  document.querySelectorAll('.check-nav-item').forEach(item => {
+    const icon = item.querySelector('.check-nav-icon');
+    item.classList.toggle('active', icon.classList.contains(check));
+  });
+  if (check !== 'employment') {
+    showToast('Only Employment check is interactive in this mockup', 'info');
+    setTimeout(() => {
+      currentCheck = 'employment';
+      document.querySelectorAll('.check-nav-item').forEach(item => {
+        const icon = item.querySelector('.check-nav-icon');
+        item.classList.toggle('active', icon.classList.contains('employment'));
+      });
+    }, 1500);
+    return;
+  }
+  render();
+}
+
+// ==================== SAVE / CANCEL / RESET ====================
+function saveChanges() {
+  savedConfigs[currentScope] = cloneConfig(configs[currentScope]);
+  changesMade = false;
+  showToast('Configuration saved successfully', 'success');
+  render();
+}
+
+function cancelChanges() {
+  configs[currentScope] = savedConfigs[currentScope] ? cloneConfig(savedConfigs[currentScope]) : null;
+  changesMade = false;
+  render();
+}
+
+function createOverride() {
+  configs[currentScope] = cloneConfig(configs.company);
+  savedConfigs[currentScope] = cloneConfig(configs.company);
+  showToast('Custom override created — edit and save', 'info');
+  render();
+}
+
+function showResetModal() {
+  document.getElementById('resetModal').classList.add('show');
+}
+
+function resetToDefault() {
+  configs[currentScope] = null;
+  savedConfigs[currentScope] = null;
+  changesMade = false;
+  closeModal('resetModal');
+  showToast('Override removed — using company default', 'success');
+  render();
+}
+
+document.getElementById('resetBtn').addEventListener('click', showResetModal);
+
+function updateChangeCount() {
+  const el = document.getElementById('changeCount');
+  if (changesMade) {
+    el.textContent = '● Unsaved changes';
+    el.className = 'change-count has-changes';
+  } else {
+    el.textContent = 'No changes';
+    el.className = 'change-count';
+  }
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('show');
+  if (id === 'warningModal') pendingHeroRemove = null;
+}
+
+function showToast(msg, type) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.className = 'toast ' + type + ' show';
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+// ==================== INIT ====================
+render();
+</script>
+
+</body>
+</html>

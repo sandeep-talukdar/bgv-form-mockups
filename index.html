@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>BGV Form Config — Candidate Mockup Index</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Figtree', sans-serif; background: #f8f8f8; color: #101828; min-width: 1280px; }
+
+  /* ── Page Header ── */
+  .page-header {
+    background: #0828cc; color: #fff; padding: 32px 60px;
+  }
+  .page-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 6px; }
+  .page-header p { font-size: 15px; font-weight: 400; color: rgba(255,255,255,0.8); line-height: 1.6; }
+
+  /* ── Flow Diagram ── */
+  .flow-section {
+    max-width: 1280px; margin: 32px auto 0; padding: 0 60px;
+  }
+  .flow-section h2 {
+    font-size: 18px; font-weight: 700; color: #101828; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .flow-section h2::before {
+    content: ''; width: 4px; height: 20px; background: #0828cc; border-radius: 2px;
+  }
+  .flow-strip {
+    display: flex; align-items: center; gap: 0;
+    background: #fff; border: 1px solid #e5e7eb; border-radius: 12px;
+    padding: 20px 24px; overflow-x: auto;
+  }
+  .flow-step {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    min-width: 120px; text-align: center;
+  }
+  .flow-step-circle {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 700; color: #fff; background: #0828cc;
+  }
+  .flow-step-circle.muted { background: #d1d5db; color: #6b7280; }
+  .flow-step-label { font-size: 13px; font-weight: 600; color: #101828; }
+  .flow-step-scenarios { font-size: 11px; color: #6b7280; margin-top: 2px; }
+  .flow-arrow {
+    font-size: 20px; color: #d1d5db; margin: 0 8px; flex-shrink: 0;
+  }
+
+  /* ── Sections ── */
+  .section-group {
+    max-width: 1280px; margin: 32px auto 0; padding: 0 60px;
+  }
+  .section-group:last-child { padding-bottom: 60px; }
+  .section-group h2 {
+    font-size: 18px; font-weight: 700; color: #101828; margin-bottom: 6px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-group h2::before {
+    content: ''; width: 4px; height: 20px; background: #0828cc; border-radius: 2px;
+  }
+  .section-desc {
+    font-size: 13px; color: #6b7280; margin-bottom: 16px; line-height: 1.5;
+  }
+
+  /* ── Scenario Cards ── */
+  .scenario-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+  }
+  .scenario-card {
+    background: #fff; border: 1px solid #e5e7eb; border-radius: 12px;
+    overflow: hidden; transition: box-shadow 0.2s, border-color 0.2s;
+    text-decoration: none; color: inherit; display: block;
+  }
+  .scenario-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08); border-color: #0828cc;
+  }
+  .scenario-card-thumb {
+    width: 100%; height: 200px; background: #f3f4f6;
+    overflow: hidden; border-bottom: 1px solid #e5e7eb;
+  }
+  .scenario-card-thumb img {
+    width: 100%; height: 100%; object-fit: cover; object-position: top left;
+  }
+  .scenario-card-body { padding: 14px 16px; }
+  .scenario-card-number {
+    font-size: 11px; font-weight: 700; color: #0828cc;
+    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;
+  }
+  .scenario-card-title {
+    font-size: 15px; font-weight: 600; color: #101828; margin-bottom: 6px;
+  }
+  .scenario-card-desc {
+    font-size: 12px; color: #6b7280; line-height: 1.5;
+  }
+  .scenario-card-tags {
+    display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap;
+  }
+  .tag {
+    font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px;
+  }
+  .tag.base { background: #eef2ff; color: #0828cc; }
+  .tag.variant { background: #fef9c3; color: #92400e; }
+  .tag.modal { background: #f0fdf4; color: #166534; }
+  .tag.final { background: #fef2f2; color: #dc2626; }
+
+  /* ── Shared Patterns ── */
+  .patterns-section {
+    max-width: 1280px; margin: 40px auto 0; padding: 0 60px;
+  }
+  .patterns-section h2 {
+    font-size: 18px; font-weight: 700; color: #101828; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .patterns-section h2::before {
+    content: ''; width: 4px; height: 20px; background: #0828cc; border-radius: 2px;
+  }
+  .patterns-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
+  }
+  .pattern-card {
+    background: #fff; border: 1px solid #e5e7eb; border-radius: 12px;
+    padding: 18px 20px;
+  }
+  .pattern-card h4 { font-size: 14px; font-weight: 600; color: #101828; margin-bottom: 8px; }
+  .pattern-card p { font-size: 13px; color: #6b7280; line-height: 1.6; }
+  .pattern-card code {
+    background: #f3f4f6; padding: 1px 5px; border-radius: 3px;
+    font-size: 12px; color: #0828cc; font-family: 'SF Mono', monospace;
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Page Header ── -->
+<div class="page-header">
+  <h1>Candidate BGV Form — Mockup Index</h1>
+  <p>All candidate-facing form scenarios for the BGV Form Config feature (Ticket #34175). Each scenario shows a specific UI state.<br>
+  Open any scenario to see the full mockup. Scenarios are grouped by form section and ordered by the candidate journey.</p>
+</div>
+
+<!-- ── Flow Diagram ── -->
+<div class="flow-section">
+  <h2>Candidate Journey Flow</h2>
+  <div class="flow-strip">
+    <div class="flow-step">
+      <div class="flow-step-circle muted">1</div>
+      <div class="flow-step-label">Basic Details</div>
+      <div class="flow-step-scenarios">Pre-existing</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-circle">2</div>
+      <div class="flow-step-label">Identity</div>
+      <div class="flow-step-scenarios">Scenarios 1, 6</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-circle">3</div>
+      <div class="flow-step-label">Education</div>
+      <div class="flow-step-scenarios">Scenarios 2, 5</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-circle">4</div>
+      <div class="flow-step-label">Address</div>
+      <div class="flow-step-scenarios">Scenario 7</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-circle">5</div>
+      <div class="flow-step-label">Employment</div>
+      <div class="flow-step-scenarios">Scenarios 3, 4, 10, 11</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-circle">6</div>
+      <div class="flow-step-label">Exit Flow</div>
+      <div class="flow-step-scenarios">Scenarios 8, 9</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-circle">7</div>
+      <div class="flow-step-label">Review &amp; Submit</div>
+      <div class="flow-step-scenarios">Scenario 12</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ Identity ══════════════ -->
+<div class="section-group">
+  <h2>Identity</h2>
+  <p class="section-desc">The Identity step shows document types (PAN, Aadhaar, Driving License, etc.) configured by the company admin. Each document type is a sub-section with an upload zone, DigiLocker option, and "I don't have this document" exit link.</p>
+  <div class="scenario-grid">
+    <a class="scenario-card" href="candidate-scenario-1.html">
+      <div class="scenario-card-thumb"><img src="candidate-scenario-1.png" alt="Scenario 1"></div>
+      <div class="scenario-card-body">
+        <div class="scenario-card-number">Scenario 1</div>
+        <div class="scenario-card-title">Identity — Base State</div>
+        <div class="scenario-card-desc">PAN has an uploaded document card. Aadhaar shows an empty upload zone. Proceed is disabled (not all sub-sections complete).</div>
+        <div class="scenario-card-tags"><span class="tag base">Base state</span></div>
+      </div>
+    </a>
+    <a class="scenario-card" href="candidate-scenario-6.html">
+      <div class="scenario-card-thumb"><img src="candidate-scenario-6.png" alt="Scenario 6"></div>
+      <div class="scenario-card-body">
+        <div class="scenario-card-number">Scenario 6</div>
+        <div class="scenario-card-title">Identity — Mandatory &amp; Optional</div>
+        <div class="scenario-card-desc">PAN is mandatory (badge shown), Aadhaar is optional (Proceed enabled without upload), Driving License is collapsed (not yet opened).</div>
+        <div class="scenario-card-tags"><span class="tag variant">Variant</span></div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<!-- ══════════════ Education ══════════════ -->
+<div class="section-group">
+  <h2>Education</h2>
+  <p class="section-desc">Education sub-sections (Post-graduation, Graduation, Twelfth, Tenth) each have form fields (university/school name, passing year), preferred document upload, and DigiLocker action buttons. The "I don't have this education" checkbox allows skipping a level.</p>
+  <div class="scenario-grid">
+    <a class="scenario-card" href="candidate-scenario-2.html">
+      <div class="scenario-card-thumb"><img src="candidate-scenario-2.png" alt="Scenario 2"></div>
+      <div class="scenario-card-body">
+        <div class="scenario-card-number">Scenario 2</div>
+        <div class="scenario-card-title">Education — All 4 Levels</div>
+        <div class="scenario-card-desc">All 4 education levels shown. Post-grad and Graduation have upload zones. Twelfth has DigiLocker tooltip. Tenth has action buttons only.</div>
+        <div class="scenario-card-tags"><span class="tag base">Base state</span></div>
+      </div>
+    </a>
+    <a class="scenario-card" href="candidate-scenario-5.html">
+      <div class="scenario-card-thumb"><img src="candidate-scenario-5.png" alt="Scenario 5"></div>
+      <div class="scenario-card-body">
+        <div class="scenario-card-number">Scenario 5</div>
+        <div class="scenario-card-title">Education — Mandatory Documents</div>
+        <div class="scenario-card-desc">Post-grad and Graduation with Degree Certificate marked as mandatory hero document. Upload zones with preferred doc label and mandatory badge.</div>
+        <div class="scenario-card-tags"><span class="tag variant">Variant</span></div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<!-- ══════════════ Address ══════════════ -->
+<div class="section-group">
+  <h2>Address</h2>
+  <p class="section-desc">Address sub-sections (Permanent, Current, Drug Test) have a digital verification warning banner, acceptable documents list, upload zone with DigiLocker, and "I don't have preferred documents" exit link. Current address has a "same as permanent" checkbox.</p>
+  <div class="scenario-grid">
+    <a class="scenario-card" href="candidate-scenario-7.html">
+      <div class="scenario-card-thumb"><img src="candidate-scenario-7.png" alt="Scenario 7"></div>
+      <div class="scenario-card-body">
+        <div class="scenario-card-number">Scenario 7</div>
+        <div class="scenario-card-title">Address — Permanent &amp; Current</div>
+        <div class="scenario-card-desc">Permanent address expanded with warning banner, acceptable docs list, upload zone. Current address with "same as permanent" checkbox. Proceed is disabled.</div>
+        <div class="scenario-card-tags"><span class="tag base">Base state</span></div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<!-- ══════════════ Employment ══════════════ -->
+<div class="section-group">
+  <h2>Employment</h2>
+  <p class="section-desc">Employment sub-sections show employment type dropdown, preferred document (hero) upload, mandatory documents group, and optional documents list. "I am a fresher" checkbox at the section level. Each employment record is a sub-section.</p>
+  <div class="scenario-grid">
+    <a class="scenario-card" href="candidate-scenario-3.html">
+      <div class="scenario-card-thumb"><img src="candidate-scenario-3.png" alt="Scenario 3"></div>
+      <div class="scenario-card-body">
+        <div class="scenario-card-number">Scenario 3</div>
+        <div class="scenario-card-title">Employment — Hero Uploaded</div>
+        <div class="scenario-card-desc">Experience Letter uploaded (file preview row). Mandatory group appears showing Relieving Letter as Pending. Optional docs listed below. Proceed disabled.</div>
+        <div class="scenario-card-tags"><span class="tag base">Base state</span></div>
+      </div>
+    </a>
+    <a class="scenario-card" href="candidate-scenario-4.html">
+      <div class="scenario-card-thumb"><img src="candidate-scenario-4.png" alt="Scenario 4"></div>
+      <div class="scenario-card-body">
+        <div class="scenario-card-number">Scenario 4</div>
+        <div class="scenario-card-title">Employment — All Mandatory Done</div>
+        <div class="scenario-card-desc">All mandatory docs uploaded. Mandatory group turns green. Proceed is now ENABLED. Shows the completed state before moving to next section.</div>
+        <div class="scenario-card-tags"><span class="tag variant">Variant</span></div>
+      </div>
+    </a>
+    <a class="scenario-card" href="candidate-scenario-10.html">
+      <div class="scenario-card-thumb"><img src="candidate-scenario-10.png" alt="Scenario 10"></div>
+      <div class="scenario-card-body">
+        <div class="scenario-card-number">Scenario 10</div>
+        <div class="scenario-card-title">Non-Preferred First Warning</div>
+        <div class="scenario-card-desc">Candidate uploaded an Offer Letter (non-preferred) instead of Experience Letter (preferred). Warning banner appears prompting them to upload the preferred doc.</div>
+        <div class="scenario-card-tags"><span class="tag variant">Variant</span></div>
+      </div>
+    </a>
+    <a class="scenario-card" href="candidate-scenario-11.html">
+      <div class="scenario-card-thumb"><img src="candidate-scenario-11.png" alt="Scenario 11"></div>
+      <div class="scenario-card-body">
+        <div class="scenario-card-number">Scenario 11</div>
+        <div class="scenario-card-title">Mandatory Doc — Reason &amp; ETA</div>
+        <div class="scenario-card-desc">Relieving Letter marked as "I don't have this". Inline reason dropdown and ETA date field expanded directly within the sub-section (not a modal).</div>
+        <div class="scenario-card-tags"><span class="tag variant">Variant</span></div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<!-- ══════════════ Exit Flow ══════════════ -->
+<div class="section-group">
+  <h2>Exit Flow — "I don't have preferred documents"</h2>
+  <p class="section-desc">Triggered when a candidate clicks "I don't have preferred documents" or "I don't have this document" on any section. A 2-step modal guides them through providing a reason and selecting alternate documents. This flow applies to Identity, Address, and Education sections.</p>
+  <div class="scenario-grid">
+    <a class="scenario-card" href="candidate-scenario-8.html">
+      <div class="scenario-card-thumb"><img src="candidate-scenario-8.png" alt="Scenario 8"></div>
+      <div class="scenario-card-body">
+        <div class="scenario-card-number">Scenario 8</div>
+        <div class="scenario-card-title">Exit Flow — Step 1: Reasoning</div>
+        <div class="scenario-card-desc">Modal with stepper (Step 1 active). Reason dropdown (required), detail textarea (optional), ETA date picker (optional, shows past-date validation error).</div>
+        <div class="scenario-card-tags"><span class="tag modal">Modal</span></div>
+      </div>
+    </a>
+    <a class="scenario-card" href="candidate-scenario-9.html">
+      <div class="scenario-card-thumb"><img src="candidate-scenario-9.png" alt="Scenario 9"></div>
+      <div class="scenario-card-body">
+        <div class="scenario-card-number">Scenario 9</div>
+        <div class="scenario-card-title">Exit Flow — Step 2: Alternate Docs</div>
+        <div class="scenario-card-desc">Modal Step 2 — lists alternate documents the candidate can upload instead. One document already uploaded. "Submit" button at the bottom.</div>
+        <div class="scenario-card-tags"><span class="tag modal">Modal</span></div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<!-- ══════════════ Review & Submit ══════════════ -->
+<div class="section-group">
+  <h2>Review &amp; Submit</h2>
+  <p class="section-desc">The final step where the candidate reviews all sections before submitting. All sections are shown as summary cards with uploaded documents, statuses, and edit links. The "Submit Background Verification Form" button is at the bottom.</p>
+  <div class="scenario-grid">
+    <a class="scenario-card" href="candidate-scenario-12-review.html">
+      <div class="scenario-card-thumb"><img src="candidate-scenario-12.png" alt="Scenario 12"></div>
+      <div class="scenario-card-body">
+        <div class="scenario-card-number">Scenario 12</div>
+        <div class="scenario-card-title">Review &amp; Submit — All Complete</div>
+        <div class="scenario-card-desc">All sections completed. Summary cards for Identity, Education, Address, Employment. One employment has a missing mandatory doc warning. Submit button enabled.</div>
+        <div class="scenario-card-tags"><span class="tag final">Final step</span></div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<!-- ══════════════ Shared Patterns ══════════════ -->
+<div class="patterns-section">
+  <h2>Shared UI Patterns (Engineering Reference)</h2>
+  <div class="patterns-grid">
+    <div class="pattern-card">
+      <h4>Sidebar Navigation</h4>
+      <p>Left sidebar (332px) with "Yet to complete" and "Completed" sections. Active item has <code>bg: #f5f7ff</code> + left border <code>#1e40af</code>. Progress bar (140px wide, <code>#eef2ff</code> track, <code>#0f973d</code> fill). Status dots: grey circle = incomplete, green check = complete.</p>
+    </div>
+    <div class="pattern-card">
+      <h4>Upload Zone</h4>
+      <p>Dashed border <code>rgba(8,40,204,0.4)</code>, 16px radius, 140px height. Contains DigiLocker button (231×44, <code>#6334fa</code> border) + "or" divider + upload icon with "Click to upload" link. Used in Identity, Address, and Education (when doc upload is configured).</p>
+    </div>
+    <div class="pattern-card">
+      <h4>Proceed Button</h4>
+      <p>Always INSIDE the sub-section card, right-aligned at the bottom of <code>.subsection-content</code>. 168×44px, <code>#0828cc</code>, 8px radius. Disabled state: <code>opacity: 0.4</code>. Enabled when all required uploads for that sub-section are complete.</p>
+    </div>
+    <div class="pattern-card">
+      <h4>Exit Flow Modal</h4>
+      <p>Triggered by "I don't have this document" / "I don't have preferred documents" links. 2-step modal: Step 1 = Reasoning (dropdown + textarea + date). Step 2 = Alternate documents list. See Scenarios 8 and 9.</p>
+    </div>
+    <div class="pattern-card">
+      <h4>Mandatory Documents Group</h4>
+      <p>Red-bordered group (<code>#fca5a5</code>) listing all required docs with status pills (Pending / Uploaded). Turns green (<code>#86efac</code>) when all are uploaded. Count badge in header. See Scenarios 3 and 4.</p>
+    </div>
+    <div class="pattern-card">
+      <h4>Section Title Card</h4>
+      <p>Top card in content area. 72px min-height, <code>#d9d9d9</code> border, 12px radius. Title (24px, 600 weight) + inline status dots. Dots match sidebar: grey circle = incomplete sub-section, green check = complete.</p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

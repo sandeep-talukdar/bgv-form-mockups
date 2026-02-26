@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>BGV Revamp Form — Scenario 9: Exit Flow — Step 2 (Mobile)</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Poppins', sans-serif; background: #f5f5f7; color: #1a1a2e; width: 390px; margin: 0 auto; }
+
+  .banner { background: #fef9c3; border: 1px solid #f59e0b; padding: 8px 16px; font-size: 11px; font-weight: 600; color: #92400e; text-align: center; line-height: 1.4; }
+
+  .topnav { background: #fff; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e5e7eb; }
+  .topnav-left { display: flex; align-items: center; gap: 8px; }
+  .company-logo { width: 32px; height: 32px; background: #1e293b; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 12px; flex-shrink: 0; }
+  .topnav .title { font-size: 12px; font-weight: 600; }
+  .topnav .subtitle { font-size: 9px; color: #6b7280; }
+  .sv-icon { width: 18px; height: 18px; background: #4f46e5; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #fff; font-size: 8px; font-weight: 700; }
+
+  /* ── Bottom sheet modal (mobile) ── */
+  .sheet-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 200;
+    display: flex; align-items: flex-end; justify-content: center;
+  }
+  .sheet {
+    background: #fff; border-radius: 16px 16px 0 0; width: 390px;
+    max-height: 92vh; overflow-y: auto;
+    box-shadow: 0 -8px 30px rgba(0,0,0,.15);
+    animation: slideUp .25s ease-out;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  .sheet-handle {
+    width: 36px; height: 4px; background: #d1d5db; border-radius: 2px;
+    margin: 10px auto 0;
+  }
+  .sheet-hdr {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 16px; border-bottom: 1px solid #e5e7eb;
+  }
+  .sheet-hdr h3 { font-size: 14px; font-weight: 600; }
+  .sheet-x {
+    width: 24px; height: 24px; border-radius: 50%; border: none;
+    background: #f3f4f6; cursor: pointer; font-size: 14px; color: #6b7280;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .sheet-body { padding: 16px; }
+  .sheet-ftr {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 16px; border-top: 1px solid #e5e7eb;
+  }
+  .sheet-cancel { background: none; border: none; color: #6b7280; font-size: 12px; font-weight: 500; cursor: pointer; font-family: inherit; }
+  .sheet-primary {
+    background: #4f46e5; color: #fff; border: none; padding: 10px 20px;
+    border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit;
+  }
+
+  /* ── Stepper ── */
+  .stepper { display: flex; align-items: center; gap: 6px; margin-bottom: 14px; }
+  .step { display: flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; color: #9ca3af; }
+  .step.active { color: #4f46e5; }
+  .step .step-n {
+    width: 18px; height: 18px; border-radius: 50%; background: #e5e7eb;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 700; color: #6b7280;
+  }
+  .step.active .step-n { background: #4f46e5; color: #fff; }
+  .step.done .step-n { background: #22c55e; color: #fff; }
+  .step-line { flex: 1; height: 1px; border-top: 2px dashed #d1d5db; }
+
+  /* ── Note box ── */
+  .note-box {
+    background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 6px;
+    padding: 10px 12px; font-size: 11px; color: #4338ca; line-height: 1.4; margin-bottom: 14px;
+  }
+  .note-box strong { font-weight: 600; }
+
+  /* ── Uploaded file ── */
+  .uploaded-file {
+    display: flex; align-items: center; gap: 10px; padding: 8px 10px;
+    background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; margin-bottom: 6px;
+  }
+  .uploaded-file .uf-thumb {
+    width: 36px; height: 36px; background: #eef2ff; border-radius: 5px;
+    display: flex; align-items: center; justify-content: center; font-size: 15px; color: #6366f1;
+  }
+  .uploaded-file .uf-info { flex: 1; }
+  .uploaded-file .uf-name { font-size: 11px; font-weight: 500; }
+  .uploaded-file .uf-meta { font-size: 9px; color: #9ca3af; }
+  .uploaded-file .uf-check { color: #22c55e; font-size: 14px; font-weight: 700; }
+
+  /* ── Alt doc item ── */
+  .alt-doc-item {
+    padding: 8px 10px; background: #f9fafb; border: 1px solid #e5e7eb;
+    border-radius: 6px; margin-bottom: 6px; display: flex; align-items: center;
+    gap: 8px; font-size: 11px; color: #6b7280;
+  }
+  .alt-doc-item .alt-upload {
+    margin-left: auto; color: #4f46e5; font-size: 10px; font-weight: 500; cursor: pointer;
+  }
+
+  .page-footer { background: #1e293b; padding: 12px 16px; text-align: center; font-size: 9px; color: #94a3b8; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; }
+
+  .sc-desc { background: #f0f4ff; border: 1px solid #e5e7eb; padding: 8px 16px; font-size: 11px; color: #4338ca; line-height: 1.4; }
+  .sc-desc strong { font-weight: 600; }
+  .eng-note { margin: 10px 16px; background: #f9fafb; border-left: 3px solid #d1d5db; border-radius: 4px; padding: 8px 12px; font-size: 10px; color: #6b7280; line-height: 1.5; }
+  .eng-note strong { color: #374151; font-weight: 600; }
+
+</style>
+</head>
+<body>
+
+<div class="banner">PROPOSED DESIGN — Candidate BGV Revamp Form: Mandatory Document Enforcement (Scenario 9: Exit Flow — Step 2) (Mobile)</div>
+
+<div class="sc-desc">
+  <strong>State:</strong> Step 2 of exit flow. Candidate can upload alternate (non-preferred) documents. The list of acceptable alternate docs comes from the BGV Form Config (all collected docs minus the preferred one). Candidate can upload one or more and confirm.
+</div>
+<div class="eng-note">
+  <strong>Engineering note:</strong> "Alternate documents" = all collected docs for that check type EXCEPT the hero/preferred doc. Show them as a checklist with upload areas. Candidate uploads at least one. On "Confirm" close bottom sheet, mark the preferred doc as "skipped with reason", proceed to next step. The mandatory doc requirement is waived for the preferred doc when the exit flow is completed — but NOT for other mandatory docs (e.g. Relieving Letter still required).
+</div>
+
+<div class="topnav">
+  <div class="topnav-left">
+    <div class="company-logo">J</div>
+    <div><div class="title">Jaguar</div><div class="subtitle">Background verification</div></div>
+  </div>
+  <div><span class="sv-icon">S</span></div>
+</div>
+
+<!-- Bottom sheet overlay -->
+<div class="sheet-overlay">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-hdr"><h3>Preferred documents not available</h3><button class="sheet-x">&times;</button></div>
+    <div class="sheet-body">
+      <div class="stepper">
+        <div class="step done"><div class="step-n">&#x2713;</div>Reasoning</div>
+        <div class="step-line"></div>
+        <div class="step active"><div class="step-n">2</div>Alternate docs</div>
+      </div>
+      <div class="note-box"><strong>Upload at least one alternate document</strong> to proceed with verification.</div>
+
+      <div style="margin-bottom:12px;">
+        <div style="font-size:11px; font-weight:600; margin-bottom:8px; color:#374151;">Acceptable alternate documents:</div>
+
+        <div class="uploaded-file">
+          <div class="uf-thumb">&#x1F4C4;</div>
+          <div class="uf-info"><div class="uf-name">Relieving_Letter.pdf</div><div class="uf-meta">128 KB &middot; Uploaded</div></div>
+          <div class="uf-check">&#x2713;</div>
+        </div>
+
+        <div class="alt-doc-item">
+          <span>&#x1F4C4;</span> Offer Letter <span class="alt-upload">Upload</span>
+        </div>
+        <div class="alt-doc-item">
+          <span>&#x1F4C4;</span> Appointment Letter <span class="alt-upload">Upload</span>
+        </div>
+        <div class="alt-doc-item">
+          <span>&#x1F4C4;</span> Payslips <span class="alt-upload">Upload</span>
+        </div>
+        <div class="alt-doc-item">
+          <span>&#x1F4C4;</span> Form 16 <span class="alt-upload">Upload</span>
+        </div>
+      </div>
+    </div>
+    <div class="sheet-ftr"><button class="sheet-cancel">Back</button><button class="sheet-primary">Confirm</button></div>
+  </div>
+</div>
+
+<div class="page-footer">
+  <span>&copy;2025, Springrole India Private Limited | All rights reserved.</span>
+  <span>Privacy Policy</span><span>Compliance</span>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>BGV Revamp Form — Scenario 6: Identity (Mobile)</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Poppins', sans-serif; background: #f5f5f7; color: #1a1a2e; width: 390px; margin: 0 auto; }
+
+  .banner { background: #fef9c3; border: 1px solid #f59e0b; padding: 8px 16px; font-size: 11px; font-weight: 600; color: #92400e; text-align: center; line-height: 1.4; }
+
+  .topnav { background: #fff; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e5e7eb; }
+  .topnav-left { display: flex; align-items: center; gap: 8px; }
+  .company-logo { width: 32px; height: 32px; background: #1e293b; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 12px; flex-shrink: 0; }
+  .topnav .title { font-size: 12px; font-weight: 600; }
+  .topnav .subtitle { font-size: 9px; color: #6b7280; }
+  .sv-icon { width: 18px; height: 18px; background: #4f46e5; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #fff; font-size: 8px; font-weight: 700; }
+
+  .progress-bar { background: #fff; padding: 10px 16px; display: flex; gap: 6px; overflow-x: auto; border-bottom: 1px solid #e5e7eb; -webkit-overflow-scrolling: touch; }
+  .progress-bar::-webkit-scrollbar { display: none; }
+  .progress-pill { display: flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 16px; font-size: 10px; font-weight: 500; color: #6b7280; background: #f3f4f6; white-space: nowrap; flex-shrink: 0; }
+  .progress-pill.active { background: #eef2ff; color: #4f46e5; font-weight: 600; }
+  .progress-pill.done { background: #d1fae5; color: #065f46; }
+  .progress-pill .pill-icon { font-size: 10px; }
+
+  .content { padding: 16px 16px 100px; }
+
+  .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 16px; margin-bottom: 14px; }
+  .card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .card-header h2 { font-size: 16px; font-weight: 600; }
+  .card-dots { display: flex; gap: 3px; }
+  .card-dot { width: 7px; height: 7px; border-radius: 50%; background: #e5e7eb; }
+
+  .subsection { border: 1px dashed #d1d5db; border-radius: 8px; padding: 14px; margin-top: 12px; }
+  .sub-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .sub-header h3 { font-size: 14px; font-weight: 600; }
+
+  .mand-badge { display: inline-flex; align-items: center; gap: 3px; background: #fef2f2; color: #dc2626; font-size: 9px; font-weight: 600; padding: 2px 8px; border-radius: 10px; border: 1px solid #fecaca; margin-left: 4px; }
+  .optional-badge { display: inline-flex; background: #f3f4f6; color: #6b7280; font-size: 9px; font-weight: 500; padding: 2px 8px; border-radius: 10px; margin-left: 4px; }
+
+  .upload-box { border: 2px dashed #d1d5db; border-radius: 8px; padding: 14px; text-align: center; background: #fafbfc; cursor: pointer; margin-bottom: 6px; }
+  .upload-box .up-icon { font-size: 20px; color: #9ca3af; margin-bottom: 4px; }
+  .upload-box .up-text { font-size: 12px; color: #6b7280; }
+  .upload-box .up-text a { color: #4f46e5; font-weight: 600; text-decoration: none; }
+  .upload-box .up-sub { font-size: 10px; color: #b0b5bf; margin-top: 2px; }
+
+  .no-doc-link { font-size: 11px; color: #4f46e5; cursor: pointer; display: inline-block; margin-top: 4px; }
+
+  .bottom-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 390px; background: #fff; border-top: 1px solid #e5e7eb; padding: 12px 16px; z-index: 100; }
+  .bottom-bar button { width: 100%; background: #c7d2fe; color: #fff; border: none; padding: 12px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: not-allowed; font-family: inherit; }
+  .bottom-bar button.enabled { background: #4f46e5; cursor: pointer; }
+
+  .page-footer { background: #1e293b; padding: 12px 16px; text-align: center; font-size: 9px; color: #94a3b8; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; }
+
+  .sc-desc { background: #f0f4ff; border: 1px solid #e5e7eb; padding: 8px 16px; font-size: 11px; color: #4338ca; line-height: 1.4; }
+  .sc-desc strong { font-weight: 600; }
+  .eng-note { margin: 10px 16px; background: #f9fafb; border-left: 3px solid #d1d5db; border-radius: 4px; padding: 8px 12px; font-size: 10px; color: #6b7280; line-height: 1.5; }
+  .eng-note strong { color: #374151; font-weight: 600; }
+
+</style>
+</head>
+<body>
+
+<div class="banner">PROPOSED DESIGN — Candidate BGV Revamp Form: Mandatory Document Enforcement (Scenario 6: Identity) (Mobile)</div>
+
+<div class="sc-desc">
+  <strong>State:</strong> Identity section. Each identity type (PAN, Aadhaar, etc.) is a separate upload section. If a type is marked mandatory in BGV Form Config, it shows the "Mandatory" badge. The hero doc (PAN in this config) is shown first.
+</div>
+<div class="eng-note">
+  <strong>Engineering note:</strong> Identity works differently from Employment/Education — each document type is its own section (not a hierarchy). The config controls: (1) which types appear (collected), (2) which are mandatory (must upload), (3) the order (hero is first). If a type is mandatory, its section shows the "Mandatory" badge and the "I don't have this document" link triggers the exit flow.
+</div>
+
+<div class="topnav">
+  <div class="topnav-left">
+    <div class="company-logo">J</div>
+    <div><div class="title">Jaguar</div><div class="subtitle">Background verification</div></div>
+  </div>
+  <div><span class="sv-icon">S</span></div>
+</div>
+
+<div class="progress-bar">
+  <div class="progress-pill active"><span class="pill-icon">&#x1F4C7;</span> Identity</div>
+  <div class="progress-pill"><span class="pill-icon">&#x1F393;</span> Education</div>
+  <div class="progress-pill"><span class="pill-icon">&#x1F4CD;</span> Address</div>
+  <div class="progress-pill"><span class="pill-icon">&#x1F4BC;</span> Employment</div>
+  <div class="progress-pill done"><span class="pill-icon">&#x1F464;</span> Basic details</div>
+</div>
+
+<div class="content">
+  <div class="card">
+    <div class="card-header"><h2>Identity</h2><div class="card-dots"><div class="card-dot"></div><div class="card-dot"></div></div></div>
+
+    <!-- PAN (hero, mandatory) -->
+    <div class="subsection">
+      <div class="sub-header"><h3>PAN</h3><span class="mand-badge">Mandatory</span></div>
+      <div class="upload-box">
+        <div class="up-icon">&#x2B06;</div>
+        <div class="up-text"><a>Click to upload</a> or drag and drop</div>
+        <div class="up-sub">Once you upload our AI will fill the form for you.</div>
+      </div>
+      <a class="no-doc-link">I don't have this document</a>
+    </div>
+
+    <!-- Aadhaar (optional) -->
+    <div class="subsection">
+      <div class="sub-header"><h3>Aadhaar</h3><span class="optional-badge">Optional</span></div>
+      <div class="upload-box">
+        <div class="up-icon">&#x2B06;</div>
+        <div class="up-text"><a>Click to upload</a> or drag and drop</div>
+      </div>
+      <a class="no-doc-link">I don't have this document</a>
+    </div>
+
+    <!-- Driving License (optional, collapsed) -->
+    <div class="subsection" style="opacity:.6;">
+      <div class="sub-header" style="margin-bottom:0;"><h3>Driving License</h3><span class="optional-badge">Optional</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="bottom-bar">
+  <button>Proceed</button>
+</div>
+
+<div class="page-footer">
+  <span>&copy;2025, Springrole India Private Limited | All rights reserved.</span>
+  <span>Privacy Policy</span><span>Compliance</span>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BGV Revamp Form — Mandatory Document Enforcement (All States)</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Poppins', sans-serif; background: #f5f5f7; color: #1a1a2e; }
+
+  .banner {
+    background: #fef9c3; border: 1px solid #f59e0b; padding: 10px 20px;
+    font-size: 13px; font-weight: 600; color: #92400e; text-align: center;
+  }
+
+  /* ── Top nav (matches Figma revamp) ── */
+  .topnav {
+    background: #fff; padding: 14px 40px; display: flex; align-items: center;
+    justify-content: space-between; border-bottom: 1px solid #e5e7eb;
+  }
+  .topnav-left { display: flex; align-items: center; gap: 12px; }
+  .company-logo {
+    width: 40px; height: 40px; background: #1e293b; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 700; font-size: 14px;
+  }
+  .topnav .title { font-size: 15px; font-weight: 600; }
+  .topnav .subtitle { font-size: 11px; color: #6b7280; }
+  .sv-powered { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #9ca3af; }
+  .sv-icon { width: 22px; height: 22px; background: #4f46e5; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #fff; font-size: 10px; font-weight: 700; }
+  .review-submit-btn {
+    background: #4f46e5; color: #fff; border: none; padding: 10px 22px;
+    border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit;
+  }
+
+  /* ── Main layout ── */
+  .main { display: flex; max-width: 1160px; margin: 0 auto; padding: 0 32px; min-height: calc(100vh - 130px); }
+
+  /* ── Sidebar ── */
+  .sidebar { width: 220px; padding: 24px 0 24px 0; flex-shrink: 0; border-right: 1px solid #f3f4f6; }
+  .sb-label { font-size: 10px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: .6px; padding: 0 12px; margin-bottom: 8px; margin-top: 20px; }
+  .sb-label:first-child { margin-top: 0; }
+  .sb-item {
+    display: flex; align-items: center; gap: 10px; padding: 9px 12px;
+    border-radius: 8px; cursor: pointer; font-size: 13px; color: #6b7280;
+    margin-bottom: 1px; border-left: 3px solid transparent;
+  }
+  .sb-item:hover { background: #f9fafb; }
+  .sb-item.active { background: #eef2ff; color: #4f46e5; font-weight: 600; border-left-color: #4f46e5; }
+  .sb-item .sb-icon { width: 22px; text-align: center; font-size: 14px; }
+  .sb-item .sb-dots { margin-left: auto; display: flex; gap: 3px; }
+  .sb-dot { width: 7px; height: 7px; border-radius: 50%; background: #e5e7eb; }
+  .sb-dot.done { background: #22c55e; }
+  .sb-dot.warn { background: #f59e0b; }
+  .sb-progress { margin-left: auto; width: 50px; height: 3px; background: #e5e7eb; border-radius: 2px; overflow: hidden; }
+  .sb-progress .fill { height: 100%; background: #22c55e; border-radius: 2px; }
+  .sb-footer { margin-top: auto; padding: 24px 12px 0; font-size: 10px; color: #9ca3af; }
+
+  /* ── Content ── */
+  .content { flex: 1; padding: 24px 0 40px 32px; }
+
+  /* ── Section card ── */
+  .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+  .card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+  .card-header h2 { font-size: 20px; font-weight: 600; }
+  .card-dots { display: flex; gap: 4px; }
+  .card-dot { width: 9px; height: 9px; border-radius: 50%; background: #e5e7eb; }
+  .card-dot.done { background: #22c55e; }
+
+  /* ── Subsection ── */
+  .subsection { border: 1px dashed #d1d5db; border-radius: 10px; padding: 20px; margin-top: 16px; }
+  .subsection.completed-sub { border-color: #86efac; border-style: solid; background: #f0fdf4; }
+  .sub-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .sub-header h3 { font-size: 15px; font-weight: 600; }
+  .sub-skip { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #6b7280; cursor: pointer; }
+
+  /* ── Preferred / Mandatory labels ── */
+  .pref-label { font-size: 12px; color: #6b7280; margin-bottom: 8px; }
+  .pref-label strong { color: #374151; }
+  .mand-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: #fef2f2; color: #dc2626; font-size: 10px; font-weight: 600;
+    padding: 3px 10px; border-radius: 12px; border: 1px solid #fecaca;
+    margin-left: 6px;
+  }
+  .optional-badge {
+    display: inline-flex; background: #f3f4f6; color: #6b7280; font-size: 10px;
+    font-weight: 500; padding: 3px 10px; border-radius: 12px; margin-left: 6px;
+  }
+
+  /* ── Upload area ── */
+  .upload-box {
+    border: 2px dashed #d1d5db; border-radius: 10px; padding: 24px;
+    text-align: center; background: #fafbfc; cursor: pointer; transition: all .15s;
+    margin-bottom: 8px;
+  }
+  .upload-box:hover { border-color: #818cf8; background: #f5f3ff; }
+  .upload-box .up-icon { font-size: 24px; color: #9ca3af; margin-bottom: 6px; }
+  .upload-box .up-text { font-size: 13px; color: #6b7280; }
+  .upload-box .up-text a { color: #4f46e5; font-weight: 600; text-decoration: none; cursor: pointer; }
+  .upload-box .up-sub { font-size: 11px; color: #b0b5bf; margin-top: 3px; }
+
+  /* ── Uploaded file ── */
+  .uploaded-file {
+    display: flex; align-items: center; gap: 12px; padding: 10px 14px;
+    background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 6px;
+  }
+  .uploaded-file .uf-thumb {
+    width: 44px; height: 44px; background: #eef2ff; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center; font-size: 18px; color: #6366f1;
+  }
+  .uploaded-file .uf-info { flex: 1; }
+  .uploaded-file .uf-name { font-size: 12px; font-weight: 500; }
+  .uploaded-file .uf-meta { font-size: 10px; color: #9ca3af; }
+  .uploaded-file .uf-check { color: #22c55e; font-size: 16px; font-weight: 700; }
+
+  /* ── "I don't have" link ── */
+  .no-doc-link { font-size: 12px; color: #4f46e5; cursor: pointer; display: inline-block; margin-top: 6px; }
+  .no-doc-link:hover { text-decoration: underline; }
+
+  /* ── Mandatory docs group ── */
+  .mand-group {
+    background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px;
+    padding: 14px; margin-top: 14px;
+  }
+  .mand-group-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .mand-group-header h4 { font-size: 13px; font-weight: 600; color: #dc2626; }
+  .mand-group-header .mand-count {
+    font-size: 10px; background: #dc2626; color: #fff; padding: 1px 7px;
+    border-radius: 10px; font-weight: 700;
+  }
+  .mand-doc-item {
+    display: flex; align-items: center; gap: 10px; padding: 9px 12px;
+    background: #fff; border: 1px solid #fecaca; border-radius: 8px; margin-bottom: 6px;
+  }
+  .mand-doc-item:last-child { margin-bottom: 0; }
+  .mand-doc-item .md-icon { font-size: 14px; }
+  .mand-doc-item .md-label { flex: 1; font-size: 12px; font-weight: 500; }
+  .status-pill { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+  .status-pill.pending { background: #fef3c7; color: #92400e; }
+  .status-pill.uploaded { background: #d1fae5; color: #065f46; }
+
+  /* ── Completed mandatory group ── */
+  .mand-group.completed { background: #f0fdf4; border-color: #86efac; }
+  .mand-group.completed h4 { color: #16a34a; }
+
+  /* ── Optional docs ── */
+  .opt-group { margin-top: 14px; }
+  .opt-group h4 { font-size: 12px; font-weight: 600; color: #6b7280; margin-bottom: 8px; }
+  .opt-list { font-size: 12px; color: #9ca3af; line-height: 1.7; }
+
+  /* ── Proceed button ── */
+  .proceed-btn {
+    background: #4f46e5; color: #fff; border: none; padding: 10px 28px;
+    border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer;
+    font-family: inherit; float: right; margin-top: 14px;
+  }
+  .proceed-btn:disabled { background: #c7d2fe; cursor: not-allowed; }
+  .clearfix::after { content: ''; display: table; clear: both; }
+
+  /* ── Warning banner ── */
+  .warn-banner {
+    background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px;
+    padding: 10px 14px; font-size: 12px; color: #92400e; display: flex;
+    align-items: flex-start; gap: 8px; margin-top: 12px; line-height: 1.5;
+  }
+  .warn-banner .wb-icon { font-size: 14px; flex-shrink: 0; }
+
+  /* ── Success state ── */
+  .success-msg {
+    display: flex; align-items: center; gap: 8px; font-size: 12px;
+    color: #16a34a; font-weight: 500; margin-top: 8px;
+  }
+
+  /* ── Modal ── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5);
+    z-index: 200; align-items: center; justify-content: center;
+  }
+  .modal-overlay.visible { display: flex; }
+  .modal-box {
+    background: #fff; border-radius: 16px; width: 480px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.2); max-height: 90vh; overflow-y: auto;
+  }
+  .modal-hdr {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 24px; border-bottom: 1px solid #e5e7eb;
+  }
+  .modal-hdr h3 { font-size: 15px; font-weight: 600; }
+  .modal-x {
+    width: 26px; height: 26px; border-radius: 50%; border: none;
+    background: #f3f4f6; cursor: pointer; font-size: 15px; color: #6b7280;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .modal-body { padding: 20px 24px; }
+  .modal-ftr {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 24px; border-top: 1px solid #e5e7eb;
+  }
+  .modal-cancel { background: none; border: none; color: #6b7280; font-size: 13px; font-weight: 500; cursor: pointer; font-family: inherit; }
+  .modal-primary {
+    background: #4f46e5; color: #fff; border: none; padding: 9px 22px;
+    border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit;
+  }
+
+  /* ── Stepper ── */
+  .stepper { display: flex; align-items: center; gap: 8px; margin-bottom: 18px; }
+  .step { display: flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 500; color: #9ca3af; }
+  .step.active { color: #4f46e5; }
+  .step .step-n {
+    width: 20px; height: 20px; border-radius: 50%; background: #e5e7eb;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; color: #6b7280;
+  }
+  .step.active .step-n { background: #4f46e5; color: #fff; }
+  .step.done .step-n { background: #22c55e; color: #fff; }
+  .step-line { flex: 1; height: 1px; border-top: 2px dashed #d1d5db; }
+
+  /* ── Note box ── */
+  .note-box {
+    background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 8px;
+    padding: 12px 14px; font-size: 12px; color: #4338ca; line-height: 1.5; margin-bottom: 18px;
+  }
+  .note-box strong { font-weight: 600; }
+
+  /* ── Form ── */
+  .fg { margin-bottom: 14px; }
+  .fl { font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 5px; display: block; }
+  .fl .req { color: #dc2626; }
+  .fi, .fs, .ft {
+    width: 100%; padding: 9px 12px; border: 1px solid #d1d5db; border-radius: 8px;
+    font-size: 13px; font-family: inherit; background: #fff;
+  }
+  .ft { min-height: 70px; resize: vertical; }
+  .fhint { font-size: 10px; color: #9ca3af; margin-top: 3px; font-style: italic; }
+  .ferr { font-size: 11px; color: #dc2626; margin-top: 3px; }
+
+  /* ── Scenario tabs ── */
+  .sc-tabs {
+    display: flex; background: #fff; border: 1px solid #e5e7eb;
+    border-radius: 8px 8px 0 0; overflow-x: auto; max-width: 1160px;
+    margin: 0 auto; position: sticky; top: 0; z-index: 100;
+  }
+  .sc-tab {
+    padding: 10px 16px; font-size: 11px; font-weight: 500; color: #6b7280;
+    cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap;
+    text-align: center; flex: 1;
+  }
+  .sc-tab:hover { background: #f9fafb; }
+  .sc-tab.active { color: #4f46e5; border-bottom-color: #4f46e5; font-weight: 600; background: #eef2ff; }
+
+  .sc-desc {
+    max-width: 1160px; margin: 0 auto; background: #f0f4ff; border: 1px solid #e5e7eb;
+    border-top: none; padding: 10px 16px; font-size: 12px; color: #4338ca; line-height: 1.5;
+  }
+  .sc-desc strong { font-weight: 600; }
+
+  .scenario { display: none; }
+  .scenario.active { display: block; }
+
+  /* ── Annotation (design note for engineers) ── */
+  .eng-note {
+    max-width: 1160px; margin: 12px auto; background: #f9fafb;
+    border-left: 3px solid #d1d5db; border-radius: 4px; padding: 10px 14px;
+    font-size: 11px; color: #6b7280; line-height: 1.6;
+  }
+  .eng-note strong { color: #374151; font-weight: 600; }
+
+  /* ── Footer ── */
+  .page-footer {
+    background: #1e293b; padding: 14px 40px; text-align: center;
+    font-size: 10px; color: #94a3b8; display: flex; align-items: center;
+    justify-content: center; gap: 20px;
+  }
+
+  /* ── Acceptable docs expandable ── */
+  .accept-docs {
+    font-size: 12px; color: #6b7280; margin-bottom: 12px;
+    background: #f9fafb; border-radius: 8px; padding: 10px 14px;
+  }
+  .accept-docs strong { color: #374151; }
+  .accept-more { color: #4f46e5; cursor: pointer; font-weight: 500; }
+
+  /* ── Form field row ── */
+  .field-row { display: flex; gap: 16px; margin-bottom: 14px; }
+  .field-row .fg { flex: 1; margin-bottom: 0; }
+</style>
+</head>
+<body>
+
+<div class="banner">PROPOSED DESIGN — Candidate BGV Revamp Form: Mandatory Document Enforcement (Engineering Handoff)</div>
+
+<!-- Scenario tabs -->
+<div class="sc-tabs">
+  <div class="sc-tab active" onclick="showSc('s1')">1. Homepage</div>
+  <div class="sc-tab" onclick="showSc('s2')">2. Employment — Before Upload</div>
+  <div class="sc-tab" onclick="showSc('s3')">3. Employment — Hero Uploaded</div>
+  <div class="sc-tab" onclick="showSc('s4')">4. Employment — All Mandatory Done</div>
+  <div class="sc-tab" onclick="showSc('s5')">5. Education</div>
+  <div class="sc-tab" onclick="showSc('s6')">6. Identity</div>
+  <div class="sc-tab" onclick="showSc('s7')">7. Address</div>
+  <div class="sc-tab" onclick="showSc('s8')">8. Exit Flow — Step 1</div>
+  <div class="sc-tab" onclick="showSc('s9')">9. Exit Flow — Step 2</div>
+  <div class="sc-tab" onclick="showSc('s10')">10. Non-Preferred First</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SCENARIO 1: HOMEPAGE
+     ═══════════════════════════════════════════════════ -->
+<div class="scenario active" id="s1">
+  <div class="sc-desc">
+    <strong>State:</strong> Candidate lands on BGV form. Right panel shows "Required documents" per check type. <strong>Preferred</strong> = hero document (top of hierarchy, configured by super admin). <strong>Acceptable</strong> = all collected documents for that check. The homepage shows what the candidate needs upfront.
+  </div>
+  <div class="eng-note">
+    <strong>Engineering note:</strong> The "Preferred" and "Acceptable" labels are driven by the BGV Form Config API. For each check type: <code>preferred</code> = the hero document (position 0 in hierarchy, always mandatory). <code>acceptable</code> = all other collected documents. If no hero doc is configured (e.g. address), show "Acceptable" only. Identity shows all 5 document types that are collected.
+  </div>
+
+  <div class="topnav">
+    <div class="topnav-left">
+      <div class="company-logo">J</div>
+      <div><div class="title">Background verification for Jaguar</div><div class="subtitle">All questions in this form are based on <strong>Jaguar's verification policies.</strong></div></div>
+    </div>
+    <div class="sv-powered">Powered by <span class="sv-icon">S</span> <strong style="color:#374151;">SpringVerify</strong></div>
+  </div>
+
+  <div style="max-width:1060px; margin:0 auto; padding:40px 32px;">
+    <div style="display:flex; gap:48px;">
+      <div style="flex:1;">
+        <div style="background:linear-gradient(135deg,#eef2ff,#e0e7ff); border-radius:16px; padding:36px; text-align:center; margin-bottom:24px;">
+          <div style="font-size:48px;">&#x1F91D;</div>
+          <div style="font-size:14px; color:#4f46e5; font-weight:600; margin-top:8px;">SpringVerify</div>
+        </div>
+        <h2 style="font-size:22px; margin-bottom:10px;">Welcome to SpringVerify</h2>
+        <p style="font-size:13px; color:#374151; line-height:1.7; margin-bottom:16px;">
+          <strong>Jaguar</strong> trusts SpringVerify to verify your background. All questions in this form are based on <strong>Jaguar's verification policies.</strong>
+        </p>
+        <div style="font-size:13px; color:#374151; line-height:2;">
+          &#x2705; Ensure your documents are <strong>clear</strong> and <strong>legible</strong>.<br>
+          &#x2705; In case you don't have a document, save your progress and come back later.<br>
+          &#x2705; Review your information, and ensure it's <strong>complete</strong> and <strong>accurate</strong>.
+        </div>
+      </div>
+      <div style="width:400px;">
+        <h3 style="font-size:15px; font-weight:700; margin-bottom:4px;">Required documents:</h3>
+        <p style="font-size:11px; color:#9ca3af; margin-bottom:18px; line-height:1.5;">If you don't have a preferred document, don't worry. We will help you along the way. Just get started!</p>
+
+        <div style="margin-bottom:18px; display:flex; gap:10px;">
+          <div style="width:26px; height:26px; background:#eef2ff; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0;">&#x1F4C7;</div>
+          <div><div style="font-size:13px; font-weight:600;">Identity</div><div style="font-size:11px; color:#6b7280;">Acceptable: <strong>Aadhaar, PAN, Driving License, Voter ID, Passport</strong></div></div>
+        </div>
+        <div style="margin-bottom:18px; display:flex; gap:10px;">
+          <div style="width:26px; height:26px; background:#eef2ff; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0;">&#x1F4CD;</div>
+          <div><div style="font-size:13px; font-weight:600;">Proof of Address <span style="font-weight:400; color:#6b7280;">(Permanent)</span></div><div style="font-size:11px; color:#6b7280;">Acceptable: <strong>Aadhaar, Driving License, Voter ID</strong> <span style="color:#4f46e5; cursor:pointer;">+15 more</span></div></div>
+        </div>
+        <div style="margin-bottom:18px; display:flex; gap:10px;">
+          <div style="width:26px; height:26px; background:#eef2ff; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0;">&#x1F393;</div>
+          <div><div style="font-size:13px; font-weight:600;">Graduation</div><div style="font-size:11px; color:#6b7280;">Preferred: <strong>Degree Certificate</strong></div></div>
+        </div>
+        <div style="margin-bottom:18px; display:flex; gap:10px;">
+          <div style="width:26px; height:26px; background:#eef2ff; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0;">&#x1F393;</div>
+          <div><div style="font-size:13px; font-weight:600;">Post Graduation</div><div style="font-size:11px; color:#6b7280;">Preferred: <strong>Degree Certificate</strong></div></div>
+        </div>
+        <div style="margin-bottom:18px; display:flex; gap:10px;">
+          <div style="width:26px; height:26px; background:#eef2ff; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0;">&#x1F4BC;</div>
+          <div><div style="font-size:13px; font-weight:600;">Employment <span style="font-weight:400; color:#6b7280;">(latest)</span></div><div style="font-size:11px; color:#6b7280;">Preferred: <strong>Experience Letter</strong></div></div>
+        </div>
+        <div style="text-align:right; margin-top:20px;"><button class="review-submit-btn" style="background:#1e293b;">Get started</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SCENARIO 2: EMPLOYMENT — BEFORE UPLOAD
+     ═══════════════════════════════════════════════════ -->
+<div class="scenario" id="s2">
+  <div class="sc-desc">
+    <strong>State:</strong> Employment section, nothing uploaded yet. Hero doc (Experience Letter) shown with <strong>Preferred</strong> label + <strong>Mandatory</strong> badge. Below: grouped "Other mandatory documents" section listing Relieving Letter (also mandatory per config). Then optional docs. "Proceed" is disabled until all mandatory docs are uploaded.
+  </div>
+  <div class="eng-note">
+    <strong>Engineering note:</strong> Group documents into 3 tiers: (1) <strong>Hero/Preferred</strong> — always position 0, always mandatory, shown first with upload area. (2) <strong>Other mandatory</strong> — any non-hero docs marked mandatory in config, shown in the red grouped section after hero. (3) <strong>Optional</strong> — remaining collected docs, listed as text. "Proceed" button is disabled while any mandatory doc (including hero) has status = pending.
+  </div>
+
+  <div class="topnav">
+    <div class="topnav-left"><div class="company-logo">J</div><div><div class="title">Background verification for Jaguar</div><div class="subtitle">All questions in this form are based on <strong>Jaguar's verification policies.</strong></div></div></div>
+    <button class="review-submit-btn">Review & Submit</button>
+  </div>
+  <div class="main">
+    <div class="sidebar">
+      <div class="sb-label">Yet to complete</div>
+      <div class="sb-item"><div class="sb-icon">&#x1F4C7;</div>Identity<div class="sb-dots"><div class="sb-dot"></div><div class="sb-dot"></div></div></div>
+      <div class="sb-item"><div class="sb-icon">&#x1F393;</div>Education<div class="sb-dots"><div class="sb-dot"></div><div class="sb-dot"></div></div></div>
+      <div class="sb-item"><div class="sb-icon">&#x1F4CD;</div>Address<div class="sb-dots"><div class="sb-dot"></div><div class="sb-dot"></div><div class="sb-dot"></div></div></div>
+      <div class="sb-item active"><div class="sb-icon">&#x1F4BC;</div>Employment<div class="sb-dots"><div class="sb-dot"></div><div class="sb-dot"></div></div></div>
+      <div class="sb-label">Completed</div>
+      <div class="sb-item"><div class="sb-icon">&#x1F464;</div>Basic details<div class="sb-progress"><div class="fill" style="width:100%;"></div></div></div>
+    </div>
+    <div class="content">
+      <div class="card">
+        <div class="card-header"><h2>Employment</h2><div class="card-dots"><div class="card-dot"></div><div class="card-dot"></div></div></div>
+        <label class="sub-skip" style="margin-top:8px;"><input type="checkbox" style="accent-color:#4f46e5;"> I am a fresher</label>
+
+        <div class="subsection">
+          <div class="sub-header"><h3>Employment 1 <span style="color:#9ca3af; font-weight:400;">(latest)</span></h3></div>
+          <div class="fg"><label class="fl">Employment type<span class="req">*</span></label><select class="fs"><option>Full time</option></select></div>
+
+          <!-- Hero doc -->
+          <div style="margin-bottom:4px;">
+            <span class="pref-label"><strong>Preferred:</strong> Experience Letter</span>
+            <span class="mand-badge">Mandatory</span>
+          </div>
+          <div class="upload-box">
+            <div class="up-icon">&#x2B06;</div>
+            <div class="up-text"><a>Click to upload</a> or drag and drop</div>
+            <div class="up-sub">Once you upload our AI will fill the form for you.</div>
+          </div>
+          <a class="no-doc-link" onclick="document.getElementById('exitModal').classList.add('visible')">I don't have preferred documents</a>
+
+          <!-- Other mandatory docs -->
+          <div class="mand-group">
+            <div class="mand-group-header"><h4>&#x26A0;&#xFE0F; Other mandatory documents</h4><span class="mand-count">1</span></div>
+            <div class="mand-doc-item">
+              <div class="md-icon">&#x1F4C4;</div>
+              <div class="md-label">Relieving Letter</div>
+              <span class="status-pill pending">Pending</span>
+            </div>
+          </div>
+
+          <!-- Optional docs -->
+          <div class="opt-group">
+            <h4>Optional documents</h4>
+            <div class="opt-list">Offer Letter, Appointment Letter, Payslips, Resignation Acceptance Letter, Full and Final Settlement, Form 16, Form 26AS, Bank Statement</div>
+          </div>
+
+          <div class="clearfix"><button class="proceed-btn" disabled>Proceed</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SCENARIO 3: EMPLOYMENT — HERO DOC UPLOADED
+     ═══════════════════════════════════════════════════ -->
+<div class="scenario" id="s3">
+  <div class="sc-desc">
+    <strong>State:</strong> Candidate uploaded Experience Letter (hero doc). It appears as an uploaded file. Relieving Letter is still pending. "Proceed" remains disabled.
+  </div>
+  <div class="eng-note">
+    <strong>Engineering note:</strong> After hero upload, the upload area is replaced by the uploaded file preview. The "Other mandatory documents" section updates its item status from "Pending" to "Uploaded" as each doc is uploaded. Each mandatory doc item should have its own upload area (click to expand / inline upload). "Proceed" enables only when ALL mandatory docs show "Uploaded" status.
+  </div>
+
+  <div class="topnav">
+    <div class="topnav-left"><div class="company-logo">J</div><div><div class="title">Background verification for Jaguar</div><div class="subtitle">All questions in this form are based on <strong>Jaguar's verification policies.</strong></div></div></div>
+    <button class="review-submit-btn">Review & Submit</button>
+  </div>
+  <div class="main">
+    <div class="sidebar">
+      <div class="sb-label">Yet to complete</div>
+      <div class="sb-item"><div class="sb-icon">&#x1F4C7;</div>Identity<div class="sb-dots"><div class="sb-dot"></div><div class="sb-dot"></div></div></div>
+      <div class="sb-item"><div class="sb-icon">&#x1F393;</div>Education<div class="sb-dots"><div class="sb-dot"></div><div class="sb-dot"></div></div></div>
+      <div class="sb-item"><div class="sb-icon">&#x1F4CD;</div>Address<div class="sb-dots"><div class="sb-dot"></div><div class="sb-dot"></div><div class="sb-dot"></div></div></div>
+      <div class="sb-item active"><div class="sb-icon">&#x1F4BC;</div>Employment<div class="sb-dots"><div class="sb-dot done"></div><div class="sb-dot"></div></div></div>
+      <div class="sb-label">Completed</div>
+      <div class="sb-item"><div class="sb-icon">&#x1F464;</div>Basic details<div class="sb-progress"><div class="fill" style="width:100%;"></div></div></div>
+    </div>
+    <div class="content">
+      <div class="card">
+        <div class="card-header"><h2>Employment</h2><div class="card-dots"><div class="card-dot done"></div><div class="card-dot"></div></div></div>
+        <div class="subsection">
+          <div class="sub-header"><h3>Employment 1 <span style="color:#9ca3af; font-weight:400;">(latest)</span></h3></div>
+          <div class="fg"><label class="fl">Employment type<span class="req">*</span></label><select class="fs"><option>Full time</option></select></div>
+
+          <!-- Hero doc: UPLOADED -->
+          <div style="margin-bottom:4px;">
+            <span class="pref-label"><strong>Preferred:</strong> Experience Letter</span>
+            <span class="mand-badge">Mandatory</span>
+          </div>
+          <div class="uploaded-file">
+            <div class="uf-thumb">&#x1F4C4;</div>
+            <div class="uf-info"><div class="uf-name">Experience_Letter_Jaguar.pdf</div><div class="uf-meta">245 KB &middot; Uploaded just now</div></div>
+            <div class="uf-check">&#x2713;</div>
+          </div>
+          <div class="success-msg">&#x2705; Preferred document uploaded</div>
+
+          <!-- Other mandatory: still pending -->
+          <div class="mand-group">
+            <div class="mand-group-header"><h4>&#x26A0;&#xFE0F; Other mandatory documents</h4><span class="mand-count">1</span></div>
+            <div class="mand-doc-item">
+              <div class="md-icon">&#x1F4C4;</div>
+              <div class="md-label">Relieving Letter</div>
+              <span class="status-pill pending">Pending</span>
+            </div>
+            <div class="upload-box" style="margin-top:8px; padding:16px;">
+              <div class="up-text"><a>Click to upload</a> Relieving Letter</div>
+            </div>
+          </div>
+
+          <div class="opt-group">
+            <h4>Optional documents</h4>
+            <div class="opt-list">Offer Letter, Appointment Letter, Payslips, Resignation Acceptance Letter, Full and Final Settlement, Form 16, Form 26AS, Bank Statement</div>
+          </div>
+
+          <div class="clearfix"><button class="proceed-btn" disabled>Proceed</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SCENARIO 4: ALL MANDATORY DOCS UPLOADED
+     ═══════════════════════════════════════════════════ -->
+<div class="scenario" id="s4">
+  <div class="sc-desc">
+    <strong>State:</strong> All mandatory documents uploaded (Experience Letter + Relieving Letter). Mandatory group turns green. "Proceed" button is now enabled.
+  </div>
+  <div class="topnav">
+    <div class="topnav-left"><div class="company-logo">J</div><div><div class="title">Background verification for Jaguar</div><div class="subtitle">All questions in this form are based on <strong>Jaguar's verification policies.</strong></div></div></div>
+    <button class="review-submit-btn">Review & Submit</button>
+  </div>
+  <div class="main">
+    <div class="sidebar">
+      <div class="sb-label">Yet to complete</div>
+      <div class="sb-item"><div class="sb-icon">&#x1F4C7;</div>Identity<div class="sb-dots"><div class="sb-dot"></div><div class="sb-dot"></div></div></div>
+      <div class="sb-item active"><div class="sb-icon">&#x1F4BC;</div>Employment<div class="sb-dots"><div class="sb-dot done"></div><div class="sb-dot"></div></div></div>
+      <div class="sb-label">Completed</div>
+      <div class="sb-item"><div class="sb-icon">&#x1F464;</div>Basic details<div class="sb-progress"><div class="fill" style="width:100%;"></div></div></div>
+    </div>
+    <div class="content">
+      <div class="card">
+        <div class="card-header"><h2>Employment</h2><div class="card-dots"><div class="card-dot done"></div><div class="card-dot"></div></div></div>
+        <div class="subsection">
+          <div class="sub-header"><h3>Employment 1 <span style="color:#9ca3af; font-weight:400;">(latest)</span></h3></div>
+          <div class="fg"><label class="fl">Employment type<span class="req">*</span></label><select class="fs"><option>Full time</option></select></div>
+
+          <!-- Hero: uploaded -->
+          <div style="margin-bottom:4px;"><span class="pref-label"><strong>Preferred:</strong> Experience Letter</span><span class="mand-badge">Mandatory</span></div>
+          <div class="uploaded-file">
+            <div class="uf-thumb">&#x1F4C4;</div>
+            <div class="uf-info"><div class="uf-name">Experience_Letter_Jaguar.pdf</div><div class="uf-meta">245 KB</div></div>
+            <div class="uf-check">&#x2713;</div>
+          </div>
+
+          <!-- All mandatory done -->
+          <div class="mand-group completed">
+            <div class="mand-group-header"><h4>&#x2705; All mandatory documents uploaded</h4></div>
+            <div class="mand-doc-item" style="border-color:#86efac;">
+              <div class="md-icon">&#x1F4C4;</div>
+              <div class="md-label">Relieving Letter</div>
+              <span class="status-pill uploaded">Uploaded</span>
+            </div>
+          </div>
+
+          <div class="opt-group">
+            <h4>Optional documents</h4>
+            <div class="opt-list">Offer Letter, Appointment Letter, Payslips, Resignation Acceptance Letter, Full and Final Settlement, Form 16, Form 26AS, Bank Statement</div>
+          </div>
+
+          <div class="clearfix"><button class="proceed-btn">Proceed</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SCENARIO 5: EDUCATION
+     ═══════════════════════════════════════════════════ -->
+<div class="scenario" id="s5">
+  <div class="sc-desc">
+    <strong>State:</strong> Education section. For each education level (Post-graduation, Graduation, etc.), the hero doc from Category A (Degree Certificate) is shown as preferred + mandatory. The upload flow is identical to employment.
+  </div>
+  <div class="eng-note">
+    <strong>Engineering note:</strong> Education checks use the same mandatory doc pattern as employment. The hero document comes from Category A (completion documents). The "Preferred" label shows the hero doc name. If the super admin also marked other Category A docs as mandatory (e.g. Consolidated Marksheet), they appear in the "Other mandatory documents" group.
+  </div>
+  <div class="topnav">
+    <div class="topnav-left"><div class="company-logo">J</div><div><div class="title">Background verification for Jaguar</div><div class="subtitle">All questions in this form are based on <strong>Jaguar's verification policies.</strong></div></div></div>
+    <button class="review-submit-btn">Review & Submit</button>
+  </div>
+  <div class="main">
+    <div class="sidebar">
+      <div class="sb-label">Yet to complete</div>
+      <div class="sb-item active"><div class="sb-icon">&#x1F393;</div>Education<div class="sb-dots"><div class="sb-dot"></div><div class="sb-dot"></div><div class="sb-dot"></div><div class="sb-dot"></div></div></div>
+      <div class="sb-item"><div class="sb-icon">&#x1F4CD;</div>Address<div class="sb-dots"><div class="sb-dot"></div><div class="sb-dot"></div><div class="sb-dot"></div></div></div>
+      <div class="sb-item"><div class="sb-icon">&#x1F4BC;</div>Employment<div class="sb-dots"><div class="sb-dot"></div><div class="sb-dot"></div></div></div>
+      <div class="sb-label">Completed</div>
+      <div class="sb-item"><div class="sb-icon">&#x1F464;</div>Basic details<div class="sb-progress"><div class="fill" style="width:100%;"></div></div></div>
+      <div class="sb-item"><div class="sb-icon">&#x1F4C7;</div>Identity<div class="sb-progress"><div class="fill" style="width:100%;"></div></div></div>
+    </div>
+    <div class="content">
+      <div class="card">
+        <div class="card-header"><h2>Education</h2><div class="card-dots"><div class="card-dot"></div><div class="card-dot"></div><div class="card-dot"></div><div class="card-dot"></div></div></div>
+
+        <!-- Post-graduation -->
+        <div class="subsection">
+          <div class="sub-header"><h3>Post-graduation</h3></div>
+          <div class="field-row">
+            <div class="fg"><label class="fl">University name<span class="req">*</span></label><select class="fs"><option>Dr. Ambedkar Institute of Technology</option></select></div>
+            <div class="fg"><label class="fl">Passing year<span class="req">*</span></label><select class="fs"><option>2020</option></select></div>
+          </div>
+          <div style="margin-bottom:4px;"><span class="pref-label"><strong>Preferred:</strong> Degree Certificate</span><span class="mand-badge">Mandatory</span></div>
+          <div class="upload-box" style="padding:18px;">
+            <div class="up-icon">&#x2B06;</div>
+            <div class="up-text"><a>Click to upload</a> or drag and drop</div>
+            <div class="up-sub">Once you upload our AI will fill the form for you.</div>
+          </div>
+          <a class="no-doc-link" onclick="document.getElementById('exitModal').classList.add('visible')">I don't have preferred documents</a>
+          <div class="clearfix"><button class="proceed-btn" disabled>Proceed</button></div>
+        </div>
+
+        <!-- Graduation -->
+        <div class="subsection">
+          <div class="sub-header"><h3>Graduation</h3><label class="sub-skip"><input type="checkbox" style="accent-color:#4f46e5;"> I don't have this education</label></div>
+          <div class="field-row">
+            <div class="fg"><label class="fl">University name<span class="req">*</span></label><select class="fs"><option>Select University name</option></select></div>
+            <div class="fg"><label class="fl">Passing year<span class="req">*</span></label><select class="fs"><option>Select your passing year</option></select></div>
+          </div>
+          <div style="margin-bottom:4px;"><span class="pref-label"><strong>Preferred:</strong> Degree Certificate</span><span class="mand-badge">Mandatory</span></div>
+          <div class="upload-box" style="padding:18px;">
+            <div class="up-icon">&#x2B06;</div>
+            <div class="up-text"><a>Click to upload</a> or drag and drop</div>
+          </div>
+          <a class="no-doc-link" onclick="document.getElementById('exitModal').classList.add('visible')">I don't have preferred documents</a>
+          <div class="clearfix"><button class="proceed-btn" disabled>Proceed</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SCENARIO 6: IDENTITY
+     ═══════════════════════════════════════════════════ -->
+<div class="scenario" id="s6">
+  <div class="sc-desc">
+    <strong>State:</strong> Identity section. Each identity type (PAN, Aadhaar, etc.) is a separate upload section. If a type is marked mandatory in BGV Form Config, it shows the "Mandatory" badge. The hero doc (PAN in this config) is shown first. If PAN is mandatory, candidate must upload it.
+  </div>
+  <div class="eng-note">
+    <strong>Engineering note:</strong> Identity works differently from Employment/Education — each document type is its own section (not a hierarchy). The config controls: (1) which types appear (collected), (2) which are mandatory (must upload), (3) the order (hero is first). If a type is mandatory, its section shows the "Mandatory" badge and the "I don't have this document" link triggers the exit flow.
+  </div>
+  <div class="topnav">
+    <div class="topnav-left"><div class="company-logo">J</div><div><div class="title">Background verification for Jaguar</div><div class="subtitle">All questions in this form are based on <strong>Jaguar's verification policies.</strong></div></div></div>
+    <button class="review-submit-btn">Review & Submit</button>
+  </div>
+  <div class="main">
+    <div class="sidebar">
+      <div class="sb-label">Yet to complete</div>
+      <div class="sb-item active"><div class="sb-icon">&#x1F4C7;</div>Identity<div class="sb-dots"><div class="sb-dot"></div><div class="sb-dot"></div></div></div>
+      <div class="sb-item"><div class="sb-icon">&#x1F393;</div>Education<div class="sb-dots"><div class="sb-dot"></div><div class="sb-dot"></div></div></div>
+      <div class="sb-item"><div class="sb-icon">&#x1F4CD;</div>Address<div class="sb-dots"><div class="sb-dot"></div><div class="sb-dot"></div><div class="sb-dot"></div></div></div>
+      <div class="sb-item"><div class="sb-icon">&#x1F4BC;</div>Employment<div class="sb-dots"><div class="sb-dot"></div><div class="sb-dot"></div></div></div>
+      <div class="sb-label">Completed</div>
+      <div class="sb-item"><div class="sb-icon">&#x1F464;</div>Basic details<div class="sb-progress"><div class="fill" style="width:100%;"></div></div></div>
+    </div>
+    <div class="content">
+      <div class="card">
+        <div class="card-header"><h2>Identity</h2><div class="card-dots"><div class="card-dot"></div><div class="card-dot"></div></div></div>
+
+        <!-- PAN (hero, mandatory) -->
+        <div class="subsection">
+          <div class="sub-header"><h3>PAN</h3><span class="mand-badge">Mandatory</span></div>
+          <div class="upload-box" style="padding:18px;">
+            <div class="up-icon">&#x2B06;</div>
+            <div class="up-text"><a>Click to upload</a> or drag and drop</div>
+            <div class="up-sub">Once you upload our AI will fill the form for you.</div>
+          </div>
+          <a class="no-doc-link" onclick="document.getElementById('exitModal').classList.add('visible')">I don't have this document</a>
+          <div class="clearfix"><button class="proceed-btn" disabled>Proceed</button></div>
+        </div>
+
+        <!-- Aadhaar (not mandatory) -->
+        <div class="subsection">
+          <div class="sub-header"><h3>Aadhaar</h3><span class="optional-badge">Optional</span></div>
+          <div class="upload-box" style="padding:18px;">
+            <div class="up-icon">&#x2B06;</div>
+            <div class="up-text"><a>Click to upload</a> or drag and drop</div>
+          </div>
+          <a class="no-doc-link">I don't have this document</a>
+          <div class="clearfix"><button class="proceed-btn">Proceed</button></div>
+        </div>
+
+        <!-- Driving License (not mandatory, collapsed) -->
+        <div class="subsection" style="opacity:.6;">
+          <div class="sub-header"><h3>Driving License</h3><span class="optional-badge">Optional</span></div>
+        </div>
+
+        <!-- Voter ID (not collected — hidden) -->
+        <!-- This doc type is not shown because it was unchecked in BGV Form Config -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SCENARIO 7: ADDRESS
+     ═══════════════════════════════════════════════════ -->
+<div class="scenario" id="s7">
+  <div class="sc-desc">
+    <strong>State:</strong> Address section. Shows acceptable documents list from config. No hero doc concept for address (all docs equally weighted). If any address doc is mandatory per config, it's called out. "I don't have preferred documents" link available.
+  </div>
+  <div class="eng-note">
+    <strong>Engineering note:</strong> Address check has no hierarchy/hero concept — all collected documents are shown in the "Acceptable" list. If the super admin marks any address document as mandatory (e.g. Aadhaar front and back), it appears with a "Mandatory" badge. The candidate must upload at least the mandatory doc(s). If no docs are mandatory, any acceptable doc suffices.
+  </div>
+  <div class="topnav">
+    <div class="topnav-left"><div class="company-logo">J</div><div><div class="title">Background verification for Jaguar</div><div class="subtitle">All questions in this form are based on <strong>Jaguar's verification policies.</strong></div></div></div>
+    <button class="review-submit-btn">Review & Submit</button>
+  </div>
+  <div class="main">
+    <div class="sidebar">
+      <div class="sb-label">Yet to complete</div>
+      <div class="sb-item active"><div class="sb-icon">&#x1F4CD;</div>Address<div class="sb-dots"><div class="sb-dot"></div><div class="sb-dot"></div><div class="sb-dot"></div></div></div>
+      <div class="sb-item"><div class="sb-icon">&#x1F4BC;</div>Employment<div class="sb-dots"><div class="sb-dot"></div><div class="sb-dot"></div></div></div>
+      <div class="sb-label">Completed</div>
+      <div class="sb-item"><div class="sb-icon">&#x1F464;</div>Basic details<div class="sb-progress"><div class="fill" style="width:100%;"></div></div></div>
+      <div class="sb-item"><div class="sb-icon">&#x1F4C7;</div>Identity<div class="sb-progress"><div class="fill" style="width:100%;"></div></div></div>
+      <div class="sb-item"><div class="sb-icon">&#x1F393;</div>Education<div class="sb-progress"><div class="fill" style="width:100%;"></div></div></div>
+    </div>
+    <div class="content">
+      <div class="card">
+        <div class="card-header"><h2>Address</h2><div class="card-dots"><div class="card-dot"></div><div class="card-dot"></div><div class="card-dot"></div></div></div>
+
+        <!-- Permanent address -->
+        <div class="subsection">
+          <div class="sub-header"><h3>Permanent address</h3></div>
+          <div class="warn-banner">
+            <div class="wb-icon">&#x1F4E2;</div>
+            <div>This address will be verified digitally. You or a family member will receive a web link with instructions that you need to follow while present at this address.</div>
+          </div>
+          <div class="accept-docs" style="margin-top:12px;">
+            <strong>Acceptable documents:</strong> Aadhaar (front and back), Driving License (front and back), Voter ID (front and back), Passport (front and back) <span class="accept-more">+13 more</span>
+          </div>
+          <div class="upload-box" style="padding:18px;">
+            <div class="up-icon">&#x2B06;</div>
+            <div class="up-text"><a>Click to upload</a> or drag and drop</div>
+            <div class="up-sub">Once you upload our AI will fill the form for you.</div>
+          </div>
+          <a class="no-doc-link" onclick="document.getElementById('exitModal').classList.add('visible')">I don't have preferred documents</a>
+          <div class="clearfix"><button class="proceed-btn" disabled>Proceed</button></div>
+        </div>
+
+        <!-- Current address -->
+        <div class="subsection" style="margin-top:16px;">
+          <div class="sub-header"><h3>Current address</h3><label class="sub-skip"><input type="checkbox" style="accent-color:#4f46e5;"> Current address is same as permanent address</label></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SCENARIO 8: EXIT FLOW — STEP 1 (REASONING)
+     ═══════════════════════════════════════════════════ -->
+<div class="scenario" id="s8">
+  <div class="sc-desc">
+    <strong>State:</strong> Candidate clicked "I don't have preferred documents." Modal appears — Step 1: Reasoning. Candidate selects why, provides detail, and gives an ETA. This is NOT a hard block — candidate can proceed after completing this.
+  </div>
+  <div class="eng-note">
+    <strong>Engineering note:</strong> This modal is from the existing BGV revamp Figma (frame 3518:38964). Fields: (1) "Why do you not have the documents?" — dropdown, required. Options: Lost the documents, Serving notice period, Company shut down, Documents never issued, Other. (2) "Explain the reason in detail" — free text, optional but encouraged. (3) "When can you expect the documents?" — date picker, optional. Validation: ETA cannot be in the past. Save all 3 fields to the candidate's check record. On "Next" → go to Step 2.
+  </div>
+  <div class="topnav">
+    <div class="topnav-left"><div class="company-logo">J</div><div><div class="title">Background verification for Jaguar</div><div class="subtitle">All questions in this form are based on <strong>Jaguar's verification policies.</strong></div></div></div>
+    <button class="review-submit-btn">Review & Submit</button>
+  </div>
+  <div style="display:flex; align-items:flex-start; justify-content:center; padding:40px 0 60px;">
+    <div class="modal-box" style="box-shadow:0 4px 24px rgba(0,0,0,.12);">
+      <div class="modal-hdr"><h3>Preferred documents not available</h3><button class="modal-x">&times;</button></div>
+      <div class="modal-body">
+        <div class="stepper">
+          <div class="step active"><div class="step-n">1</div>Reasoning</div>
+          <div class="step-line"></div>
+          <div class="step"><div class="step-n">2</div>Add alternate documents</div>
+        </div>
+        <div class="note-box"><strong>Note:</strong> the experience letter is most reliable for verification. You can proceed with alternate documents, but our team might reach out for more details, causing delays.</div>
+        <div class="fg"><label class="fl">Why do you not have the documents?<span class="req">*</span></label><select class="fs"><option>Lost the documents</option><option>Serving notice period</option><option>Company shut down</option><option>Documents never issued</option><option>Other</option></select></div>
+        <div class="fg"><label class="fl">Explain the reason in detail</label><div class="fhint">(A detailed reason helps us verify your background faster. Otherwise, we may have to reach out to you, causing delays.)</div><textarea class="ft" style="margin-top:4px;">I lost my experience letter when I moved to a new city. I have requested a duplicate from my previous employer.</textarea></div>
+        <div class="fg"><label class="fl">When can you expect the documents? &#x24D8;</label><input type="date" class="fi" value="2024-09-23"><div class="ferr">&#x26A0; ETA cannot be in past</div></div>
+      </div>
+      <div class="modal-ftr"><button class="modal-cancel">Cancel</button><button class="modal-primary">Next</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SCENARIO 9: EXIT FLOW — STEP 2 (ALTERNATE DOCS)
+     ═══════════════════════════════════════════════════ -->
+<div class="scenario" id="s9">
+  <div class="sc-desc">
+    <strong>State:</strong> Step 2 of exit flow. Candidate can upload alternate (non-preferred) documents. The list of acceptable alternate docs comes from the BGV Form Config (all collected docs minus the preferred one). Candidate can upload one or more and confirm.
+  </div>
+  <div class="eng-note">
+    <strong>Engineering note:</strong> "Alternate documents" = all collected docs for that check type EXCEPT the hero/preferred doc. Show them as a checklist with upload areas. Candidate uploads at least one. On "Confirm" → close modal, mark the preferred doc as "skipped with reason", proceed to next step. The mandatory doc requirement is waived for the preferred doc when the exit flow is completed — but NOT for other mandatory docs (e.g. Relieving Letter still required).
+  </div>
+  <div class="topnav">
+    <div class="topnav-left"><div class="company-logo">J</div><div><div class="title">Background verification for Jaguar</div><div class="subtitle">All questions in this form are based on <strong>Jaguar's verification policies.</strong></div></div></div>
+    <button class="review-submit-btn">Review & Submit</button>
+  </div>
+  <div style="display:flex; align-items:flex-start; justify-content:center; padding:40px 0 60px;">
+    <div class="modal-box" style="box-shadow:0 4px 24px rgba(0,0,0,.12);">
+      <div class="modal-hdr"><h3>Preferred documents not available</h3><button class="modal-x">&times;</button></div>
+      <div class="modal-body">
+        <div class="stepper">
+          <div class="step done"><div class="step-n">&#x2713;</div>Reasoning</div>
+          <div class="step-line"></div>
+          <div class="step active"><div class="step-n">2</div>Add alternate documents</div>
+        </div>
+        <div class="note-box"><strong>Upload at least one alternate document</strong> to proceed with verification.</div>
+
+        <div style="margin-bottom:14px;">
+          <div style="font-size:12px; font-weight:600; margin-bottom:8px; color:#374151;">Acceptable alternate documents:</div>
+
+          <div class="uploaded-file" style="margin-bottom:8px;">
+            <div class="uf-thumb">&#x1F4C4;</div>
+            <div class="uf-info"><div class="uf-name">Relieving_Letter.pdf</div><div class="uf-meta">128 KB &middot; Uploaded</div></div>
+            <div class="uf-check">&#x2713;</div>
+          </div>
+
+          <div style="padding:8px 12px; background:#f9fafb; border:1px solid #e5e7eb; border-radius:8px; margin-bottom:6px; display:flex; align-items:center; gap:10px; font-size:12px; color:#6b7280;">
+            <span>&#x1F4C4;</span> Offer Letter <a style="margin-left:auto; color:#4f46e5; font-size:11px; font-weight:500; cursor:pointer;">Upload</a>
+          </div>
+          <div style="padding:8px 12px; background:#f9fafb; border:1px solid #e5e7eb; border-radius:8px; margin-bottom:6px; display:flex; align-items:center; gap:10px; font-size:12px; color:#6b7280;">
+            <span>&#x1F4C4;</span> Appointment Letter <a style="margin-left:auto; color:#4f46e5; font-size:11px; font-weight:500; cursor:pointer;">Upload</a>
+          </div>
+          <div style="padding:8px 12px; background:#f9fafb; border:1px solid #e5e7eb; border-radius:8px; margin-bottom:6px; display:flex; align-items:center; gap:10px; font-size:12px; color:#6b7280;">
+            <span>&#x1F4C4;</span> Payslips <a style="margin-left:auto; color:#4f46e5; font-size:11px; font-weight:500; cursor:pointer;">Upload</a>
+          </div>
+          <div style="padding:8px 12px; background:#f9fafb; border:1px solid #e5e7eb; border-radius:8px; display:flex; align-items:center; gap:10px; font-size:12px; color:#6b7280;">
+            <span>&#x1F4C4;</span> Form 16 <a style="margin-left:auto; color:#4f46e5; font-size:11px; font-weight:500; cursor:pointer;">Upload</a>
+          </div>
+        </div>
+      </div>
+      <div class="modal-ftr"><button class="modal-cancel">Back</button><button class="modal-primary">Confirm</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SCENARIO 10: NON-PREFERRED DOC UPLOADED FIRST
+     ═══════════════════════════════════════════════════ -->
+<div class="scenario" id="s10">
+  <div class="sc-desc">
+    <strong>State:</strong> Candidate uploaded a non-preferred document (Offer Letter) instead of the preferred doc (Experience Letter). A warning appears: the preferred doc is still needed. Candidate can continue but is nudged to upload the preferred doc.
+  </div>
+  <div class="eng-note">
+    <strong>Engineering note:</strong> When a non-preferred doc is uploaded first (i.e. not the hero doc), show a warning banner below the upload area. The warning text should mention the preferred doc name. The "Proceed" button remains disabled if mandatory docs are still pending. If the preferred doc is mandatory and not uploaded, the candidate must either upload it or go through the exit flow.
+  </div>
+  <div class="topnav">
+    <div class="topnav-left"><div class="company-logo">J</div><div><div class="title">Background verification for Jaguar</div><div class="subtitle">All questions in this form are based on <strong>Jaguar's verification policies.</strong></div></div></div>
+    <button class="review-submit-btn">Review & Submit</button>
+  </div>
+  <div class="main">
+    <div class="sidebar">
+      <div class="sb-label">Yet to complete</div>
+      <div class="sb-item active"><div class="sb-icon">&#x1F4BC;</div>Employment<div class="sb-dots"><div class="sb-dot warn"></div><div class="sb-dot"></div></div></div>
+      <div class="sb-label">Completed</div>
+      <div class="sb-item"><div class="sb-icon">&#x1F464;</div>Basic details<div class="sb-progress"><div class="fill" style="width:100%;"></div></div></div>
+    </div>
+    <div class="content">
+      <div class="card">
+        <div class="card-header"><h2>Employment</h2><div class="card-dots"><div class="card-dot warn"></div><div class="card-dot"></div></div></div>
+        <div class="subsection">
+          <div class="sub-header"><h3>Employment 1 <span style="color:#9ca3af; font-weight:400;">(latest)</span></h3></div>
+          <div class="fg"><label class="fl">Employment type<span class="req">*</span></label><select class="fs"><option>Full time</option></select></div>
+
+          <!-- Non-preferred doc uploaded -->
+          <div class="uploaded-file">
+            <div class="uf-thumb">&#x1F4C4;</div>
+            <div class="uf-info"><div class="uf-name">Offer_Letter_Jaguar.pdf</div><div class="uf-meta">189 KB &middot; Uploaded</div></div>
+            <div class="uf-check">&#x2713;</div>
+          </div>
+
+          <!-- Warning: preferred doc still needed -->
+          <div class="warn-banner">
+            <div class="wb-icon">&#x26A0;&#xFE0F;</div>
+            <div>
+              <strong>Preferred document still needed.</strong> The Experience Letter is the most reliable document for employment verification. Please upload it for faster verification.
+              <br><a class="no-doc-link" style="margin-top:4px;" onclick="document.getElementById('exitModal').classList.add('visible')">I don't have this document</a>
+            </div>
+          </div>
+
+          <!-- Preferred doc upload still available -->
+          <div style="margin-top:12px; margin-bottom:4px;">
+            <span class="pref-label"><strong>Preferred:</strong> Experience Letter</span>
+            <span class="mand-badge">Mandatory</span>
+          </div>
+          <div class="upload-box" style="padding:16px;">
+            <div class="up-text"><a>Click to upload</a> Experience Letter</div>
+          </div>
+
+          <!-- Mandatory group -->
+          <div class="mand-group">
+            <div class="mand-group-header"><h4>&#x26A0;&#xFE0F; Other mandatory documents</h4><span class="mand-count">1</span></div>
+            <div class="mand-doc-item"><div class="md-icon">&#x1F4C4;</div><div class="md-label">Relieving Letter</div><span class="status-pill pending">Pending</span></div>
+          </div>
+
+          <div class="clearfix"><button class="proceed-btn" disabled>Proceed</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ Floating exit flow modal ══ -->
+<div class="modal-overlay" id="exitModal">
+  <div class="modal-box">
+    <div class="modal-hdr"><h3>Preferred documents not available</h3><button class="modal-x" onclick="document.getElementById('exitModal').classList.remove('visible')">&times;</button></div>
+    <div class="modal-body">
+      <div class="stepper"><div class="step active"><div class="step-n">1</div>Reasoning</div><div class="step-line"></div><div class="step"><div class="step-n">2</div>Add alternate documents</div></div>
+      <div class="note-box"><strong>Note:</strong> the preferred document is most reliable for verification. You can proceed with alternate documents, but our team might reach out for more details, causing delays.</div>
+      <div class="fg"><label class="fl">Why do you not have the documents?<span class="req">*</span></label><select class="fs"><option>Select a reason</option><option>Lost the documents</option><option>Serving notice period</option><option>Company shut down</option><option>Documents never issued</option><option>Other</option></select></div>
+      <div class="fg"><label class="fl">Explain the reason in detail</label><textarea class="ft" placeholder="Explain why you don't have this document..."></textarea></div>
+      <div class="fg"><label class="fl">When can you expect the documents? &#x24D8;</label><input type="date" class="fi"></div>
+    </div>
+    <div class="modal-ftr"><button class="modal-cancel" onclick="document.getElementById('exitModal').classList.remove('visible')">Cancel</button><button class="modal-primary">Next</button></div>
+  </div>
+</div>
+
+<div class="page-footer">
+  <span>&copy;2025, Springrole India Private Limited | All rights reserved.</span>
+  <span>Privacy Policy</span><span>Compliance</span>
+</div>
+
+<script>
+function showSc(id) {
+  document.querySelectorAll('.scenario').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.sc-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>

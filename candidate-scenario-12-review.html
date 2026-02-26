@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>BGV Revamp Form — Scenario 12: Review &amp; Submit</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Figtree', sans-serif; background: #f8f8f8; color: #101828; min-width: 1280px; }
+
+  /* ── PROPOSED DESIGN Banner ── */
+  .banner {
+    background: #fef9c3; border: 1px solid #f59e0b; padding: 10px 20px;
+    font-size: 13px; font-weight: 600; color: #92400e; text-align: center;
+  }
+
+  /* ── Header ── */
+  .header {
+    height: 80px; background: #fff;
+    box-shadow: 0px 1px 8px rgba(93, 92, 245, 0.1);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px; position: relative; z-index: 10;
+  }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .company-logo {
+    width: 56px; height: 56px; border-radius: 50%; background: #1e293b;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 700; font-size: 22px; flex-shrink: 0;
+  }
+  .company-name { font-size: 20px; font-weight: 600; color: #101828; }
+  .company-subtitle { font-size: 12px; font-weight: 500; color: #6a6a6a; margin-top: 2px; }
+  .company-subtitle strong { font-weight: 600; color: #101828; }
+  .header-right { display: flex; align-items: center; gap: 16px; }
+  /* Review & Submit button — ENABLED on review page */
+  .review-submit-btn {
+    background: #0828cc; color: #fff; border: none;
+    padding: 12px 44px; border-radius: 8px; font-size: 14px; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+  }
+
+  /* ── Main Layout ── */
+  .main-layout {
+    display: flex; max-width: 1280px; margin: 0 auto;
+    padding: 24px 40px; gap: 16px; min-height: calc(100vh - 80px - 36px);
+  }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    width: 332px; flex-shrink: 0; background: #fff;
+    border: 1px solid #e5e7eb; border-radius: 12px;
+    padding: 20px 0; display: flex; flex-direction: column;
+  }
+  .sb-section-label {
+    font-size: 14px; font-weight: 500; color: #101828;
+    text-transform: uppercase; padding: 0 20px; margin-bottom: 8px;
+    margin-top: 4px;
+  }
+  .sb-items { padding: 0; }
+  .sb-item {
+    display: flex; align-items: center; gap: 12px;
+    height: 60px; padding: 8px 16px; cursor: pointer;
+    border-left: 4px solid transparent; transition: all 0.15s;
+  }
+  .sb-item:hover { background: #fafafa; }
+  .sb-item.active {
+    background: #f5f7ff; border-left-color: #1e40af;
+  }
+  .sb-item.active .sb-item-label { font-weight: 600; color: #1e40af; }
+  .sb-item-icon {
+    width: 24px; height: 24px; display: flex; align-items: center;
+    justify-content: center; flex-shrink: 0;
+  }
+  .sb-item-label {
+    font-size: 16px; font-weight: 500; color: #101828;
+    width: 130px; flex-shrink: 0;
+  }
+  .sb-item-progress {
+    flex: 1; display: flex; align-items: center; justify-content: flex-end; gap: 6px;
+  }
+  .sb-progress-bar {
+    width: 140px; height: 6px; background: #eef2ff; border-radius: 3px;
+    overflow: hidden;
+  }
+  .sb-progress-bar .fill {
+    height: 100%; background: #0f973d; border-radius: 3px;
+  }
+  .sb-divider {
+    height: 1px; background: #e5e7eb; margin: 12px 20px;
+  }
+  .sb-footer {
+    margin-top: auto; padding: 20px 20px 8px; opacity: 0.8;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .sb-footer-powered {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 300; font-style: italic; color: #6b7280;
+  }
+  .sb-footer-powered .sv-logo {
+    width: 18px; height: 18px; background: #0828cc; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 9px; font-weight: 700;
+  }
+  .sb-footer-powered strong { font-weight: 600; font-style: normal; color: #101828; }
+  .sb-footer-secure {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 12px; font-weight: 400; color: #6b7280;
+  }
+
+  /* ── Content Area ── */
+  .content-area { flex: 1; display: flex; flex-direction: column; gap: 16px; }
+
+  /* ── Page title ── */
+  .page-title { margin-bottom: 4px; }
+  .page-title h2 { font-size: 24px; font-weight: 700; color: #101828; }
+  .page-title p { font-size: 14px; color: #6a6a6a; margin-top: 4px; }
+
+  /* ── Review summary card ── */
+  .review-card {
+    background: #fff; border: 1px solid #d9d9d9; border-radius: 12px;
+    overflow: hidden;
+  }
+  .review-card-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 24px; border-bottom: 1px solid #f3f4f6;
+    background: #f1f5fc; cursor: pointer;
+  }
+  .review-card-header-left { display: flex; align-items: center; gap: 12px; }
+  .review-card-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .review-card-icon.green { background: #f0fdf4; }
+  .review-card-icon.amber { background: #fffbeb; }
+  .review-card-title { font-size: 16px; font-weight: 600; color: #101828; }
+  .review-card-subtitle { font-size: 12px; color: #6a6a6a; margin-top: 2px; }
+  .review-card-header-right { display: flex; align-items: center; gap: 12px; }
+  .review-card-status {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 500;
+  }
+  .review-card-status.complete { color: #0f973d; }
+  .review-card-status.warning { color: #d97706; }
+  .edit-link {
+    font-size: 13px; font-weight: 600; color: #0828cc;
+    cursor: pointer; text-decoration: none; padding: 4px 8px;
+    border-radius: 6px;
+  }
+  .edit-link:hover { background: #eef2ff; }
+
+  /* ── Review card body ── */
+  .review-card-body { padding: 16px 24px 20px; }
+
+  /* ── Review detail row ── */
+  .review-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 0; border-bottom: 1px solid #f3f4f6;
+    font-size: 14px;
+  }
+  .review-row:last-child { border-bottom: none; }
+  .review-row-label { color: #6a6a6a; font-size: 13px; }
+  .review-row-value { font-weight: 500; font-size: 14px; color: #101828; }
+
+  /* ── Sub-section label (inside review card) ── */
+  .review-sub-label {
+    font-size: 14px; font-weight: 600; color: #101828;
+    padding-top: 12px; margin-bottom: 4px;
+  }
+  .review-sub-meta { font-size: 12px; color: #98a2b3; margin-bottom: 6px; }
+
+  /* ── Docs section divider ── */
+  .docs-divider {
+    font-size: 11px; font-weight: 600; color: #98a2b3;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    padding-top: 10px; margin-bottom: 6px;
+  }
+
+  /* ── Document status row ── */
+  .doc-status-row {
+    display: flex; align-items: center; gap: 12px; padding: 10px 14px;
+    background: #f9fafb; border-radius: 8px; margin-top: 6px; border: 1px solid #f3f4f6;
+  }
+  .doc-status-row.amber-row {
+    background: #fffbeb; border-color: #fde68a;
+  }
+  .doc-icon {
+    width: 32px; height: 32px; background: #eef2ff; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .doc-icon.amber-icon { background: #fef3c7; }
+  .doc-info { flex: 1; }
+  .doc-name { font-size: 13px; font-weight: 500; color: #101828; }
+  .doc-file { font-size: 11px; color: #98a2b3; margin-top: 2px; }
+  .doc-file.amber-file { color: #d97706; }
+  .doc-check { flex-shrink: 0; }
+
+  /* ── Badges ── */
+  .mand-badge {
+    display: inline-flex; align-items: center;
+    background: #fef2f2; color: #dc2626; font-size: 11px; font-weight: 600;
+    padding: 2px 8px; border-radius: 12px; border: 1px solid #fecaca;
+    margin-left: 6px;
+  }
+  .optional-badge {
+    display: inline-flex; background: #f3f4f6; color: #6a6a6a; font-size: 11px;
+    font-weight: 500; padding: 2px 8px; border-radius: 12px; margin-left: 6px;
+  }
+  .skipped-badge {
+    display: inline-flex; background: #fff7ed; color: #c2410c; font-size: 11px;
+    font-weight: 500; padding: 2px 8px; border-radius: 12px; border: 1px solid #fed7aa;
+    margin-left: 6px;
+  }
+
+  /* ── Amber reason info box ── */
+  .amber-reason-box {
+    background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px;
+    padding: 12px 14px; margin-top: 8px; font-size: 13px; color: #92400e; line-height: 1.6;
+  }
+  .amber-reason-header {
+    display: flex; align-items: center; gap: 6px;
+    font-weight: 600; margin-bottom: 8px; font-size: 13px;
+  }
+  .amber-reason-row { margin-bottom: 4px; }
+  .amber-reason-label { color: #78716c; font-weight: 500; }
+  .amber-reason-value { font-weight: 500; color: #92400e; }
+
+  /* ── Submit section ── */
+  .submit-section {
+    background: #fff; border: 1px solid #d9d9d9; border-radius: 12px;
+    padding: 24px;
+  }
+  .confirm-check-row {
+    display: flex; align-items: flex-start; gap: 12px; margin-bottom: 20px;
+  }
+  .confirm-check-row input[type="checkbox"] {
+    width: 18px; height: 18px; accent-color: #0828cc; margin-top: 2px;
+    flex-shrink: 0; cursor: pointer;
+  }
+  .confirm-check-row label {
+    font-size: 14px; color: #374151; line-height: 1.6; cursor: pointer;
+  }
+  .submit-btn {
+    background: #0828cc; color: #fff; border: none;
+    width: 100%; padding: 14px 28px; border-radius: 8px;
+    font-size: 16px; font-weight: 600; cursor: pointer; font-family: inherit;
+  }
+  .submit-note {
+    font-size: 12px; color: #98a2b3; text-align: center; margin-top: 10px;
+    font-style: italic;
+  }
+
+  /* ── Scenario notes ── */
+  .sc-desc {
+    max-width: 1280px; margin: 0 auto; background: #f0f4ff; border: 1px solid #e5e7eb;
+    padding: 10px 40px; font-size: 12px; color: #4338ca; line-height: 1.5;
+  }
+  .sc-desc strong { font-weight: 600; }
+  .eng-note {
+    max-width: 1280px; margin: 0 auto; background: #f9fafb;
+    border-left: 3px solid #d1d5db; border-radius: 4px; padding: 10px 40px;
+    font-size: 11px; color: #6b7280; line-height: 1.6;
+  }
+  .eng-note strong { color: #374151; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="banner">PROPOSED DESIGN — Candidate BGV Revamp Form: Review &amp; Submit (Scenario 12)</div>
+
+<div class="sc-desc">
+  <strong>State:</strong> Candidate has completed all sections and is on the final Review &amp; Submit page. All sidebar items show 100% green progress. The header "Review &amp; Submit" button is enabled (opacity 1). Summary cards show: Identity (PAN + Aadhaar uploaded), Education (Post-graduation, Graduation, Twelfth skipped, Tenth uploaded), Address (permanent uploaded, current same as permanent), Employment (Experience Letter uploaded, Relieving Letter — reason provided: "Serving notice period", ETA: 15 Mar 2026).
+</div>
+<div class="eng-note">
+  <strong>Engineering note:</strong> The Review &amp; Submit page aggregates all check sections. Each section renders as a summary card. For mandatory docs where the candidate provided a reason and ETA, show an amber info box (not red) — the form allows submission in this state but it is flagged for the verification team. The Submit button is always enabled on this page (all sections are complete). After submission, redirect to the existing success/thank-you page. "Edit" links navigate back to the respective check section.
+</div>
+
+<!-- ── Header ── -->
+<div class="header">
+  <div class="header-left">
+    <div class="company-logo">J</div>
+    <div class="company-info">
+      <div class="company-name">Background verification for Jaguar</div>
+      <div class="company-subtitle">All questions in this form are based on <strong>Jaguar's verification policies.</strong></div>
+    </div>
+  </div>
+  <div class="header-right">
+    <!-- ENABLED on review page -->
+    <button class="review-submit-btn">Review &amp; Submit</button>
+  </div>
+</div>
+
+<!-- ── Main Layout ── -->
+<div class="main-layout">
+
+  <!-- ── Sidebar — ALL completed ── -->
+  <div class="sidebar">
+    <div class="sb-section-label">Completed</div>
+    <div class="sb-items">
+
+      <!-- Basic Details -->
+      <div class="sb-item">
+        <div class="sb-item-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="8" r="4" fill="#101828" opacity="0.6"/>
+            <path d="M4 20c0-3.31 3.58-6 8-6s8 2.69 8 6" fill="#101828" opacity="0.4"/>
+          </svg>
+        </div>
+        <div class="sb-item-label">Basic details</div>
+        <div class="sb-item-progress">
+          <div class="sb-progress-bar"><div class="fill" style="width:100%;"></div></div>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#0f973d"/><path d="M5 8l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+
+      <!-- Identity -->
+      <div class="sb-item">
+        <div class="sb-item-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <rect x="2" y="4" width="20" height="16" rx="2" stroke="#101828" stroke-width="1.5"/>
+            <circle cx="9" cy="11" r="2.5" stroke="#101828" stroke-width="1.5"/>
+            <path d="M5 18c0-2 1.5-3 4-3s4 1 4 3" stroke="#101828" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="15" y1="9" x2="19" y2="9" stroke="#101828" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="15" y1="13" x2="19" y2="13" stroke="#101828" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="sb-item-label">Identity</div>
+        <div class="sb-item-progress">
+          <div class="sb-progress-bar"><div class="fill" style="width:100%;"></div></div>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#0f973d"/><path d="M5 8l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+
+      <!-- Education -->
+      <div class="sb-item">
+        <div class="sb-item-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z" fill="#101828" opacity="0.7"/>
+            <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" fill="#101828" opacity="0.5"/>
+          </svg>
+        </div>
+        <div class="sb-item-label">Education</div>
+        <div class="sb-item-progress">
+          <div class="sb-progress-bar"><div class="fill" style="width:100%;"></div></div>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#0f973d"/><path d="M5 8l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+
+      <!-- Address -->
+      <div class="sb-item">
+        <div class="sb-item-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#101828" opacity="0.6"/>
+            <circle cx="12" cy="9" r="2.5" fill="#fff"/>
+          </svg>
+        </div>
+        <div class="sb-item-label">Address</div>
+        <div class="sb-item-progress">
+          <div class="sb-progress-bar"><div class="fill" style="width:100%;"></div></div>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#0f973d"/><path d="M5 8l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+
+      <!-- Employment -->
+      <div class="sb-item">
+        <div class="sb-item-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M20 7H4c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2z" fill="#101828" opacity="0.5"/>
+            <path d="M16 7V5c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2" stroke="#101828" stroke-width="1.5"/>
+            <rect x="2" y="7" width="20" height="4" rx="1" fill="#101828" opacity="0.7"/>
+          </svg>
+        </div>
+        <div class="sb-item-label">Employment</div>
+        <div class="sb-item-progress">
+          <div class="sb-progress-bar"><div class="fill" style="width:100%;"></div></div>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#0f973d"/><path d="M5 8l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="sb-divider"></div>
+
+    <!-- Final step -->
+    <div class="sb-section-label" style="margin-top: 8px;">Final step</div>
+    <div class="sb-items">
+      <div class="sb-item active">
+        <div class="sb-item-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M9 12l2 2 4-4" stroke="#1e40af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="12" cy="12" r="9" stroke="#1e40af" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="sb-item-label">Review &amp; Submit</div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="sb-footer">
+      <div class="sb-footer-powered">
+        Powered by <span class="sv-logo">S</span> <strong>SpringVerify</strong>
+      </div>
+      <div class="sb-footer-secure">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L2 3v3c0 3.5 2.1 6.4 5 7.5 2.9-1.1 5-4 5-7.5V3L7 1z" stroke="#6b7280" stroke-width="1.2"/><path d="M5 7l1.5 1.5L9.5 5" stroke="#6b7280" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        100% Secure
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Content Area ── -->
+  <div class="content-area">
+
+    <!-- Page title -->
+    <div class="page-title">
+      <h2>Review &amp; Submit</h2>
+      <p>Please review all your details before submitting.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 1. IDENTITY -->
+    <!-- ============================================================ -->
+    <div class="review-card">
+      <div class="review-card-header">
+        <div class="review-card-header-left">
+          <div class="review-card-icon green">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <rect x="1" y="3" width="20" height="16" rx="2" stroke="#0f973d" stroke-width="1.5"/>
+              <circle cx="8" cy="10" r="2.5" stroke="#0f973d" stroke-width="1.5"/>
+              <path d="M4 17c0-2 1.5-3 4-3s4 1 4 3" stroke="#0f973d" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="14" y1="8" x2="18" y2="8" stroke="#0f973d" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="14" y1="12" x2="18" y2="12" stroke="#0f973d" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <div class="review-card-title">Identity</div>
+            <div class="review-card-subtitle">Identity documents</div>
+          </div>
+        </div>
+        <div class="review-card-header-right">
+          <div class="review-card-status complete">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="#0f973d"/><path d="M4.5 7l2 2 3.5-3.5" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Complete
+          </div>
+          <a class="edit-link">Edit</a>
+        </div>
+      </div>
+      <div class="review-card-body">
+        <div class="docs-divider">Documents</div>
+
+        <!-- PAN — uploaded -->
+        <div class="doc-status-row">
+          <div class="doc-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 2h7l4 4v9a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" fill="#c7d2fe" stroke="#6366f1" stroke-width="1"/>
+              <path d="M10 2v4h4" stroke="#6366f1" stroke-width="1" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="doc-info">
+            <div class="doc-name">PAN <span class="mand-badge">Mandatory</span></div>
+            <div class="doc-file">PAN_Card_Rahul.pdf &middot; 112 KB</div>
+          </div>
+          <div class="doc-check">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="#0f973d"/><path d="M6 10l2.5 2.5 5.5-5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+
+        <!-- Aadhaar — uploaded -->
+        <div class="doc-status-row">
+          <div class="doc-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 2h7l4 4v9a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" fill="#c7d2fe" stroke="#6366f1" stroke-width="1"/>
+              <path d="M10 2v4h4" stroke="#6366f1" stroke-width="1" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="doc-info">
+            <div class="doc-name">Aadhaar <span class="mand-badge">Mandatory</span></div>
+            <div class="doc-file">Aadhaar_Rahul.pdf &middot; 98 KB</div>
+          </div>
+          <div class="doc-check">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="#0f973d"/><path d="M6 10l2.5 2.5 5.5-5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 2. EDUCATION -->
+    <!-- ============================================================ -->
+    <div class="review-card">
+      <div class="review-card-header">
+        <div class="review-card-header-left">
+          <div class="review-card-icon green">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <path d="M11 2L1 8l10 5.5L20 8 11 2z" fill="#dcfce7" stroke="#0f973d" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M4 11.5v4L11 20l7-4.5v-4L11 15l-7-3.5z" fill="#86efac" stroke="#0f973d" stroke-width="1"/>
+            </svg>
+          </div>
+          <div>
+            <div class="review-card-title">Education</div>
+            <div class="review-card-subtitle">Academic qualifications and documents</div>
+          </div>
+        </div>
+        <div class="review-card-header-right">
+          <div class="review-card-status complete">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="#0f973d"/><path d="M4.5 7l2 2 3.5-3.5" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Complete
+          </div>
+          <a class="edit-link">Edit</a>
+        </div>
+      </div>
+      <div class="review-card-body">
+
+        <!-- Post-graduation -->
+        <div class="review-sub-label">Post-graduation — IIT Delhi</div>
+        <div class="docs-divider">Documents</div>
+        <div class="doc-status-row">
+          <div class="doc-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 2h7l4 4v9a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" fill="#c7d2fe" stroke="#6366f1" stroke-width="1"/><path d="M10 2v4h4" stroke="#6366f1" stroke-width="1" stroke-linecap="round"/></svg>
+          </div>
+          <div class="doc-info">
+            <div class="doc-name">Degree Certificate <span class="mand-badge">Mandatory</span></div>
+            <div class="doc-file">Degree_Certificate_IIT.pdf &middot; 320 KB</div>
+          </div>
+          <div class="doc-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="#0f973d"/><path d="M6 10l2.5 2.5 5.5-5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+
+        <!-- Graduation -->
+        <div class="review-sub-label" style="margin-top: 14px;">Graduation — Delhi University</div>
+        <div class="docs-divider">Documents</div>
+        <div class="doc-status-row">
+          <div class="doc-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 2h7l4 4v9a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" fill="#c7d2fe" stroke="#6366f1" stroke-width="1"/><path d="M10 2v4h4" stroke="#6366f1" stroke-width="1" stroke-linecap="round"/></svg>
+          </div>
+          <div class="doc-info">
+            <div class="doc-name">Degree Certificate <span class="mand-badge">Mandatory</span></div>
+            <div class="doc-file">Degree_Certificate_DU.pdf &middot; 280 KB</div>
+          </div>
+          <div class="doc-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="#0f973d"/><path d="M6 10l2.5 2.5 5.5-5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+
+        <!-- Twelfth — skipped -->
+        <div class="review-sub-label" style="margin-top: 14px;">Twelfth — CBSE</div>
+        <div class="docs-divider">Documents</div>
+        <div class="doc-status-row" style="background: #f9fafb; border-color: #f3f4f6;">
+          <div class="doc-icon" style="background: #f3f4f6;">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 2h7l4 4v9a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/><path d="M10 2v4h4" stroke="#d1d5db" stroke-width="1" stroke-linecap="round"/></svg>
+          </div>
+          <div class="doc-info">
+            <div class="doc-name">Marksheet <span class="skipped-badge">Skipped</span></div>
+            <div class="doc-file" style="color:#98a2b3;">Not uploaded — section skipped</div>
+          </div>
+          <span style="font-size: 13px; color: #98a2b3;">—</span>
+        </div>
+
+        <!-- Tenth — uploaded -->
+        <div class="review-sub-label" style="margin-top: 14px;">Tenth — CBSE</div>
+        <div class="docs-divider">Documents</div>
+        <div class="doc-status-row">
+          <div class="doc-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 2h7l4 4v9a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" fill="#c7d2fe" stroke="#6366f1" stroke-width="1"/><path d="M10 2v4h4" stroke="#6366f1" stroke-width="1" stroke-linecap="round"/></svg>
+          </div>
+          <div class="doc-info">
+            <div class="doc-name">Marksheet <span class="mand-badge">Mandatory</span></div>
+            <div class="doc-file">Marksheet_10th.pdf &middot; 145 KB</div>
+          </div>
+          <div class="doc-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="#0f973d"/><path d="M6 10l2.5 2.5 5.5-5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 3. ADDRESS -->
+    <!-- ============================================================ -->
+    <div class="review-card">
+      <div class="review-card-header">
+        <div class="review-card-header-left">
+          <div class="review-card-icon green">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <path d="M11 1C7.13 1 4 4.13 4 8c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#dcfce7" stroke="#0f973d" stroke-width="1.5"/>
+              <circle cx="11" cy="8" r="2.5" fill="#0f973d"/>
+            </svg>
+          </div>
+          <div>
+            <div class="review-card-title">Address</div>
+            <div class="review-card-subtitle">Address and proof documents</div>
+          </div>
+        </div>
+        <div class="review-card-header-right">
+          <div class="review-card-status complete">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="#0f973d"/><path d="M4.5 7l2 2 3.5-3.5" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Complete
+          </div>
+          <a class="edit-link">Edit</a>
+        </div>
+      </div>
+      <div class="review-card-body">
+        <div class="review-row">
+          <span class="review-row-label">Permanent address</span>
+          <span class="review-row-value">123 MG Road, Bangalore — 560001</span>
+        </div>
+        <div class="review-row">
+          <span class="review-row-label">Current address</span>
+          <span class="review-row-value" style="color: #0f973d; font-size: 13px;">Same as permanent address</span>
+        </div>
+        <div class="docs-divider">Documents</div>
+        <div class="doc-status-row">
+          <div class="doc-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 2h7l4 4v9a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" fill="#c7d2fe" stroke="#6366f1" stroke-width="1"/><path d="M10 2v4h4" stroke="#6366f1" stroke-width="1" stroke-linecap="round"/></svg>
+          </div>
+          <div class="doc-info">
+            <div class="doc-name">Address Proof <span class="mand-badge">Mandatory</span></div>
+            <div class="doc-file">Aadhaar_Address_Proof.pdf &middot; 156 KB</div>
+          </div>
+          <div class="doc-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="#0f973d"/><path d="M6 10l2.5 2.5 5.5-5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 4. EMPLOYMENT — Relieving Letter with reason + ETA -->
+    <!-- ============================================================ -->
+    <div class="review-card">
+      <div class="review-card-header">
+        <div class="review-card-header-left">
+          <div class="review-card-icon green">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <path d="M19 6H3c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z" fill="#dcfce7" stroke="#0f973d" stroke-width="1.5"/>
+              <path d="M15 6V4c0-1.1-.9-2-2-2H9c-1.1 0-2 .9-2 2v2" stroke="#0f973d" stroke-width="1.5"/>
+              <rect x="1" y="6" width="20" height="4" rx="1" fill="#0f973d" opacity="0.4"/>
+            </svg>
+          </div>
+          <div>
+            <div class="review-card-title">Employment</div>
+            <div class="review-card-subtitle">Work history and documents</div>
+          </div>
+        </div>
+        <div class="review-card-header-right">
+          <div class="review-card-status complete">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="#0f973d"/><path d="M4.5 7l2 2 3.5-3.5" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Complete
+          </div>
+          <a class="edit-link">Edit</a>
+        </div>
+      </div>
+      <div class="review-card-body">
+        <div class="review-sub-label">Employment 1 — Full time, Jaguar Pvt Ltd</div>
+        <div class="docs-divider">Documents</div>
+
+        <!-- Experience Letter — uploaded -->
+        <div class="doc-status-row">
+          <div class="doc-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 2h7l4 4v9a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" fill="#c7d2fe" stroke="#6366f1" stroke-width="1"/><path d="M10 2v4h4" stroke="#6366f1" stroke-width="1" stroke-linecap="round"/></svg>
+          </div>
+          <div class="doc-info">
+            <div class="doc-name">Experience Letter <span class="mand-badge">Mandatory</span></div>
+            <div class="doc-file">Experience_Letter_Jaguar.pdf &middot; 245 KB</div>
+          </div>
+          <div class="doc-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="#0f973d"/><path d="M6 10l2.5 2.5 5.5-5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+
+        <!-- Relieving Letter — not uploaded, reason provided -->
+        <div class="doc-status-row amber-row">
+          <div class="doc-icon amber-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 2h7l4 4v9a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" fill="#fef3c7" stroke="#fde68a" stroke-width="1"/><path d="M10 2v4h4" stroke="#fde68a" stroke-width="1" stroke-linecap="round"/></svg>
+          </div>
+          <div class="doc-info">
+            <div class="doc-name">Relieving Letter <span class="mand-badge">Mandatory</span></div>
+            <div class="doc-file amber-file">Not uploaded — reason provided</div>
+          </div>
+          <div>
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M9 1.5L1.5 15h15L9 1.5z" fill="#fde68a" stroke="#f59e0b" stroke-width="1.2" stroke-linejoin="round"/>
+              <path d="M9 7v3.5" stroke="#92400e" stroke-width="1.3" stroke-linecap="round"/>
+              <circle cx="9" cy="12" r="0.7" fill="#92400e"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Amber reason info box -->
+        <div class="amber-reason-box">
+          <div class="amber-reason-header">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M7 1L1 11.5h12L7 1z" fill="#fde68a" stroke="#f59e0b" stroke-width="1" stroke-linejoin="round"/>
+              <path d="M7 5.5v3" stroke="#92400e" stroke-width="1.2" stroke-linecap="round"/>
+              <circle cx="7" cy="10" r="0.6" fill="#92400e"/>
+            </svg>
+            Mandatory document not uploaded — reason and expected date provided
+          </div>
+          <div class="amber-reason-row">
+            <span class="amber-reason-label">Reason: </span>
+            <span class="amber-reason-value">Serving notice period. Employer will issue the letter after last working day.</span>
+          </div>
+          <div class="amber-reason-row">
+            <span class="amber-reason-label">Expected submission date: </span>
+            <span class="amber-reason-value">15 Mar 2026</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SUBMIT SECTION -->
+    <!-- ============================================================ -->
+    <div class="submit-section">
+      <div class="confirm-check-row">
+        <input type="checkbox" id="confirmCheck" checked>
+        <label for="confirmCheck">I confirm that all information provided is true and accurate to the best of my knowledge. I understand that providing false information may lead to disqualification.</label>
+      </div>
+      <button class="submit-btn">Submit Background Verification Form</button>
+      <div class="submit-note">You will not be able to edit your responses after submission.</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="eng-note">
+  <strong>Engineering note:</strong> All sections are complete. The Review &amp; Submit button in the header is always enabled on this page. The Submit button in the content area is also enabled once all sections are complete (checkbox serves as a final confirmation before submit). For the Relieving Letter, the amber box shows the reason and ETA provided by the candidate — this flags the document as pending for the verification team without blocking submission. "Edit" links navigate back to the relevant section.
+</div>
+
+</body>
+</html>

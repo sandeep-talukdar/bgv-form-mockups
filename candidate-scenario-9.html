@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>BGV Revamp Form — Scenario 9: Exit Flow — Step 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Figtree', sans-serif; background: #f8f8f8; color: #101828; min-width: 1280px; }
+
+  /* ── PROPOSED DESIGN Banner ── */
+  .banner {
+    background: #fef9c3; border: 1px solid #f59e0b; padding: 10px 20px;
+    font-size: 13px; font-weight: 600; color: #92400e; text-align: center;
+  }
+
+  /* ── Header ── */
+  .header {
+    height: 80px; background: #fff;
+    box-shadow: 0px 1px 8px rgba(93, 92, 245, 0.1);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px; position: relative; z-index: 10;
+  }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .company-logo {
+    width: 56px; height: 56px; border-radius: 50%; background: #1e293b;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 700; font-size: 22px; flex-shrink: 0;
+  }
+  .company-name { font-size: 20px; font-weight: 600; color: #101828; }
+  .company-subtitle { font-size: 12px; font-weight: 500; color: #6a6a6a; margin-top: 2px; }
+  .company-subtitle strong { font-weight: 600; color: #101828; }
+  .header-right { display: flex; align-items: center; gap: 16px; }
+  .review-submit-btn {
+    background: #0828cc; color: #fff; border: none;
+    padding: 12px 44px; border-radius: 8px; font-size: 14px; font-weight: 600;
+    cursor: pointer; font-family: inherit; opacity: 0.4;
+  }
+
+  /* ── Scenario notes ── */
+  .sc-desc {
+    max-width: 1280px; margin: 0 auto; background: #f0f4ff; border: 1px solid #e5e7eb;
+    padding: 10px 40px; font-size: 12px; color: #4338ca; line-height: 1.5;
+  }
+  .sc-desc strong { font-weight: 600; }
+  .eng-note {
+    max-width: 1280px; margin: 0 auto; background: #f9fafb;
+    border-left: 3px solid #d1d5db; border-radius: 4px; padding: 10px 40px;
+    font-size: 11px; color: #6b7280; line-height: 1.6;
+  }
+  .eng-note strong { color: #374151; font-weight: 600; }
+
+  /* ── Modal wrapper ── */
+  .modal-wrapper {
+    display: flex; align-items: flex-start; justify-content: center;
+    padding: 48px 40px 60px;
+  }
+
+  /* ── Modal box ── */
+  .modal-box {
+    background: #fff; border-radius: 16px; width: 520px;
+    box-shadow: 0 4px 32px rgba(0, 0, 0, 0.14); overflow: hidden;
+  }
+  .modal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px; border-bottom: 1px solid #e5e7eb;
+  }
+  .modal-header h3 { font-size: 16px; font-weight: 600; color: #101828; }
+  .modal-x {
+    width: 28px; height: 28px; border-radius: 50%; border: none;
+    background: #f3f4f6; cursor: pointer; font-size: 16px; color: #6a6a6a;
+    display: flex; align-items: center; justify-content: center; font-family: inherit;
+  }
+  .modal-body { padding: 24px 24px 20px; }
+  .modal-footer {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 16px 24px; border-top: 1px solid #e5e7eb;
+  }
+
+  /* ── Stepper ── */
+  .stepper {
+    display: flex; align-items: center; gap: 0; margin-bottom: 20px;
+  }
+  .step {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 500; color: #98a2b3;
+  }
+  .step.done { color: #0f973d; }
+  .step.active { color: #0828cc; font-weight: 600; }
+  .step-circle {
+    width: 24px; height: 24px; border-radius: 50%; background: #e5e7eb;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: #6a6a6a; flex-shrink: 0;
+  }
+  .step.done .step-circle {
+    background: #0f973d; color: #fff;
+  }
+  .step.active .step-circle {
+    background: #0828cc; color: #fff;
+  }
+  .step-connector {
+    flex: 1; height: 0; border-top: 1.5px dashed #d9d9d9; margin: 0 12px;
+  }
+
+  /* ── Note box ── */
+  .note-box {
+    background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 8px;
+    padding: 12px 16px; font-size: 13px; color: #3730a3; line-height: 1.5;
+    margin-bottom: 20px;
+  }
+  .note-box strong { font-weight: 600; }
+
+  /* ── Alternate doc list ── */
+  .alt-docs-label {
+    font-size: 13px; font-weight: 600; color: #101828; margin-bottom: 10px;
+  }
+
+  /* Uploaded file row */
+  .doc-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 14px; border-radius: 8px;
+    border: 1px solid #e5e7eb; margin-bottom: 6px;
+    font-size: 13px; color: #101828;
+  }
+  .doc-row.uploaded { background: #f9fafb; }
+  .doc-row.pending { background: #f9fafb; color: #6a6a6a; }
+  .doc-row-icon {
+    width: 32px; height: 32px; background: #eef2ff; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .doc-row-info { flex: 1; }
+  .doc-row-name { font-size: 13px; font-weight: 500; color: #101828; }
+  .doc-row-meta { font-size: 11px; color: #98a2b3; margin-top: 1px; }
+  .doc-row-check {
+    width: 20px; height: 20px; flex-shrink: 0;
+  }
+  .upload-link {
+    font-size: 12px; font-weight: 600; color: #0828cc;
+    text-decoration: none; cursor: pointer; margin-left: auto;
+  }
+
+  /* ── Modal buttons ── */
+  .btn-back {
+    background: none; border: 1px solid #d9d9d9; color: #6a6a6a;
+    padding: 10px 24px; border-radius: 8px; font-size: 14px; font-weight: 500;
+    cursor: pointer; font-family: inherit;
+  }
+  .btn-confirm {
+    background: #0828cc; color: #fff; border: none;
+    padding: 10px 28px; border-radius: 8px; font-size: 14px; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+  }
+</style>
+</head>
+<body>
+
+<div class="banner">PROPOSED DESIGN — Candidate BGV Revamp Form: Exit Flow — Step 2 (Scenario 9)</div>
+
+<div class="sc-desc">
+  <strong>State:</strong> Step 2 of the exit flow modal. Candidate confirmed they don't have the preferred document (Experience Letter) and now sees the alternate documents list. Relieving_Letter.pdf has already been uploaded (shown with green check). Four other alternate docs (Offer Letter, Appointment Letter, Payslips, Form 16) are pending with Upload links. Candidate must upload at least one alternate document to confirm.
+</div>
+<div class="eng-note">
+  <strong>Engineering note:</strong> "Alternate documents" = all collected docs for that check type EXCEPT the hero/preferred doc. Show them as a list with upload areas. On "Confirm" — close modal, mark the preferred doc as "skipped with reason", proceed. The mandatory doc requirement is waived for the preferred doc once the exit flow is completed — but NOT for other mandatory docs (e.g. Relieving Letter still required if it appears separately as a mandatory doc).
+</div>
+
+<!-- ── Header ── -->
+<div class="header">
+  <div class="header-left">
+    <div class="company-logo">J</div>
+    <div class="company-info">
+      <div class="company-name">Background verification for Jaguar</div>
+      <div class="company-subtitle">All questions in this form are based on <strong>Jaguar's verification policies.</strong></div>
+    </div>
+  </div>
+  <div class="header-right">
+    <button class="review-submit-btn" disabled>Review &amp; Submit</button>
+  </div>
+</div>
+
+<!-- ── Modal (centered on page, no sidebar) ── -->
+<div class="modal-wrapper">
+  <div class="modal-box">
+
+    <!-- Header -->
+    <div class="modal-header">
+      <h3>Preferred documents not available</h3>
+      <button class="modal-x">&times;</button>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body">
+
+      <!-- Stepper -->
+      <div class="stepper">
+        <div class="step done">
+          <div class="step-circle">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M2.5 6l2.5 2.5 4.5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          Reasoning
+        </div>
+        <div class="step-connector"></div>
+        <div class="step active">
+          <div class="step-circle">2</div>
+          Add alternate documents
+        </div>
+      </div>
+
+      <!-- Note box -->
+      <div class="note-box">
+        <strong>Upload at least one alternate document</strong> to proceed with verification.
+      </div>
+
+      <!-- Alternate docs list -->
+      <div class="alt-docs-label">Acceptable alternate documents:</div>
+
+      <!-- Relieving Letter — uploaded -->
+      <div class="doc-row uploaded">
+        <div class="doc-row-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 2h7l4 4v9a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" fill="#c7d2fe" stroke="#6366f1" stroke-width="1"/>
+            <path d="M10 2v4h4" stroke="#6366f1" stroke-width="1" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="doc-row-info">
+          <div class="doc-row-name">Relieving_Letter.pdf</div>
+          <div class="doc-row-meta">128 KB &middot; Uploaded</div>
+        </div>
+        <div class="doc-row-check">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="9" fill="#0f973d"/>
+            <path d="M6 10l2.5 2.5 5.5-5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Offer Letter — pending -->
+      <div class="doc-row pending">
+        <div class="doc-row-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 2h7l4 4v9a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+            <path d="M10 2v4h4" stroke="#d1d5db" stroke-width="1" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="doc-row-info">
+          <div class="doc-row-name" style="color:#6a6a6a;">Offer Letter</div>
+        </div>
+        <a class="upload-link">Upload</a>
+      </div>
+
+      <!-- Appointment Letter — pending -->
+      <div class="doc-row pending">
+        <div class="doc-row-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 2h7l4 4v9a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+            <path d="M10 2v4h4" stroke="#d1d5db" stroke-width="1" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="doc-row-info">
+          <div class="doc-row-name" style="color:#6a6a6a;">Appointment Letter</div>
+        </div>
+        <a class="upload-link">Upload</a>
+      </div>
+
+      <!-- Payslips — pending -->
+      <div class="doc-row pending">
+        <div class="doc-row-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 2h7l4 4v9a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+            <path d="M10 2v4h4" stroke="#d1d5db" stroke-width="1" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="doc-row-info">
+          <div class="doc-row-name" style="color:#6a6a6a;">Payslips</div>
+        </div>
+        <a class="upload-link">Upload</a>
+      </div>
+
+      <!-- Form 16 — pending -->
+      <div class="doc-row pending">
+        <div class="doc-row-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 2h7l4 4v9a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+            <path d="M10 2v4h4" stroke="#d1d5db" stroke-width="1" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="doc-row-info">
+          <div class="doc-row-name" style="color:#6a6a6a;">Form 16</div>
+        </div>
+        <a class="upload-link">Upload</a>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      <button class="btn-back">Back</button>
+      <button class="btn-confirm">Confirm</button>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>BGV Revamp Form — Scenario 11: Mandatory Document — Reason &amp; ETA</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Figtree', sans-serif; background: #f8f8f8; color: #101828; min-width: 1280px; }
+
+  /* ── PROPOSED DESIGN Banner ── */
+  .banner {
+    background: #fef9c3; border: 1px solid #f59e0b; padding: 10px 20px;
+    font-size: 13px; font-weight: 600; color: #92400e; text-align: center;
+  }
+
+  /* ── Header ── */
+  .header {
+    height: 80px; background: #fff;
+    box-shadow: 0px 1px 8px rgba(93, 92, 245, 0.1);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px; position: relative; z-index: 10;
+  }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .company-logo {
+    width: 56px; height: 56px; border-radius: 50%; background: #1e293b;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 700; font-size: 22px; flex-shrink: 0;
+  }
+  .company-name { font-size: 20px; font-weight: 600; color: #101828; }
+  .company-subtitle { font-size: 12px; font-weight: 500; color: #6a6a6a; margin-top: 2px; }
+  .company-subtitle strong { font-weight: 600; color: #101828; }
+  .header-right { display: flex; align-items: center; gap: 16px; }
+  .review-submit-btn {
+    background: #0828cc; color: #fff; border: none;
+    padding: 12px 44px; border-radius: 8px; font-size: 14px; font-weight: 600;
+    cursor: pointer; font-family: inherit; opacity: 0.4;
+  }
+
+  /* ── Main Layout ── */
+  .main-layout {
+    display: flex; max-width: 1280px; margin: 0 auto;
+    padding: 24px 40px; gap: 16px; min-height: calc(100vh - 80px - 72px);
+  }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    width: 332px; flex-shrink: 0; background: #fff;
+    border: 1px solid #e5e7eb; border-radius: 12px;
+    padding: 20px 0; display: flex; flex-direction: column;
+  }
+  .sb-section-label {
+    font-size: 14px; font-weight: 500; color: #101828;
+    text-transform: uppercase; padding: 0 20px; margin-bottom: 8px;
+    margin-top: 4px;
+  }
+  .sb-items { padding: 0; }
+  .sb-item {
+    display: flex; align-items: center; gap: 12px;
+    height: 60px; padding: 8px 16px; cursor: pointer;
+    border-left: 4px solid transparent; transition: all 0.15s;
+  }
+  .sb-item:hover { background: #fafafa; }
+  .sb-item.active {
+    background: #f5f7ff; border-left-color: #1e40af;
+  }
+  .sb-item.active .sb-item-label { font-weight: 600; color: #1e40af; }
+  .sb-item-icon {
+    width: 24px; height: 24px; display: flex; align-items: center;
+    justify-content: center; flex-shrink: 0;
+  }
+  .sb-item-label {
+    font-size: 16px; font-weight: 500; color: #101828;
+    width: 110px; flex-shrink: 0;
+  }
+  .sb-item-progress {
+    flex: 1; display: flex; align-items: center; justify-content: flex-end; gap: 6px;
+  }
+  .sb-progress-bar {
+    width: 140px; height: 6px; background: #eef2ff; border-radius: 3px;
+    overflow: hidden;
+  }
+  .sb-progress-bar .fill {
+    height: 100%; background: #0f973d; border-radius: 3px;
+  }
+  .sb-status-dots { display: flex; gap: 4px; align-items: center; }
+  .sb-warn-dot {
+    width: 10px; height: 10px; border-radius: 50%; background: #f59e0b;
+  }
+  .sb-divider {
+    height: 1px; background: #e5e7eb; margin: 12px 20px;
+  }
+  .sb-footer {
+    margin-top: auto; padding: 20px 20px 8px; opacity: 0.8;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .sb-footer-powered {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 300; font-style: italic; color: #6b7280;
+  }
+  .sb-footer-powered .sv-logo {
+    width: 18px; height: 18px; background: #0828cc; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 9px; font-weight: 700;
+  }
+  .sb-footer-powered strong { font-weight: 600; font-style: normal; color: #101828; }
+  .sb-footer-secure {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 12px; font-weight: 400; color: #6b7280;
+  }
+
+  /* ── Content Area ── */
+  .content-area { flex: 1; display: flex; flex-direction: column; gap: 16px; }
+
+  /* Section title card */
+  .section-title-card {
+    background: #fff; border: 1px solid #d9d9d9; border-radius: 12px;
+    min-height: 72px; display: flex; align-items: center;
+    padding: 16px 24px; gap: 10px;
+  }
+  .section-title-card h2 { font-size: 24px; font-weight: 600; color: #101828; }
+  .section-title-dots { display: flex; gap: 6px; align-items: center; }
+
+  /* Sub-section card */
+  .subsection-card {
+    background: #fff; border: 1px solid #d9d9d9; border-radius: 12px;
+    overflow: hidden;
+  }
+  .subsection-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 18px 24px; border-bottom: 1px solid #f3f4f6;
+    background: #f1f5fc;
+  }
+  .subsection-header h3 { font-size: 18px; font-weight: 600; color: #101828; }
+  .subsection-header .subheader-meta { font-size: 14px; font-weight: 400; color: #98a2b3; }
+  .subsection-content { padding: 20px 24px 24px; }
+
+  /* ── Form elements ── */
+  .fg { margin-bottom: 16px; }
+  .fl { font-size: 14px; font-weight: 500; color: #101828; margin-bottom: 6px; display: block; }
+  .fl .req { color: #dc2626; }
+  .fi, .fs, .ft {
+    width: 100%; padding: 10px 14px; border: 1px solid #d9d9d9; border-radius: 8px;
+    font-size: 14px; font-family: inherit; background: #fff; color: #101828;
+  }
+  .ft { min-height: 80px; resize: vertical; }
+  .fi.error { border-color: #dc2626; }
+  .ferr { font-size: 12px; color: #dc2626; margin-top: 4px; }
+  .fhint { font-size: 11px; color: #98a2b3; margin-top: 4px; font-style: italic; }
+
+  /* ── Preferred doc uploaded ── */
+  .pref-label-row {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
+  }
+  .pref-label { font-size: 13px; font-weight: 500; color: #6a6a6a; }
+  .pref-label strong { color: #101828; font-weight: 600; }
+  .mand-badge {
+    display: inline-flex; align-items: center;
+    background: #fef2f2; color: #dc2626; font-size: 11px; font-weight: 600;
+    padding: 2px 10px; border-radius: 12px; border: 1px solid #fecaca;
+  }
+
+  /* ── Uploaded file row ── */
+  .uploaded-file {
+    display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+    background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 6px;
+  }
+  .uf-icon {
+    width: 36px; height: 36px; background: #eef2ff; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .uf-info { flex: 1; }
+  .uf-name { font-size: 13px; font-weight: 500; color: #101828; }
+  .uf-meta { font-size: 11px; color: #98a2b3; margin-top: 2px; }
+  .uf-check { flex-shrink: 0; }
+
+  /* Success message */
+  .success-msg {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; color: #0f973d; font-weight: 500; margin-bottom: 16px;
+  }
+
+  /* ── Mandatory docs group (red) ── */
+  .mand-group {
+    background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px;
+    padding: 14px 16px; margin-bottom: 16px;
+  }
+  .mand-group-header {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+  }
+  .mand-group-header h4 { font-size: 13px; font-weight: 600; color: #dc2626; }
+  .mand-doc-item {
+    display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+    background: #fff; border: 1px solid #fecaca; border-radius: 8px; margin-bottom: 8px;
+  }
+  .md-doc-icon {
+    width: 28px; height: 28px; background: #fef2f2; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .md-label { flex: 1; font-size: 13px; font-weight: 500; color: #101828; }
+  .status-pill {
+    font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 12px;
+  }
+  .status-pill.pending { background: #fef3c7; color: #92400e; }
+
+  /* "I don't have" link — active/selected state */
+  .no-doc-link {
+    font-size: 13px; font-weight: 600; color: #0828cc;
+    text-decoration: underline; cursor: pointer; display: inline-block;
+    margin-top: 4px; margin-bottom: 10px;
+  }
+  .no-doc-link.active-state {
+    background: #eef2ff; color: #1e40af; padding: 4px 12px; border-radius: 6px;
+    text-decoration: underline; display: inline-flex; align-items: center; gap: 6px;
+  }
+
+  /* ── Reason + ETA inline expansion ── */
+  .reason-eta-section {
+    background: #fafbfc; border: 1px solid #e5e7eb; border-radius: 10px;
+    padding: 16px 18px; margin-top: 4px;
+  }
+  .reason-eta-label {
+    font-size: 12px; font-weight: 600; color: #6a6a6a; text-transform: uppercase;
+    letter-spacing: 0.4px; margin-bottom: 14px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .confirm-btn {
+    background: #0828cc; color: #fff; border: none;
+    padding: 8px 22px; border-radius: 8px; font-size: 13px; font-weight: 600;
+    cursor: pointer; font-family: inherit; margin-top: 4px;
+  }
+
+  /* ── Optional docs ── */
+  .opt-group { margin-bottom: 16px; }
+  .opt-group h4 { font-size: 13px; font-weight: 600; color: #6a6a6a; margin-bottom: 6px; }
+  .opt-list { font-size: 13px; color: #98a2b3; line-height: 1.8; }
+
+  /* ── Warning banner (amber) ── */
+  .warn-banner {
+    background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px;
+    padding: 14px 16px; font-size: 13px; color: #92400e;
+    display: flex; align-items: flex-start; gap: 10px; margin-bottom: 16px; line-height: 1.6;
+  }
+  .warn-banner-icon { flex-shrink: 0; margin-top: 1px; }
+
+  /* ── Proceed button ── */
+  .proceed-row { display: flex; justify-content: flex-end; margin-top: 8px; }
+  .proceed-btn {
+    background: #0828cc; color: #fff; border: none;
+    width: 168px; height: 44px; border-radius: 8px;
+    font-size: 16px; font-weight: 500; cursor: pointer; font-family: inherit;
+  }
+  .proceed-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* ── Scenario notes ── */
+  .sc-desc {
+    max-width: 1280px; margin: 0 auto; background: #f0f4ff; border: 1px solid #e5e7eb;
+    padding: 10px 40px; font-size: 12px; color: #4338ca; line-height: 1.5;
+  }
+  .sc-desc strong { font-weight: 600; }
+  .eng-note {
+    max-width: 1280px; margin: 0 auto; background: #f9fafb;
+    border-left: 3px solid #d1d5db; border-radius: 4px; padding: 10px 40px;
+    font-size: 11px; color: #6b7280; line-height: 1.6;
+  }
+  .eng-note strong { color: #374151; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="banner">PROPOSED DESIGN — Candidate BGV Revamp Form: Mandatory Document — Reason &amp; ETA (Scenario 11)</div>
+
+<div class="sc-desc">
+  <strong>State:</strong> Hero document (Experience Letter) has been uploaded. For the mandatory non-hero document (Relieving Letter), candidate clicked "I don't have this document" — the inline reason + ETA fields are now expanded. The ETA date field shows a validation error ("ETA cannot be in past."). Proceed remains disabled until the candidate provides both reason and a future ETA date.
+</div>
+<div class="eng-note">
+  <strong>Engineering note:</strong> Inline reason + ETA expansion is for mandatory NON-hero documents only. Hero doc exit flow uses the 2-step modal (Scenarios 8–9). When the candidate clicks "I don't have this document" for a mandatory non-hero doc, expand the reason + ETA fields inline. Candidate cannot proceed until they either upload the doc or provide both reason and a valid future ETA.
+</div>
+
+<!-- ── Header ── -->
+<div class="header">
+  <div class="header-left">
+    <div class="company-logo">J</div>
+    <div class="company-info">
+      <div class="company-name">Background verification for Jaguar</div>
+      <div class="company-subtitle">All questions in this form are based on <strong>Jaguar's verification policies.</strong></div>
+    </div>
+  </div>
+  <div class="header-right">
+    <button class="review-submit-btn" disabled>Review &amp; Submit</button>
+  </div>
+</div>
+
+<!-- ── Main Layout ── -->
+<div class="main-layout">
+
+  <!-- ── Sidebar ── -->
+  <div class="sidebar">
+    <div class="sb-section-label">Yet to complete</div>
+    <div class="sb-items">
+      <!-- Identity -->
+      <div class="sb-item">
+        <div class="sb-item-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <rect x="2" y="4" width="20" height="16" rx="2" stroke="#101828" stroke-width="1.5"/>
+            <circle cx="9" cy="11" r="2.5" stroke="#101828" stroke-width="1.5"/>
+            <path d="M5 18c0-2 1.5-3 4-3s4 1 4 3" stroke="#101828" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="15" y1="9" x2="19" y2="9" stroke="#101828" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="15" y1="13" x2="19" y2="13" stroke="#101828" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="sb-item-label">Identity</div>
+        <div class="sb-item-progress">
+          <div class="sb-status-dots">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#98a2b3" stroke-width="1.5"/></svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#98a2b3" stroke-width="1.5"/></svg>
+          </div>
+        </div>
+      </div>
+      <!-- Education -->
+      <div class="sb-item">
+        <div class="sb-item-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z" fill="#101828" opacity="0.7"/>
+            <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" fill="#101828" opacity="0.5"/>
+          </svg>
+        </div>
+        <div class="sb-item-label">Education</div>
+        <div class="sb-item-progress">
+          <div class="sb-status-dots">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#98a2b3" stroke-width="1.5"/></svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#98a2b3" stroke-width="1.5"/></svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#98a2b3" stroke-width="1.5"/></svg>
+          </div>
+        </div>
+      </div>
+      <!-- Address -->
+      <div class="sb-item">
+        <div class="sb-item-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#101828" opacity="0.6"/>
+            <circle cx="12" cy="9" r="2.5" fill="#fff"/>
+          </svg>
+        </div>
+        <div class="sb-item-label">Address</div>
+        <div class="sb-item-progress">
+          <div class="sb-status-dots">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#98a2b3" stroke-width="1.5"/></svg>
+          </div>
+        </div>
+      </div>
+      <!-- Employment — active, one done dot + one warn dot -->
+      <div class="sb-item active">
+        <div class="sb-item-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M20 7H4c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2z" fill="#101828" opacity="0.5"/>
+            <path d="M16 7V5c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2" stroke="#101828" stroke-width="1.5"/>
+            <rect x="2" y="7" width="20" height="4" rx="1" fill="#101828" opacity="0.7"/>
+          </svg>
+        </div>
+        <div class="sb-item-label">Employment</div>
+        <div class="sb-item-progress">
+          <div class="sb-status-dots">
+            <!-- hero done -->
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#0f973d"/><path d="M5 8l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <!-- mandatory pending -->
+            <div class="sb-warn-dot"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sb-divider"></div>
+
+    <!-- Completed -->
+    <div class="sb-section-label">Completed</div>
+    <div class="sb-items">
+      <div class="sb-item">
+        <div class="sb-item-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="8" r="4" fill="#101828" opacity="0.6"/>
+            <path d="M4 20c0-3.31 3.58-6 8-6s8 2.69 8 6" fill="#101828" opacity="0.4"/>
+          </svg>
+        </div>
+        <div class="sb-item-label">Basic details</div>
+        <div class="sb-item-progress">
+          <div class="sb-progress-bar"><div class="fill" style="width:100%;"></div></div>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#0f973d"/><path d="M5 8l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="sb-footer">
+      <div class="sb-footer-powered">
+        Powered by <span class="sv-logo">S</span> <strong>SpringVerify</strong>
+      </div>
+      <div class="sb-footer-secure">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L2 3v3c0 3.5 2.1 6.4 5 7.5 2.9-1.1 5-4 5-7.5V3L7 1z" stroke="#6b7280" stroke-width="1.2"/><path d="M5 7l1.5 1.5L9.5 5" stroke="#6b7280" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        100% Secure
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Content Area ── -->
+  <div class="content-area">
+
+    <!-- Section title card -->
+    <div class="section-title-card">
+      <h2>Employment</h2>
+      <div class="section-title-dots">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" fill="#0f973d"/><path d="M3.5 6l1.5 1.5 3-3" stroke="#fff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="sb-warn-dot" style="width:12px; height:12px;"></div>
+      </div>
+    </div>
+
+    <!-- Employment 1 subsection -->
+    <div class="subsection-card">
+      <div class="subsection-header">
+        <h3>Employment 1</h3>
+        <span class="subheader-meta">(latest)</span>
+      </div>
+      <div class="subsection-content">
+
+        <!-- Employment type -->
+        <div class="fg">
+          <label class="fl">Employment type <span class="req">*</span></label>
+          <select class="fs"><option>Full time</option></select>
+        </div>
+
+        <!-- Hero doc: Experience Letter UPLOADED -->
+        <div class="pref-label-row">
+          <span class="pref-label"><strong>Preferred:</strong> Experience Letter</span>
+          <span class="mand-badge">Mandatory</span>
+        </div>
+        <div class="uploaded-file">
+          <div class="uf-icon">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M3.5 2h8l4 4v10.5a.5.5 0 01-.5.5h-11a.5.5 0 01-.5-.5v-14a.5.5 0 01.5-.5z" fill="#c7d2fe" stroke="#6366f1" stroke-width="1"/>
+              <path d="M11.5 2v4.5h4" stroke="#6366f1" stroke-width="1" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="uf-info">
+            <div class="uf-name">Experience_Letter_Jaguar.pdf</div>
+            <div class="uf-meta">245 KB &middot; Uploaded just now</div>
+          </div>
+          <div class="uf-check">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <circle cx="10" cy="10" r="9" fill="#0f973d"/>
+              <path d="M6 10l2.5 2.5 5.5-5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="success-msg">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#0f973d"/><path d="M5 8l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Preferred document uploaded
+        </div>
+
+        <!-- Mandatory group: Relieving Letter -->
+        <div class="mand-group">
+          <div class="mand-group-header">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 1.5L1 13.5h14L8 1.5z" fill="#fef2f2" stroke="#fecaca" stroke-width="1" stroke-linejoin="round"/>
+              <path d="M8 6v4" stroke="#dc2626" stroke-width="1.3" stroke-linecap="round"/>
+              <circle cx="8" cy="11.5" r="0.6" fill="#dc2626"/>
+            </svg>
+            <h4>Other mandatory documents</h4>
+          </div>
+
+          <!-- Relieving Letter — Pending -->
+          <div class="mand-doc-item">
+            <div class="md-doc-icon">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M2.5 1.5h6l3 3v8.5a.5.5 0 01-.5.5h-8a.5.5 0 01-.5-.5v-11a.5.5 0 01.5-.5z" fill="#fef2f2" stroke="#fecaca" stroke-width="1"/>
+                <path d="M8.5 1.5v3.5h3" stroke="#fecaca" stroke-width="1" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <span class="md-label">Relieving Letter</span>
+            <span class="status-pill pending">Pending</span>
+          </div>
+
+          <!-- "I don't have" link — active/selected state -->
+          <div style="margin-top: 10px;">
+            <span class="no-doc-link active-state">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <circle cx="7" cy="7" r="6" stroke="#1e40af" stroke-width="1.2"/>
+                <path d="M7 5v.5" stroke="#1e40af" stroke-width="1.4" stroke-linecap="round"/>
+                <path d="M7 7.5v3" stroke="#1e40af" stroke-width="1.4" stroke-linecap="round"/>
+              </svg>
+              I don't have this document
+            </span>
+          </div>
+
+          <!-- Inline reason + ETA expansion -->
+          <div class="reason-eta-section">
+            <div class="reason-eta-label">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M9.5 2L12 4.5l-7 7H2.5V9L9.5 2z" stroke="#6a6a6a" stroke-width="1.2" stroke-linejoin="round"/>
+              </svg>
+              Tell us why you can't upload this document
+            </div>
+
+            <!-- Reason textarea -->
+            <div class="fg">
+              <label class="fl">Explain the reason in detail <span class="req">*</span></label>
+              <textarea class="ft" placeholder="e.g., I resigned recently and my employer hasn't issued the relieving letter yet. I've requested it from HR and expect it within 2 weeks." style="min-height: 80px;"></textarea>
+              <div class="fhint">A detailed reason helps us verify your background faster. Otherwise, we may have to reach out to you, causing delays.</div>
+            </div>
+
+            <!-- ETA field with validation error -->
+            <div class="fg" style="margin-bottom: 12px;">
+              <label class="fl">When can you expect the document? <span class="req">*</span></label>
+              <input type="text" class="fi error" value="15 Jan 2026" placeholder="Select a date" />
+              <div class="ferr">ETA cannot be in past.</div>
+            </div>
+
+            <!-- Confirm button -->
+            <button class="confirm-btn">Confirm</button>
+          </div>
+        </div>
+
+        <!-- Optional documents -->
+        <div class="opt-group">
+          <h4>Optional documents</h4>
+          <div class="opt-list">Offer Letter, Appointment Letter, Payslips, Resignation Acceptance Letter, Full and Final Settlement, Form 16, Form 26AS, Bank Statement</div>
+        </div>
+
+        <!-- Warning banner -->
+        <div class="warn-banner">
+          <div class="warn-banner-icon">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M9 1.5L1.5 15h15L9 1.5z" fill="#fde68a" stroke="#f59e0b" stroke-width="1.2" stroke-linejoin="round"/>
+              <path d="M9 7v4" stroke="#92400e" stroke-width="1.4" stroke-linecap="round"/>
+              <circle cx="9" cy="12.5" r="0.7" fill="#92400e"/>
+            </svg>
+          </div>
+          <span>You must either upload the Relieving Letter or provide a reason and expected date before you can proceed.</span>
+        </div>
+
+        <!-- Proceed button -->
+        <div class="proceed-row">
+          <button class="proceed-btn" disabled>Proceed</button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

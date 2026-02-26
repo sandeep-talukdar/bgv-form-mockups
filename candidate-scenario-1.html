@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>BGV Revamp Form — Scenario 1: Identity Step</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Figtree', sans-serif; background: #f8f8f8; color: #101828; min-width: 1280px; }
+
+  /* ── PROPOSED DESIGN Banner ── */
+  .banner {
+    background: #fef9c3; border: 1px solid #f59e0b; padding: 10px 20px;
+    font-size: 13px; font-weight: 600; color: #92400e; text-align: center;
+  }
+
+  /* ── Header ── */
+  .header {
+    height: 80px; background: #fff;
+    box-shadow: 0px 1px 8px rgba(93, 92, 245, 0.1);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px; position: relative; z-index: 10;
+  }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .company-logo {
+    width: 56px; height: 56px; border-radius: 50%; background: #1e293b;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 700; font-size: 22px; flex-shrink: 0;
+  }
+  .company-info {}
+  .company-name { font-size: 20px; font-weight: 600; color: #101828; }
+  .company-subtitle { font-size: 12px; font-weight: 500; color: #6a6a6a; margin-top: 2px; }
+  .company-subtitle strong { font-weight: 600; color: #101828; }
+  .header-right { display: flex; align-items: center; gap: 16px; }
+  .review-submit-btn {
+    background: #0828cc; color: #fff; border: none;
+    padding: 12px 44px; border-radius: 8px; font-size: 14px; font-weight: 600;
+    cursor: pointer; font-family: inherit; opacity: 0.4;
+  }
+
+  /* ── Main Layout ── */
+  .main-layout {
+    display: flex; max-width: 1280px; margin: 0 auto;
+    padding: 24px 40px; gap: 16px; min-height: calc(100vh - 80px - 36px);
+  }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    width: 332px; flex-shrink: 0; background: #fff;
+    border: 1px solid #e5e7eb; border-radius: 12px;
+    padding: 20px 0; display: flex; flex-direction: column;
+  }
+  .sb-section-label {
+    font-size: 14px; font-weight: 500; color: #101828;
+    text-transform: uppercase; padding: 0 20px; margin-bottom: 8px;
+    margin-top: 4px;
+  }
+  .sb-items { padding: 0; }
+  .sb-item {
+    display: flex; align-items: center; gap: 12px;
+    height: 60px; padding: 8px 16px; cursor: pointer;
+    border-left: 4px solid transparent; transition: all 0.15s;
+  }
+  .sb-item:hover { background: #fafafa; }
+  .sb-item.active {
+    background: #f5f7ff; border-left-color: #1e40af;
+  }
+  .sb-item.active .sb-item-label { font-weight: 600; color: #1e40af; }
+  .sb-item-icon {
+    width: 24px; height: 24px; display: flex; align-items: center;
+    justify-content: center; flex-shrink: 0;
+  }
+  .sb-item-label {
+    font-size: 16px; font-weight: 500; color: #101828;
+    width: 100px; flex-shrink: 0;
+  }
+  .sb-item-progress {
+    flex: 1; display: flex; align-items: center; justify-content: flex-end; gap: 8px;
+  }
+  /* Progress bar track */
+  .sb-progress-bar {
+    width: 140px; height: 6px; background: #eef2ff; border-radius: 3px;
+    overflow: hidden;
+  }
+  .sb-progress-bar .fill {
+    height: 100%; background: #0f973d; border-radius: 3px;
+  }
+  /* Status dots */
+  .sb-status-dots { display: flex; gap: 4px; align-items: center; }
+  .sb-status-dot {
+    width: 16px; height: 16px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .sb-status-dot.empty { background: none; }
+  .sb-status-dot.empty svg { color: #98a2b3; }
+  .sb-status-dot.done { background: none; }
+  .sb-status-dot.done svg { color: #0f973d; }
+
+  .sb-divider {
+    height: 1px; background: #e5e7eb; margin: 12px 20px;
+  }
+
+  .sb-footer {
+    margin-top: auto; padding: 20px 20px 8px; opacity: 0.8;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .sb-footer-powered {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 300; font-style: italic; color: #6b7280;
+  }
+  .sb-footer-powered .sv-logo {
+    width: 18px; height: 18px; background: #0828cc; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 9px; font-weight: 700;
+  }
+  .sb-footer-powered strong { font-weight: 600; font-style: normal; color: #101828; }
+  .sb-footer-secure {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 12px; font-weight: 400; color: #6b7280;
+  }
+
+  /* ── Content Area ── */
+  .content-area { flex: 1; display: flex; flex-direction: column; gap: 16px; }
+
+  /* Section title card */
+  .section-title-card {
+    background: #fff; border: 1px solid #d9d9d9; border-radius: 12px;
+    min-height: 72px; display: flex; align-items: center;
+    padding: 16px 24px; gap: 10px;
+  }
+  .section-title-card h2 { font-size: 24px; font-weight: 600; color: #101828; }
+  .section-title-dots { display: flex; gap: 6px; align-items: center; }
+  .section-title-dot {
+    width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;
+  }
+
+  /* Sub-section card */
+  .subsection-card {
+    background: #fff; border: 1px solid #d9d9d9; border-radius: 12px;
+    overflow: hidden;
+  }
+  .subsection-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 18px 24px; border-bottom: 1px solid #f3f4f6;
+  }
+  .subsection-header h3 { font-size: 18px; font-weight: 600; color: #101828; }
+  .subsection-header .check-icon {
+    width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;
+  }
+  .subsection-content {
+    padding: 19px 23px 24px;
+  }
+
+  /* ── Upload Zone ── */
+  .upload-zone {
+    border: 1.5px dashed rgba(8, 40, 204, 0.4);
+    border-radius: 16px; height: 140px;
+    display: flex; align-items: center; justify-content: center;
+    gap: 32px; padding: 0 32px; margin-bottom: 12px;
+  }
+  .upload-zone-digilocker { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .digilocker-btn {
+    width: 231px; height: 44px; background: #fff; border: 1px solid #6334fa;
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    gap: 8px; font-size: 16px; font-weight: 600; color: #6334fa;
+    cursor: pointer; font-family: inherit;
+  }
+  .digilocker-btn svg { flex-shrink: 0; }
+  .digilocker-recommended {
+    font-size: 12px; font-weight: 600; color: #0f973d;
+    background: rgba(15, 151, 61, 0.1); padding: 2px 10px; border-radius: 10px;
+  }
+
+  .upload-zone-divider {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    color: #6a6a6a; position: relative;
+  }
+  .upload-zone-divider .line {
+    width: 1px; height: 28px; background: #d9d9d9;
+  }
+  .upload-zone-divider .or-text { font-size: 18px; font-weight: 400; color: #6a6a6a; }
+
+  .upload-zone-upload {
+    display: flex; align-items: center; gap: 14px;
+  }
+  .upload-cloud-icon {
+    width: 56px; height: 56px; border-radius: 50%; background: #f5f7ff;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .upload-text-group {}
+  .upload-text-main { font-size: 14px; color: #101828; }
+  .upload-text-main a {
+    font-weight: 600; color: #0828cc; text-decoration: none; cursor: pointer;
+  }
+  .upload-text-sub { font-size: 12px; font-weight: 400; color: #98a2b3; margin-top: 2px; }
+
+  /* ── Document Card (uploaded) ── */
+  .doc-cards { display: flex; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+  .doc-card {
+    width: 233px; height: 160px; border: 1px solid #e5e7eb;
+    border-radius: 8px; overflow: hidden; cursor: pointer; transition: border-color 0.15s;
+  }
+  .doc-card:hover { border-color: #0828cc; }
+  .doc-card.selected { border-color: #0828cc; border-width: 2px; }
+  .doc-card-header {
+    background: #f1f5fc; height: 40px; padding: 0 12px;
+    display: flex; align-items: center;
+  }
+  .doc-card-header span { font-size: 14px; font-weight: 600; color: #101828; }
+  .doc-card-body {
+    height: 120px; display: flex; align-items: center; justify-content: center;
+  }
+
+  /* ── "I don't have" link ── */
+  .no-doc-link {
+    font-size: 14px; font-weight: 600; color: #0828cc;
+    text-decoration: underline; cursor: pointer; display: inline-block;
+    margin-top: 4px;
+  }
+
+  /* ── Proceed button ── */
+  .proceed-row {
+    display: flex; justify-content: flex-end; margin-top: 20px;
+  }
+  .proceed-btn {
+    background: #0828cc; color: #fff; border: none;
+    width: 168px; height: 44px; border-radius: 8px;
+    font-size: 16px; font-weight: 500; cursor: pointer; font-family: inherit;
+  }
+  .proceed-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* ── Engineering / Scenario Notes ── */
+  .sc-desc {
+    max-width: 1280px; margin: 0 auto; background: #f0f4ff; border: 1px solid #e5e7eb;
+    padding: 10px 40px; font-size: 12px; color: #4338ca; line-height: 1.5;
+  }
+  .sc-desc strong { font-weight: 600; }
+  .eng-note {
+    max-width: 1280px; margin: 0 auto; background: #f9fafb;
+    border-left: 3px solid #d1d5db; border-radius: 4px; padding: 10px 40px;
+    font-size: 11px; color: #6b7280; line-height: 1.6;
+  }
+  .eng-note strong { color: #374151; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="banner">PROPOSED DESIGN — Candidate BGV Revamp Form: Identity Step (Scenario 1)</div>
+
+<div class="sc-desc">
+  <strong>State:</strong> Candidate is on the Identity check step (first step after Basic Details). Sidebar shows Identity as active with "Yet to complete" items below. PAN sub-section has an uploaded document card. Aadhaar sub-section shows empty upload zone. Proceed button is disabled (opacity 0.4) until all required sub-sections are complete.
+</div>
+<div class="eng-note">
+  <strong>Engineering note:</strong> The sidebar items, progress bars, and status dots are driven by the BGV Form Config API. Each check type maps to a sidebar item. The progress bar fills based on completed sub-sections. Status dots represent individual sub-sections (e.g., PAN and Aadhaar for Identity).
+</div>
+
+<!-- ── Header ── -->
+<div class="header">
+  <div class="header-left">
+    <div class="company-logo">J</div>
+    <div class="company-info">
+      <div class="company-name">Background verification for Jaguar</div>
+      <div class="company-subtitle">All questions in this form are based on <strong>Jaguar's verification policies.</strong></div>
+    </div>
+  </div>
+  <div class="header-right">
+    <button class="review-submit-btn" disabled>Review & Submit</button>
+  </div>
+</div>
+
+<!-- ── Main Layout ── -->
+<div class="main-layout">
+
+  <!-- ── Sidebar ── -->
+  <div class="sidebar">
+    <div class="sb-section-label">Yet to complete</div>
+    <div class="sb-items">
+      <!-- Identity — active -->
+      <div class="sb-item active">
+        <div class="sb-item-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="4" width="20" height="16" rx="2" stroke="#101828" stroke-width="1.5"/>
+            <circle cx="9" cy="11" r="2.5" stroke="#101828" stroke-width="1.5"/>
+            <path d="M5 18c0-2 1.5-3 4-3s4 1 4 3" stroke="#101828" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="15" y1="9" x2="19" y2="9" stroke="#101828" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="15" y1="13" x2="19" y2="13" stroke="#101828" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="sb-item-label">Identity</div>
+        <div class="sb-item-progress">
+          <div class="sb-status-dots">
+            <!-- 2 dots for PAN + Aadhaar, both incomplete -->
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#98a2b3" stroke-width="1.5"/></svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#98a2b3" stroke-width="1.5"/></svg>
+          </div>
+        </div>
+      </div>
+      <!-- Education -->
+      <div class="sb-item">
+        <div class="sb-item-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z" fill="#101828" opacity="0.7"/>
+            <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" fill="#101828" opacity="0.5"/>
+          </svg>
+        </div>
+        <div class="sb-item-label">Education</div>
+        <div class="sb-item-progress">
+          <div class="sb-status-dots">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#98a2b3" stroke-width="1.5"/></svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#98a2b3" stroke-width="1.5"/></svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#98a2b3" stroke-width="1.5"/></svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#98a2b3" stroke-width="1.5"/></svg>
+          </div>
+        </div>
+      </div>
+      <!-- Address -->
+      <div class="sb-item">
+        <div class="sb-item-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#101828" opacity="0.6"/>
+            <circle cx="12" cy="9" r="2.5" fill="#fff"/>
+          </svg>
+        </div>
+        <div class="sb-item-label">Address</div>
+        <div class="sb-item-progress">
+          <div class="sb-status-dots">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#98a2b3" stroke-width="1.5"/></svg>
+          </div>
+        </div>
+      </div>
+      <!-- Employment -->
+      <div class="sb-item">
+        <div class="sb-item-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 7H4c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2z" fill="#101828" opacity="0.5"/>
+            <path d="M16 7V5c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2" stroke="#101828" stroke-width="1.5"/>
+            <rect x="2" y="7" width="20" height="4" rx="1" fill="#101828" opacity="0.7"/>
+          </svg>
+        </div>
+        <div class="sb-item-label">Employment</div>
+        <div class="sb-item-progress">
+          <div class="sb-status-dots">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#98a2b3" stroke-width="1.5"/></svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#98a2b3" stroke-width="1.5"/></svg>
+          </div>
+        </div>
+      </div>
+      <!-- Social media -->
+      <div class="sb-item">
+        <div class="sb-item-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" stroke="#101828" stroke-width="1.5"/>
+            <path d="M8 14s1.5 2 4 2 4-2 4-2" stroke="#101828" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="9" cy="10" r="1" fill="#101828"/>
+            <circle cx="15" cy="10" r="1" fill="#101828"/>
+          </svg>
+        </div>
+        <div class="sb-item-label">Social media</div>
+        <div class="sb-item-progress">
+          <div class="sb-status-dots">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#98a2b3" stroke-width="1.5"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sb-divider"></div>
+
+    <!-- Completed section -->
+    <div class="sb-section-label">Completed</div>
+    <div class="sb-items">
+      <div class="sb-item">
+        <div class="sb-item-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="8" r="4" fill="#101828" opacity="0.6"/>
+            <path d="M4 20c0-3.31 3.58-6 8-6s8 2.69 8 6" fill="#101828" opacity="0.4"/>
+          </svg>
+        </div>
+        <div class="sb-item-label">Basic details</div>
+        <div class="sb-item-progress">
+          <div class="sb-progress-bar"><div class="fill" style="width: 100%;"></div></div>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#0f973d"/><path d="M5 8l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="sb-footer">
+      <div class="sb-footer-powered">
+        Powered by <span class="sv-logo">S</span> <strong>SpringVerify</strong>
+      </div>
+      <div class="sb-footer-secure">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L2 3v3c0 3.5 2.1 6.4 5 7.5 2.9-1.1 5-4 5-7.5V3L7 1z" stroke="#6b7280" stroke-width="1.2"/><path d="M5 7l1.5 1.5L9.5 5" stroke="#6b7280" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        100% Secure
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Content Area ── -->
+  <div class="content-area">
+
+    <!-- Section title card -->
+    <div class="section-title-card">
+      <h2>Identity</h2>
+      <div class="section-title-dots">
+        <!-- 2 status dots (PAN + Aadhaar, both incomplete) -->
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#98a2b3" stroke-width="1.5"/></svg>
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#98a2b3" stroke-width="1.5"/></svg>
+      </div>
+    </div>
+
+    <!-- PAN Sub-section -->
+    <div class="subsection-card">
+      <div class="subsection-header">
+        <h3>PAN</h3>
+        <div class="check-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#98a2b3" stroke-width="1.5"/></svg>
+        </div>
+      </div>
+      <div class="subsection-content">
+        <!-- Upload zone -->
+        <div class="upload-zone">
+          <div class="upload-zone-digilocker">
+            <button class="digilocker-btn">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="4" width="16" height="12" rx="2" stroke="#6334fa" stroke-width="1.5"/><path d="M6 10h8M10 7v6" stroke="#6334fa" stroke-width="1.5" stroke-linecap="round"/></svg>
+              Fetch from DigiLocker
+            </button>
+            <span class="digilocker-recommended">Recommended</span>
+          </div>
+          <div class="upload-zone-divider">
+            <div class="line"></div>
+            <span class="or-text">or</span>
+            <div class="line"></div>
+          </div>
+          <div class="upload-zone-upload">
+            <div class="upload-cloud-icon">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                <path d="M14 18V10m0 0l-3 3m3-3l3 3" stroke="#0828cc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M7 16.5A5 5 0 017.5 7a6 6 0 0111.3-.5A5 5 0 0121 16.5" stroke="#0828cc" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="upload-text-group">
+              <div class="upload-text-main"><a>Click to upload</a> or drag and drop</div>
+              <div class="upload-text-sub">Once you upload our AI will fill the form for you.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Uploaded PAN card -->
+        <div class="doc-cards">
+          <div class="doc-card selected">
+            <div class="doc-card-header">
+              <span>PAN Card</span>
+            </div>
+            <div class="doc-card-body">
+              <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                <rect x="4" y="8" width="32" height="24" rx="3" fill="#e8ecf4" stroke="#c5cdd8" stroke-width="1"/>
+                <rect x="8" y="14" width="10" height="8" rx="1" fill="#d0d8e4"/>
+                <line x1="22" y1="15" x2="32" y2="15" stroke="#c5cdd8" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="22" y1="19" x2="30" y2="19" stroke="#c5cdd8" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="22" y1="23" x2="28" y2="23" stroke="#c5cdd8" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- I don't have this document link -->
+        <a class="no-doc-link">I don't have this document</a>
+
+        <!-- Proceed button — inside subsection -->
+        <div class="proceed-row">
+          <button class="proceed-btn" disabled>Proceed</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Aadhaar Sub-section -->
+    <div class="subsection-card">
+      <div class="subsection-header">
+        <h3>Aadhaar</h3>
+        <div class="check-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#98a2b3" stroke-width="1.5"/></svg>
+        </div>
+      </div>
+      <div class="subsection-content">
+        <!-- Upload zone -->
+        <div class="upload-zone">
+          <div class="upload-zone-digilocker">
+            <button class="digilocker-btn">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="4" width="16" height="12" rx="2" stroke="#6334fa" stroke-width="1.5"/><path d="M6 10h8M10 7v6" stroke="#6334fa" stroke-width="1.5" stroke-linecap="round"/></svg>
+              Fetch from DigiLocker
+            </button>
+            <span class="digilocker-recommended">Recommended</span>
+          </div>
+          <div class="upload-zone-divider">
+            <div class="line"></div>
+            <span class="or-text">or</span>
+            <div class="line"></div>
+          </div>
+          <div class="upload-zone-upload">
+            <div class="upload-cloud-icon">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                <path d="M14 18V10m0 0l-3 3m3-3l3 3" stroke="#0828cc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M7 16.5A5 5 0 017.5 7a6 6 0 0111.3-.5A5 5 0 0121 16.5" stroke="#0828cc" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="upload-text-group">
+              <div class="upload-text-main"><a>Click to upload</a> or drag and drop</div>
+              <div class="upload-text-sub">Once you upload our AI will fill the form for you.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

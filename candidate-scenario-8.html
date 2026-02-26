@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>BGV Revamp Form — Scenario 8: Exit Flow — Step 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Figtree', sans-serif; background: #f8f8f8; color: #101828; min-width: 1280px; }
+
+  /* ── PROPOSED DESIGN Banner ── */
+  .banner {
+    background: #fef9c3; border: 1px solid #f59e0b; padding: 10px 20px;
+    font-size: 13px; font-weight: 600; color: #92400e; text-align: center;
+  }
+
+  /* ── Header ── */
+  .header {
+    height: 80px; background: #fff;
+    box-shadow: 0px 1px 8px rgba(93, 92, 245, 0.1);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px; position: relative; z-index: 10;
+  }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .company-logo {
+    width: 56px; height: 56px; border-radius: 50%; background: #1e293b;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 700; font-size: 22px; flex-shrink: 0;
+  }
+  .company-info {}
+  .company-name { font-size: 20px; font-weight: 600; color: #101828; }
+  .company-subtitle { font-size: 12px; font-weight: 500; color: #6a6a6a; margin-top: 2px; }
+  .company-subtitle strong { font-weight: 600; color: #101828; }
+  .header-right { display: flex; align-items: center; gap: 16px; }
+  .review-submit-btn {
+    background: #0828cc; color: #fff; border: none;
+    padding: 12px 44px; border-radius: 8px; font-size: 14px; font-weight: 600;
+    cursor: pointer; font-family: inherit; opacity: 0.4;
+  }
+
+  /* ── Modal wrapper — centered below header, no sidebar ── */
+  .modal-wrapper {
+    display: flex; align-items: flex-start; justify-content: center;
+    padding: 48px 40px 60px; min-height: calc(100vh - 80px - 36px);
+  }
+
+  /* ── Modal Box ── */
+  .modal-box {
+    background: #fff; border-radius: 16px; width: 520px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14); overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  /* Modal Header */
+  .modal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px; border-bottom: 1px solid #e5e7eb;
+  }
+  .modal-header h3 {
+    font-size: 16px; font-weight: 600; color: #101828;
+  }
+  .modal-close-btn {
+    width: 28px; height: 28px; border-radius: 50%; border: none;
+    background: #f3f4f6; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: #6a6a6a; font-size: 16px; font-family: inherit; line-height: 1;
+  }
+
+  /* Modal Body */
+  .modal-body {
+    padding: 24px 24px 20px;
+  }
+
+  /* ── Stepper ── */
+  .stepper {
+    display: flex; align-items: center; gap: 0;
+    margin-bottom: 20px;
+  }
+  .step {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 500; color: #98a2b3;
+  }
+  .step.active { color: #0828cc; font-weight: 600; }
+  .step.done { color: #0f973d; font-weight: 600; }
+  .step-circle {
+    width: 24px; height: 24px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700;
+    background: #e5e7eb; color: #98a2b3;
+    flex-shrink: 0;
+  }
+  .step.active .step-circle { background: #0828cc; color: #fff; }
+  .step.done .step-circle { background: #0f973d; color: #fff; }
+  .step-connector {
+    flex: 1; height: 0; border-top: 2px dashed #d9d9d9; margin: 0 10px;
+  }
+
+  /* ── Note Box ── */
+  .note-box {
+    background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 8px;
+    padding: 12px 16px; font-size: 13px; color: #4338ca;
+    line-height: 1.6; margin-bottom: 20px;
+  }
+  .note-box strong { font-weight: 600; }
+
+  /* ── Form Fields ── */
+  .form-group {
+    margin-bottom: 16px;
+  }
+  .form-label {
+    font-size: 13px; font-weight: 600; color: #101828;
+    margin-bottom: 6px; display: block;
+  }
+  .form-label .req { color: #dc2626; }
+  .form-select, .form-input, .form-textarea {
+    width: 100%; padding: 10px 14px; border: 1px solid #d9d9d9; border-radius: 8px;
+    font-size: 14px; font-family: inherit; background: #fff; color: #101828;
+    appearance: auto;
+  }
+  .form-select { cursor: pointer; }
+  .form-textarea {
+    min-height: 80px; resize: vertical;
+  }
+  .form-hint {
+    font-size: 12px; color: #98a2b3; margin-top: 4px; font-style: italic;
+    line-height: 1.5;
+  }
+  .form-error {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 12px; color: #dc2626; margin-top: 5px; font-weight: 500;
+  }
+  .form-error svg { flex-shrink: 0; }
+
+  /* ── Modal Footer ── */
+  .modal-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 24px; border-top: 1px solid #e5e7eb;
+  }
+  .btn-cancel {
+    background: none; border: none; font-size: 14px; font-weight: 500;
+    color: #6a6a6a; cursor: pointer; font-family: inherit;
+  }
+  .btn-next {
+    background: #0828cc; color: #fff; border: none;
+    padding: 10px 32px; border-radius: 8px;
+    font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit;
+  }
+
+  /* ── Engineering / Scenario Notes ── */
+  .sc-desc {
+    max-width: 1280px; margin: 0 auto; background: #f0f4ff; border: 1px solid #e5e7eb;
+    padding: 10px 40px; font-size: 12px; color: #4338ca; line-height: 1.5;
+  }
+  .sc-desc strong { font-weight: 600; }
+  .eng-note {
+    max-width: 1280px; margin: 0 auto; background: #f9fafb;
+    border-left: 3px solid #d1d5db; border-radius: 4px; padding: 10px 40px;
+    font-size: 11px; color: #6b7280; line-height: 1.6;
+  }
+  .eng-note strong { color: #374151; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="banner">PROPOSED DESIGN — Candidate BGV Revamp Form: Exit Flow — Step 1 (Scenario 8)</div>
+
+<div class="sc-desc">
+  <strong>State:</strong> Candidate clicked "I don't have preferred documents" on any section (e.g., Permanent Address or PAN). A modal appears — Step 1: Reasoning. The candidate selects a reason from a dropdown, optionally provides more detail, and optionally sets an ETA for when they expect to have the documents. The date field shows a validation error because the entered date is in the past.
+</div>
+<div class="eng-note">
+  <strong>Engineering note:</strong> This is a 2-step modal flow. Step 1 fields: (1) "Why do you not have the documents?" — dropdown, required. Options: Lost the documents, Serving notice period, Company shut down, Documents never issued, Other. (2) "Explain the reason in detail" — free text, optional. (3) "When can you expect the documents?" — date picker, optional. Validation: ETA cannot be in the past. On "Next" → proceed to Step 2 (Add alternate documents). All 3 fields are saved to the candidate's check record.
+</div>
+
+<!-- ── Header ── -->
+<div class="header">
+  <div class="header-left">
+    <div class="company-logo">J</div>
+    <div class="company-info">
+      <div class="company-name">Background verification for Jaguar</div>
+      <div class="company-subtitle">All questions in this form are based on <strong>Jaguar's verification policies.</strong></div>
+    </div>
+  </div>
+  <div class="header-right">
+    <button class="review-submit-btn" disabled>Review &amp; Submit</button>
+  </div>
+</div>
+
+<!-- ── Modal centered in page (no sidebar layout for modal scenarios) ── -->
+<div class="modal-wrapper">
+  <div class="modal-box">
+
+    <!-- Modal Header -->
+    <div class="modal-header">
+      <h3>Preferred documents not available</h3>
+      <button class="modal-close-btn">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="#6a6a6a" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="modal-body">
+
+      <!-- Stepper -->
+      <div class="stepper">
+        <div class="step active">
+          <div class="step-circle">1</div>
+          Reasoning
+        </div>
+        <div class="step-connector"></div>
+        <div class="step">
+          <div class="step-circle">2</div>
+          Add alternate documents
+        </div>
+      </div>
+
+      <!-- Note box -->
+      <div class="note-box">
+        <strong>Note:</strong> The preferred document is the most reliable for verification. You can proceed with alternate documents, but our team might reach out for more details, which could cause delays.
+      </div>
+
+      <!-- Field 1: Reason dropdown -->
+      <div class="form-group">
+        <label class="form-label">Why do you not have the documents?<span class="req"> *</span></label>
+        <select class="form-select">
+          <option value="" disabled selected>Select a reason</option>
+          <option selected>Lost the documents</option>
+          <option>Serving notice period</option>
+          <option>Company shut down</option>
+          <option>Documents never issued</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <!-- Field 2: Detail textarea -->
+      <div class="form-group">
+        <label class="form-label">Explain the reason in detail</label>
+        <div class="form-hint">A detailed reason helps us verify your background faster. Otherwise, we may have to reach out to you, causing delays.</div>
+        <textarea class="form-textarea" style="margin-top: 6px;">I lost my experience letter when I moved to a new city. I have requested a duplicate from my previous employer.</textarea>
+      </div>
+
+      <!-- Field 3: ETA date with validation error -->
+      <div class="form-group">
+        <label class="form-label">When can you expect the documents?</label>
+        <input type="date" class="form-input" value="2024-09-23" style="border-color: #dc2626;">
+        <div class="form-error">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1.5L1.5 12h11L7 1.5z" stroke="#dc2626" stroke-width="1.3" stroke-linejoin="round"/><path d="M7 6v3" stroke="#dc2626" stroke-width="1.3" stroke-linecap="round"/><circle cx="7" cy="10.5" r="0.6" fill="#dc2626"/></svg>
+          ETA cannot be in past
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="modal-footer">
+      <button class="btn-cancel">Cancel</button>
+      <button class="btn-next">Next</button>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

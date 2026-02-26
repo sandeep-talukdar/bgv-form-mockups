@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>BGV Revamp Form — Scenario 1: Homepage (Mobile)</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Poppins', sans-serif; background: #f5f5f7; color: #1a1a2e; width: 390px; margin: 0 auto; }
+
+  .banner {
+    background: #fef9c3; border: 1px solid #f59e0b; padding: 8px 16px;
+    font-size: 11px; font-weight: 600; color: #92400e; text-align: center; line-height: 1.4;
+  }
+
+  /* ── Top nav (mobile) ── */
+  .topnav {
+    background: #fff; padding: 10px 16px; display: flex; align-items: center;
+    justify-content: space-between; border-bottom: 1px solid #e5e7eb;
+  }
+  .topnav-left { display: flex; align-items: center; gap: 8px; }
+  .company-logo {
+    width: 32px; height: 32px; background: #1e293b; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 700; font-size: 12px; flex-shrink: 0;
+  }
+  .topnav .title { font-size: 12px; font-weight: 600; }
+  .topnav .subtitle { font-size: 9px; color: #6b7280; }
+  .sv-powered { display: flex; align-items: center; gap: 4px; font-size: 9px; color: #9ca3af; }
+  .sv-icon { width: 18px; height: 18px; background: #4f46e5; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #fff; font-size: 8px; font-weight: 700; }
+
+  /* ── Progress indicator (replaces sidebar) ── */
+  .progress-bar {
+    background: #fff; padding: 10px 16px; display: flex; gap: 6px; overflow-x: auto;
+    border-bottom: 1px solid #e5e7eb; -webkit-overflow-scrolling: touch;
+  }
+  .progress-bar::-webkit-scrollbar { display: none; }
+  .progress-pill {
+    display: flex; align-items: center; gap: 4px; padding: 4px 10px;
+    border-radius: 16px; font-size: 10px; font-weight: 500; color: #6b7280;
+    background: #f3f4f6; white-space: nowrap; flex-shrink: 0;
+  }
+  .progress-pill.active { background: #eef2ff; color: #4f46e5; font-weight: 600; }
+  .progress-pill.done { background: #d1fae5; color: #065f46; }
+  .progress-pill .pill-icon { font-size: 10px; }
+
+  /* ── Content ── */
+  .content { padding: 20px 16px 100px; }
+
+  /* ── Homepage hero ── */
+  .hero-visual {
+    background: linear-gradient(135deg, #eef2ff, #e0e7ff); border-radius: 12px;
+    padding: 28px; text-align: center; margin-bottom: 16px;
+  }
+  .hero-visual .emoji { font-size: 40px; }
+  .hero-visual .brand { font-size: 12px; color: #4f46e5; font-weight: 600; margin-top: 6px; }
+
+  h2 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+  .welcome-text { font-size: 12px; color: #374151; line-height: 1.6; margin-bottom: 12px; }
+  .checklist { font-size: 12px; color: #374151; line-height: 2; margin-bottom: 20px; }
+
+  /* ── Required docs panel ── */
+  .req-docs { margin-top: 16px; }
+  .req-docs h3 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .req-docs .hint { font-size: 10px; color: #9ca3af; margin-bottom: 14px; line-height: 1.4; }
+  .doc-row {
+    display: flex; gap: 8px; margin-bottom: 14px;
+  }
+  .doc-row .doc-icon {
+    width: 22px; height: 22px; background: #eef2ff; border-radius: 5px;
+    display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0;
+  }
+  .doc-row .doc-title { font-size: 12px; font-weight: 600; }
+  .doc-row .doc-detail { font-size: 10px; color: #6b7280; line-height: 1.4; }
+  .doc-row .doc-detail strong { color: #374151; }
+  .accept-more { color: #4f46e5; cursor: pointer; font-weight: 500; }
+
+  /* ── Sticky bottom bar ── */
+  .bottom-bar {
+    position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 390px;
+    background: #fff; border-top: 1px solid #e5e7eb; padding: 12px 16px;
+    z-index: 100;
+  }
+  .bottom-bar button {
+    width: 100%; background: #1e293b; color: #fff; border: none; padding: 12px;
+    border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit;
+  }
+
+  /* ── Footer ── */
+  .page-footer {
+    background: #1e293b; padding: 12px 16px; text-align: center;
+    font-size: 9px; color: #94a3b8; display: flex; flex-wrap: wrap;
+    align-items: center; justify-content: center; gap: 10px;
+  }
+
+  /* ── Scenario desc ── */
+  .sc-desc {
+    background: #f0f4ff; border: 1px solid #e5e7eb; padding: 8px 16px;
+    font-size: 11px; color: #4338ca; line-height: 1.4;
+  }
+  .sc-desc strong { font-weight: 600; }
+
+  /* ── Engineering note ── */
+  .eng-note {
+    margin: 10px 16px; background: #f9fafb; border-left: 3px solid #d1d5db;
+    border-radius: 4px; padding: 8px 12px; font-size: 10px; color: #6b7280; line-height: 1.5;
+  }
+  .eng-note strong { color: #374151; font-weight: 600; }
+
+</style>
+</head>
+<body>
+
+<div class="banner">PROPOSED DESIGN — Candidate BGV Revamp Form: Mandatory Document Enforcement (Scenario 1: Homepage) (Mobile)</div>
+
+<div class="sc-desc">
+  <strong>State:</strong> Candidate lands on BGV form. Right panel shows "Required documents" per check type. <strong>Preferred</strong> = hero document (top of hierarchy, configured by super admin). <strong>Acceptable</strong> = all collected documents for that check. The homepage shows what the candidate needs upfront.
+</div>
+<div class="eng-note">
+  <strong>Engineering note:</strong> The "Preferred" and "Acceptable" labels are driven by the BGV Form Config API. For each check type: <code>preferred</code> = the hero document (position 0 in hierarchy, always mandatory). <code>acceptable</code> = all other collected documents. If no hero doc is configured (e.g. address), show "Acceptable" only. Identity shows all 5 document types that are collected.
+</div>
+
+<div class="topnav">
+  <div class="topnav-left">
+    <div class="company-logo">J</div>
+    <div><div class="title">Jaguar</div><div class="subtitle">Background verification</div></div>
+  </div>
+  <div class="sv-powered"><span class="sv-icon">S</span></div>
+</div>
+
+<div class="content">
+  <div class="hero-visual">
+    <div class="emoji">&#x1F91D;</div>
+    <div class="brand">SpringVerify</div>
+  </div>
+
+  <h2>Welcome to SpringVerify</h2>
+  <p class="welcome-text">
+    <strong>Jaguar</strong> trusts SpringVerify to verify your background. All questions in this form are based on <strong>Jaguar's verification policies.</strong>
+  </p>
+  <div class="checklist">
+    &#x2705; Ensure your documents are <strong>clear</strong> and <strong>legible</strong>.<br>
+    &#x2705; In case you don't have a document, save your progress and come back later.<br>
+    &#x2705; Review your information, and ensure it's <strong>complete</strong> and <strong>accurate</strong>.
+  </div>
+
+  <div class="req-docs">
+    <h3>Required documents:</h3>
+    <p class="hint">If you don't have a preferred document, don't worry. We will help you along the way. Just get started!</p>
+
+    <div class="doc-row">
+      <div class="doc-icon">&#x1F4C7;</div>
+      <div><div class="doc-title">Identity</div><div class="doc-detail">Acceptable: <strong>Aadhaar, PAN, Driving License, Voter ID, Passport</strong></div></div>
+    </div>
+    <div class="doc-row">
+      <div class="doc-icon">&#x1F4CD;</div>
+      <div><div class="doc-title">Proof of Address <span style="font-weight:400; color:#6b7280;">(Permanent)</span></div><div class="doc-detail">Acceptable: <strong>Aadhaar, Driving License, Voter ID</strong> <span class="accept-more">+15 more</span></div></div>
+    </div>
+    <div class="doc-row">
+      <div class="doc-icon">&#x1F393;</div>
+      <div><div class="doc-title">Graduation</div><div class="doc-detail">Preferred: <strong>Degree Certificate</strong></div></div>
+    </div>
+    <div class="doc-row">
+      <div class="doc-icon">&#x1F393;</div>
+      <div><div class="doc-title">Post Graduation</div><div class="doc-detail">Preferred: <strong>Degree Certificate</strong></div></div>
+    </div>
+    <div class="doc-row">
+      <div class="doc-icon">&#x1F4BC;</div>
+      <div><div class="doc-title">Employment <span style="font-weight:400; color:#6b7280;">(latest)</span></div><div class="doc-detail">Preferred: <strong>Experience Letter</strong></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="bottom-bar">
+  <button>Get started</button>
+</div>
+
+<div class="page-footer" style="padding-bottom: 70px;">
+  <span>&copy;2025, Springrole India Private Limited | All rights reserved.</span>
+  <span>Privacy Policy</span><span>Compliance</span>
+</div>
+
+</body>
+</html>

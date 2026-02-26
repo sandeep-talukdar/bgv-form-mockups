@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>BGV Revamp Form — Scenario 8: Exit Flow — Step 1 (Mobile)</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Poppins', sans-serif; background: #f5f5f7; color: #1a1a2e; width: 390px; margin: 0 auto; }
+
+  .banner { background: #fef9c3; border: 1px solid #f59e0b; padding: 8px 16px; font-size: 11px; font-weight: 600; color: #92400e; text-align: center; line-height: 1.4; }
+
+  .topnav { background: #fff; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e5e7eb; }
+  .topnav-left { display: flex; align-items: center; gap: 8px; }
+  .company-logo { width: 32px; height: 32px; background: #1e293b; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 12px; flex-shrink: 0; }
+  .topnav .title { font-size: 12px; font-weight: 600; }
+  .topnav .subtitle { font-size: 9px; color: #6b7280; }
+  .sv-icon { width: 18px; height: 18px; background: #4f46e5; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #fff; font-size: 8px; font-weight: 700; }
+
+  /* ── Bottom sheet modal (mobile) ── */
+  .sheet-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 200;
+    display: flex; align-items: flex-end; justify-content: center;
+  }
+  .sheet {
+    background: #fff; border-radius: 16px 16px 0 0; width: 390px;
+    max-height: 92vh; overflow-y: auto;
+    box-shadow: 0 -8px 30px rgba(0,0,0,.15);
+    animation: slideUp .25s ease-out;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  .sheet-handle {
+    width: 36px; height: 4px; background: #d1d5db; border-radius: 2px;
+    margin: 10px auto 0;
+  }
+  .sheet-hdr {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 16px; border-bottom: 1px solid #e5e7eb;
+  }
+  .sheet-hdr h3 { font-size: 14px; font-weight: 600; }
+  .sheet-x {
+    width: 24px; height: 24px; border-radius: 50%; border: none;
+    background: #f3f4f6; cursor: pointer; font-size: 14px; color: #6b7280;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .sheet-body { padding: 16px; }
+  .sheet-ftr {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 16px; border-top: 1px solid #e5e7eb;
+  }
+  .sheet-cancel { background: none; border: none; color: #6b7280; font-size: 12px; font-weight: 500; cursor: pointer; font-family: inherit; }
+  .sheet-primary {
+    background: #4f46e5; color: #fff; border: none; padding: 10px 20px;
+    border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit;
+  }
+
+  /* ── Stepper ── */
+  .stepper { display: flex; align-items: center; gap: 6px; margin-bottom: 14px; }
+  .step { display: flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; color: #9ca3af; }
+  .step.active { color: #4f46e5; }
+  .step .step-n {
+    width: 18px; height: 18px; border-radius: 50%; background: #e5e7eb;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 700; color: #6b7280;
+  }
+  .step.active .step-n { background: #4f46e5; color: #fff; }
+  .step.done .step-n { background: #22c55e; color: #fff; }
+  .step-line { flex: 1; height: 1px; border-top: 2px dashed #d1d5db; }
+
+  /* ── Note box ── */
+  .note-box {
+    background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 6px;
+    padding: 10px 12px; font-size: 11px; color: #4338ca; line-height: 1.4; margin-bottom: 14px;
+  }
+  .note-box strong { font-weight: 600; }
+
+  /* ── Form ── */
+  .fg { margin-bottom: 12px; }
+  .fl { font-size: 11px; font-weight: 600; color: #374151; margin-bottom: 4px; display: block; }
+  .fl .req { color: #dc2626; }
+  .fi, .fs, .ft {
+    width: 100%; padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px;
+    font-size: 12px; font-family: inherit; background: #fff;
+  }
+  .ft { min-height: 60px; resize: vertical; }
+  .fhint { font-size: 9px; color: #9ca3af; margin-top: 2px; font-style: italic; }
+  .ferr { font-size: 10px; color: #dc2626; margin-top: 2px; }
+
+  .page-footer { background: #1e293b; padding: 12px 16px; text-align: center; font-size: 9px; color: #94a3b8; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; }
+
+  .sc-desc { background: #f0f4ff; border: 1px solid #e5e7eb; padding: 8px 16px; font-size: 11px; color: #4338ca; line-height: 1.4; }
+  .sc-desc strong { font-weight: 600; }
+  .eng-note { margin: 10px 16px; background: #f9fafb; border-left: 3px solid #d1d5db; border-radius: 4px; padding: 8px 12px; font-size: 10px; color: #6b7280; line-height: 1.5; }
+  .eng-note strong { color: #374151; font-weight: 600; }
+
+</style>
+</head>
+<body>
+
+<div class="banner">PROPOSED DESIGN — Candidate BGV Revamp Form: Mandatory Document Enforcement (Scenario 8: Exit Flow — Step 1) (Mobile)</div>
+
+<div class="sc-desc">
+  <strong>State:</strong> Candidate clicked "I don't have preferred documents." Bottom sheet appears — Step 1: Reasoning. Candidate selects why, provides detail, and gives an ETA. This is NOT a hard block — candidate can proceed after completing this.
+</div>
+<div class="eng-note">
+  <strong>Engineering note:</strong> This bottom sheet replaces the desktop modal (frame 3518:38964). Fields: (1) "Why do you not have the documents?" — dropdown, required. Options: Lost the documents, Serving notice period, Company shut down, Documents never issued, Other. (2) "Explain the reason in detail" — free text, optional but encouraged. (3) "When can you expect the documents?" — date picker, optional. Validation: ETA cannot be in the past. Save all 3 fields to the candidate's check record. On "Next" go to Step 2.
+</div>
+
+<div class="topnav">
+  <div class="topnav-left">
+    <div class="company-logo">J</div>
+    <div><div class="title">Jaguar</div><div class="subtitle">Background verification</div></div>
+  </div>
+  <div><span class="sv-icon">S</span></div>
+</div>
+
+<!-- Bottom sheet overlay -->
+<div class="sheet-overlay">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-hdr"><h3>Preferred documents not available</h3><button class="sheet-x">&times;</button></div>
+    <div class="sheet-body">
+      <div class="stepper">
+        <div class="step active"><div class="step-n">1</div>Reasoning</div>
+        <div class="step-line"></div>
+        <div class="step"><div class="step-n">2</div>Alternate docs</div>
+      </div>
+      <div class="note-box"><strong>Note:</strong> the experience letter is most reliable for verification. You can proceed with alternate documents, but our team might reach out for more details, causing delays.</div>
+      <div class="fg"><label class="fl">Why do you not have the documents?<span class="req">*</span></label><select class="fs"><option>Lost the documents</option><option>Serving notice period</option><option>Company shut down</option><option>Documents never issued</option><option>Other</option></select></div>
+      <div class="fg"><label class="fl">Explain the reason in detail</label><div class="fhint">(A detailed reason helps us verify your background faster.)</div><textarea class="ft" style="margin-top:4px;">I lost my experience letter when I moved to a new city. I have requested a duplicate from my previous employer.</textarea></div>
+      <div class="fg"><label class="fl">When can you expect the documents? &#x24D8;</label><input type="date" class="fi" value="2024-09-23"><div class="ferr">&#x26A0; ETA cannot be in past</div></div>
+    </div>
+    <div class="sheet-ftr"><button class="sheet-cancel">Cancel</button><button class="sheet-primary">Next</button></div>
+  </div>
+</div>
+
+<div class="page-footer">
+  <span>&copy;2025, Springrole India Private Limited | All rights reserved.</span>
+  <span>Privacy Policy</span><span>Compliance</span>
+</div>
+
+</body>
+</html>

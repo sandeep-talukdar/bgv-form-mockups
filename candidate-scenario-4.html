@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>BGV Revamp Form — Scenario 4: Employment — All Mandatory Done</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Figtree', sans-serif; background: #f8f8f8; color: #101828; min-width: 1280px; }
+
+  /* ── PROPOSED DESIGN Banner ── */
+  .banner {
+    background: #fef9c3; border: 1px solid #f59e0b; padding: 10px 20px;
+    font-size: 13px; font-weight: 600; color: #92400e; text-align: center;
+  }
+
+  /* ── Header ── */
+  .header {
+    height: 80px; background: #fff;
+    box-shadow: 0px 1px 8px rgba(93, 92, 245, 0.1);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px; position: relative; z-index: 10;
+  }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .company-logo {
+    width: 56px; height: 56px; border-radius: 50%; background: #1e293b;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 700; font-size: 22px; flex-shrink: 0;
+  }
+  .company-info {}
+  .company-name { font-size: 20px; font-weight: 600; color: #101828; }
+  .company-subtitle { font-size: 12px; font-weight: 500; color: #6a6a6a; margin-top: 2px; }
+  .company-subtitle strong { font-weight: 600; color: #101828; }
+  .header-right { display: flex; align-items: center; gap: 16px; }
+  .review-submit-btn {
+    background: #0828cc; color: #fff; border: none;
+    padding: 12px 44px; border-radius: 8px; font-size: 14px; font-weight: 600;
+    cursor: pointer; font-family: inherit; opacity: 0.4;
+  }
+
+  /* ── Main Layout ── */
+  .main-layout {
+    display: flex; max-width: 1280px; margin: 0 auto;
+    padding: 24px 40px; gap: 16px; min-height: calc(100vh - 80px - 36px);
+  }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    width: 332px; flex-shrink: 0; background: #fff;
+    border: 1px solid #e5e7eb; border-radius: 12px;
+    padding: 20px 0; display: flex; flex-direction: column;
+  }
+  .sb-section-label {
+    font-size: 14px; font-weight: 500; color: #101828;
+    text-transform: uppercase; padding: 0 20px; margin-bottom: 8px;
+    margin-top: 4px;
+  }
+  .sb-items { padding: 0; }
+  .sb-item {
+    display: flex; align-items: center; gap: 12px;
+    height: 60px; padding: 8px 16px; cursor: pointer;
+    border-left: 4px solid transparent; transition: all 0.15s;
+  }
+  .sb-item:hover { background: #fafafa; }
+  .sb-item.active {
+    background: #f5f7ff; border-left-color: #1e40af;
+  }
+  .sb-item.active .sb-item-label { font-weight: 600; color: #1e40af; }
+  .sb-item-icon {
+    width: 24px; height: 24px; display: flex; align-items: center;
+    justify-content: center; flex-shrink: 0;
+  }
+  .sb-item-label {
+    font-size: 16px; font-weight: 500; color: #101828;
+    width: 100px; flex-shrink: 0;
+  }
+  .sb-item-progress {
+    flex: 1; display: flex; align-items: center; justify-content: flex-end; gap: 8px;
+  }
+  .sb-progress-bar {
+    width: 140px; height: 6px; background: #eef2ff; border-radius: 3px;
+    overflow: hidden;
+  }
+  .sb-progress-bar .fill {
+    height: 100%; background: #0f973d; border-radius: 3px;
+  }
+  .sb-status-dots { display: flex; gap: 4px; align-items: center; }
+
+  .sb-divider {
+    height: 1px; background: #e5e7eb; margin: 12px 20px;
+  }
+
+  .sb-footer {
+    margin-top: auto; padding: 20px 20px 8px; opacity: 0.8;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .sb-footer-powered {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 300; font-style: italic; color: #6b7280;
+  }
+  .sb-footer-powered .sv-logo {
+    width: 18px; height: 18px; background: #0828cc; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 9px; font-weight: 700;
+  }
+  .sb-footer-powered strong { font-weight: 600; font-style: normal; color: #101828; }
+  .sb-footer-secure {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 12px; font-weight: 400; color: #6b7280;
+  }
+
+  /* ── Content Area ── */
+  .content-area { flex: 1; display: flex; flex-direction: column; gap: 16px; }
+
+  /* Section title card */
+  .section-title-card {
+    background: #fff; border: 1px solid #d9d9d9; border-radius: 12px;
+    min-height: 72px; display: flex; align-items: center;
+    padding: 16px 24px; gap: 10px;
+  }
+  .section-title-card h2 { font-size: 24px; font-weight: 600; color: #101828; }
+  .section-title-dots { display: flex; gap: 6px; align-items: center; }
+
+  /* Sub-section card */
+  .subsection-card {
+    background: #fff; border: 1px solid #d9d9d9; border-radius: 12px;
+    overflow: hidden;
+  }
+  .subsection-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 18px 24px; border-bottom: 1px solid #f3f4f6;
+  }
+  .subsection-header h3 { font-size: 18px; font-weight: 600; color: #101828; }
+  .subsection-header .check-icon {
+    width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;
+  }
+  .subsection-content { padding: 20px 24px 24px; }
+
+  /* ── Form Fields ── */
+  .form-group { margin-bottom: 16px; }
+  .form-label {
+    font-size: 14px; font-weight: 600; color: #101828; margin-bottom: 6px; display: block;
+  }
+  .form-label .req { color: #dc2626; }
+  .form-input, .form-select {
+    width: 100%; padding: 11px 14px; border: 1px solid #d9d9d9; border-radius: 8px;
+    font-size: 14px; font-family: inherit; background: #fff; color: #101828;
+    appearance: auto;
+  }
+  .form-select { cursor: pointer; }
+
+  /* ── Preferred doc label + mandatory badge ── */
+  .pref-label-row {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 10px; margin-top: 4px;
+  }
+  .pref-label { font-size: 14px; color: #6a6a6a; }
+  .pref-label strong { color: #101828; font-weight: 600; }
+  .mand-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: #fef2f2; color: #dc2626; font-size: 12px; font-weight: 600;
+    padding: 3px 12px; border-radius: 12px; border: 1px solid #fecaca;
+  }
+
+  /* ── Uploaded file row ── */
+  .uploaded-file-row {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px;
+    padding: 12px 16px; margin-bottom: 8px;
+  }
+  .uploaded-file-left { display: flex; align-items: center; gap: 12px; }
+  .uploaded-file-icon {
+    width: 36px; height: 36px; background: #fee2e2; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .uploaded-file-info {}
+  .uploaded-file-name { font-size: 14px; font-weight: 600; color: #101828; }
+  .uploaded-file-meta { font-size: 12px; color: #6a6a6a; margin-top: 2px; }
+  .uploaded-file-right { display: flex; align-items: center; gap: 10px; }
+  .uploaded-file-check {
+    width: 24px; height: 24px; background: #dcfce7; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .uploaded-file-delete {
+    width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+
+  /* ── Upload success message ── */
+  .upload-success-msg {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 600; color: #0f973d; margin-bottom: 16px;
+  }
+
+  /* ── Mandatory documents group ── */
+  .mandatory-group {
+    border: 1.5px solid #fca5a5; border-radius: 12px; overflow: hidden; margin-bottom: 16px;
+  }
+  .mandatory-group.completed {
+    border-color: #86efac;
+  }
+  .mandatory-group-header {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #fef2f2; padding: 12px 16px;
+  }
+  .mandatory-group.completed .mandatory-group-header {
+    background: #f0fdf4;
+  }
+  .mandatory-group-title {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 14px; font-weight: 600; color: #dc2626;
+  }
+  .mandatory-group.completed .mandatory-group-title { color: #0f973d; }
+  .mandatory-count-badge {
+    background: #dc2626; color: #fff;
+    font-size: 11px; font-weight: 700;
+    width: 22px; height: 22px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .mandatory-group.completed .mandatory-count-badge { background: #0f973d; }
+  .mandatory-group-body { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+
+  /* ── Mandatory doc item row ── */
+  .mand-doc-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-bottom: 12px; border-bottom: 1px solid #f3f4f6;
+  }
+  .mand-doc-item:last-of-type { border-bottom: none; padding-bottom: 0; }
+  .mand-doc-name { font-size: 14px; font-weight: 500; color: #101828; }
+  .status-pill {
+    font-size: 12px; font-weight: 600; padding: 3px 12px; border-radius: 20px;
+  }
+  .status-pill.pending {
+    background: #fef9c3; color: #92400e; border: 1px solid #fde68a;
+  }
+  .status-pill.uploaded {
+    background: #dcfce7; color: #166534; border: 1px solid #86efac;
+  }
+
+  /* ── Optional documents list ── */
+  .optional-docs-section { margin-top: 4px; }
+  .optional-docs-label {
+    font-size: 12px; font-weight: 600; color: #6a6a6a; margin-bottom: 10px;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .optional-doc-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 0; border-bottom: 1px solid #f3f4f6;
+  }
+  .optional-doc-item:last-child { border-bottom: none; }
+  .optional-doc-name { font-size: 14px; font-weight: 500; color: #101828; }
+  .upload-opt-btn {
+    background: #fff; border: 1px solid #d9d9d9; border-radius: 6px;
+    padding: 6px 14px; font-size: 13px; font-weight: 500; color: #0828cc;
+    cursor: pointer; font-family: inherit;
+  }
+
+  /* ── Proceed button ── */
+  .proceed-row { display: flex; justify-content: flex-end; margin-top: 20px; }
+  .proceed-btn {
+    background: #0828cc; color: #fff; border: none;
+    width: 168px; height: 44px; border-radius: 8px;
+    font-size: 16px; font-weight: 500; cursor: pointer; font-family: inherit;
+  }
+  .proceed-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* ── Engineering / Scenario Notes ── */
+  .sc-desc {
+    max-width: 1280px; margin: 0 auto; background: #f0f4ff; border: 1px solid #e5e7eb;
+    padding: 10px 40px; font-size: 12px; color: #4338ca; line-height: 1.5;
+  }
+  .sc-desc strong { font-weight: 600; }
+  .eng-note {
+    max-width: 1280px; margin: 0 auto; background: #f9fafb;
+    border-left: 3px solid #d1d5db; border-radius: 4px; padding: 10px 40px;
+    font-size: 11px; color: #6b7280; line-height: 1.6;
+  }
+  .eng-note strong { color: #374151; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="banner">PROPOSED DESIGN — Candidate BGV Revamp Form: Employment — All Mandatory Done (Scenario 4)</div>
+
+<div class="sc-desc">
+  <strong>State:</strong> All mandatory documents for Employment 1 have been uploaded. The hero doc (Experience Letter) shows as uploaded. The mandatory group turns green with a "All mandatory documents uploaded" label and the Relieving Letter shows an "Uploaded" status pill. Proceed button is now ENABLED (full opacity).
+</div>
+<div class="eng-note">
+  <strong>Engineering note:</strong> Once all mandatory docs in the group reach Uploaded status, the mandatory group border and header background switch to green. The count badge also turns green. Proceed button becomes enabled. Identity is still in "Yet to complete" in the sidebar (not yet started in this scenario).
+</div>
+
+<!-- ── Header ── -->
+<div class="header">
+  <div class="header-left">
+    <div class="company-logo">J</div>
+    <div class="company-info">
+      <div class="company-name">Background verification for Jaguar</div>
+      <div class="company-subtitle">All questions in this form are based on <strong>Jaguar's verification policies.</strong></div>
+    </div>
+  </div>
+  <div class="header-right">
+    <button class="review-submit-btn" disabled>Review &amp; Submit</button>
+  </div>
+</div>
+
+<!-- ── Main Layout ── -->
+<div class="main-layout">
+
+  <!-- ── Sidebar ── -->
+  <div class="sidebar">
+    <div class="sb-section-label">Yet to complete</div>
+    <div class="sb-items">
+
+      <!-- Employment — active -->
+      <div class="sb-item active">
+        <div class="sb-item-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 7H4c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2z" fill="#101828" opacity="0.5"/>
+            <path d="M16 7V5c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2" stroke="#101828" stroke-width="1.5"/>
+            <rect x="2" y="7" width="20" height="4" rx="1" fill="#101828" opacity="0.7"/>
+          </svg>
+        </div>
+        <div class="sb-item-label">Employment</div>
+        <div class="sb-item-progress">
+          <div class="sb-status-dots">
+            <!-- 1 done, 1 incomplete -->
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#0f973d"/><path d="M5 8l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#98a2b3" stroke-width="1.5"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Identity -->
+      <div class="sb-item">
+        <div class="sb-item-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="4" width="20" height="16" rx="2" stroke="#101828" stroke-width="1.5"/>
+            <circle cx="9" cy="11" r="2.5" stroke="#101828" stroke-width="1.5"/>
+            <path d="M5 18c0-2 1.5-3 4-3s4 1 4 3" stroke="#101828" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="15" y1="9" x2="19" y2="9" stroke="#101828" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="15" y1="13" x2="19" y2="13" stroke="#101828" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="sb-item-label">Identity</div>
+        <div class="sb-item-progress">
+          <div class="sb-status-dots">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#98a2b3" stroke-width="1.5"/></svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#98a2b3" stroke-width="1.5"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Education -->
+      <div class="sb-item">
+        <div class="sb-item-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z" fill="#101828" opacity="0.7"/>
+            <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" fill="#101828" opacity="0.5"/>
+          </svg>
+        </div>
+        <div class="sb-item-label">Education</div>
+        <div class="sb-item-progress">
+          <div class="sb-status-dots">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#98a2b3" stroke-width="1.5"/></svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#98a2b3" stroke-width="1.5"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Address -->
+      <div class="sb-item">
+        <div class="sb-item-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#101828" opacity="0.6"/>
+            <circle cx="12" cy="9" r="2.5" fill="#fff"/>
+          </svg>
+        </div>
+        <div class="sb-item-label">Address</div>
+        <div class="sb-item-progress">
+          <div class="sb-status-dots">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#98a2b3" stroke-width="1.5"/></svg>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sb-divider"></div>
+
+    <!-- Completed section -->
+    <div class="sb-section-label">Completed</div>
+    <div class="sb-items">
+      <div class="sb-item">
+        <div class="sb-item-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="8" r="4" fill="#101828" opacity="0.6"/>
+            <path d="M4 20c0-3.31 3.58-6 8-6s8 2.69 8 6" fill="#101828" opacity="0.4"/>
+          </svg>
+        </div>
+        <div class="sb-item-label">Basic details</div>
+        <div class="sb-item-progress">
+          <div class="sb-progress-bar"><div class="fill" style="width: 100%;"></div></div>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#0f973d"/><path d="M5 8l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="sb-footer">
+      <div class="sb-footer-powered">
+        Powered by <span class="sv-logo">S</span> <strong>SpringVerify</strong>
+      </div>
+      <div class="sb-footer-secure">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L2 3v3c0 3.5 2.1 6.4 5 7.5 2.9-1.1 5-4 5-7.5V3L7 1z" stroke="#6b7280" stroke-width="1.2"/><path d="M5 7l1.5 1.5L9.5 5" stroke="#6b7280" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        100% Secure
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Content Area ── -->
+  <div class="content-area">
+
+    <!-- Section title card -->
+    <div class="section-title-card">
+      <h2>Employment</h2>
+      <div class="section-title-dots">
+        <!-- 1 done dot, 1 incomplete dot -->
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" fill="#0f973d"/><path d="M3.5 6l1.5 1.5L8.5 4" stroke="#fff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#98a2b3" stroke-width="1.5"/></svg>
+      </div>
+    </div>
+
+    <!-- ═══════════ Employment 1 Sub-section ═══════════ -->
+    <div class="subsection-card">
+      <div class="subsection-header">
+        <h3>Employment 1</h3>
+        <div class="check-icon">
+          <!-- Completed check icon — green -->
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" fill="#0f973d"/><path d="M7 10l2 2 4-4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+      <div class="subsection-content">
+
+        <!-- Employment type dropdown -->
+        <div class="form-group">
+          <label class="form-label">Employment type<span class="req">*</span></label>
+          <select class="form-select">
+            <option>Full time</option>
+          </select>
+        </div>
+
+        <!-- Preferred doc label -->
+        <div class="pref-label-row">
+          <span class="pref-label"><strong>Preferred:</strong> Experience Letter</span>
+          <span class="mand-badge">Mandatory</span>
+        </div>
+
+        <!-- Hero doc uploaded — file row -->
+        <div class="uploaded-file-row">
+          <div class="uploaded-file-left">
+            <div class="uploaded-file-icon">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <rect x="3" y="2" width="14" height="16" rx="2" fill="#fff" stroke="#fca5a5" stroke-width="1.2"/>
+                <path d="M6 7h8M6 10h6M6 13h4" stroke="#fca5a5" stroke-width="1.2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="uploaded-file-info">
+              <div class="uploaded-file-name">Experience_Letter_Jaguar.pdf</div>
+              <div class="uploaded-file-meta">245 KB &middot; Uploaded just now</div>
+            </div>
+          </div>
+          <div class="uploaded-file-right">
+            <div class="uploaded-file-check">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7l2.5 2.5L11 4.5" stroke="#0f973d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="uploaded-file-delete">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 4h10M6 4V3h4v1M5 4v8a1 1 0 001 1h4a1 1 0 001-1V4" stroke="#98a2b3" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Success message -->
+        <div class="upload-success-msg">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#0f973d"/><path d="M5 8l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Preferred document uploaded
+        </div>
+
+        <!-- Mandatory documents group — COMPLETED (green) -->
+        <div class="mandatory-group completed">
+          <div class="mandatory-group-header">
+            <div class="mandatory-group-title">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#0f973d"/><path d="M5 8l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              All mandatory documents uploaded
+            </div>
+            <div class="mandatory-count-badge">1</div>
+          </div>
+          <div class="mandatory-group-body">
+            <!-- Relieving Letter — Uploaded -->
+            <div class="mand-doc-item">
+              <div class="mand-doc-name">Relieving Letter</div>
+              <span class="status-pill uploaded">Uploaded</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Optional documents -->
+        <div class="optional-docs-section">
+          <div class="optional-docs-label">Optional documents</div>
+          <div class="optional-doc-item">
+            <span class="optional-doc-name">Offer Letter</span>
+            <button class="upload-opt-btn">+ Upload</button>
+          </div>
+          <div class="optional-doc-item">
+            <span class="optional-doc-name">Appointment Letter</span>
+            <button class="upload-opt-btn">+ Upload</button>
+          </div>
+          <div class="optional-doc-item">
+            <span class="optional-doc-name">Payslips (last 3 months)</span>
+            <button class="upload-opt-btn">+ Upload</button>
+          </div>
+          <div class="optional-doc-item">
+            <span class="optional-doc-name">Form 16</span>
+            <button class="upload-opt-btn">+ Upload</button>
+          </div>
+          <div class="optional-doc-item">
+            <span class="optional-doc-name">Bank Statement</span>
+            <button class="upload-opt-btn">+ Upload</button>
+          </div>
+        </div>
+
+        <!-- Proceed — ENABLED -->
+        <div class="proceed-row">
+          <button class="proceed-btn">Proceed</button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
