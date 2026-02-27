@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=1280">
-<title>BGV Revamp Form — Scenario 11: Mandatory Document — Reason &amp; ETA</title>
+<title>BGV Revamp Form — Scenario 19: Mandatory Document — Reason Provided</title>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 <style>
@@ -36,7 +36,7 @@
   .review-submit-btn {
     background: #0828cc; color: #fff; border: none;
     padding: 12px 44px; border-radius: 8px; font-size: 14px; font-weight: 600;
-    cursor: pointer; font-family: inherit; opacity: 0.4;
+    cursor: pointer; font-family: inherit;
   }
 
   /* ── Main Layout ── */
@@ -146,11 +146,8 @@
     font-size: 14px; font-family: inherit; background: #fff; color: #101828;
   }
   .ft { min-height: 80px; resize: vertical; }
-  .fi.error { border-color: #dc2626; }
-  .ferr { font-size: 12px; color: #dc2626; margin-top: 4px; }
-  .fhint { font-size: 11px; color: #98a2b3; margin-top: 4px; font-style: italic; }
 
-  /* ── Preferred doc uploaded ── */
+  /* ── Preferred doc label ── */
   .pref-label-row {
     display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
   }
@@ -182,68 +179,85 @@
     font-size: 13px; color: #0f973d; font-weight: 500; margin-bottom: 16px;
   }
 
-  /* ── Mandatory docs group (red) ── */
+  /* ── Status pills ── */
+  .status-pill {
+    font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 12px;
+    flex-shrink: 0;
+  }
+  .status-pill.pending { background: #fef3c7; color: #92400e; }
+  .status-pill.reason-provided {
+    background: #fffbeb; color: #92400e; border: 1px solid #fde68a;
+  }
+
+  /* ── Mandatory group — resolved / amber state ── */
   .mand-group {
-    background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px;
-    padding: 14px 16px; margin-bottom: 16px;
+    border-radius: 10px; padding: 14px 16px; margin-bottom: 16px;
+    border: 1px solid;
+  }
+  .mand-group.resolved {
+    background: #fffbeb; border-color: #fde68a;
   }
   .mand-group-header {
     display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
   }
-  .mand-group-header h4 { font-size: 13px; font-weight: 600; color: #dc2626; }
+  .mand-group.resolved .mand-group-header h4 {
+    font-size: 13px; font-weight: 600; color: #92400e;
+  }
+  .mand-count-badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 20px; height: 20px; border-radius: 50%;
+    font-size: 11px; font-weight: 700; color: #fff;
+    background: #f59e0b;
+  }
+
+  /* Mandatory doc item — amber variant */
   .mand-doc-item {
-    display: flex; align-items: center; gap: 10px; padding: 10px 12px;
-    background: #fff; border: 1px solid #fecaca; border-radius: 8px; margin-bottom: 8px;
+    display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px;
+    background: #fff; border: 1px solid #fde68a; border-radius: 8px; margin-bottom: 0;
+    flex-direction: column;
+  }
+  .mand-doc-item-top {
+    display: flex; align-items: center; gap: 10px; width: 100%;
   }
   .md-doc-icon {
-    width: 28px; height: 28px; background: #fef2f2; border-radius: 6px;
+    width: 28px; height: 28px; background: #fffbeb; border-radius: 6px;
     display: flex; align-items: center; justify-content: center; flex-shrink: 0;
   }
   .md-label { flex: 1; font-size: 13px; font-weight: 500; color: #101828; }
-  .status-pill {
-    font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 12px;
-  }
-  .status-pill.pending { background: #fef3c7; color: #92400e; }
 
-  /* "I don't have" link — active/selected state */
-  .no-doc-link {
-    font-size: 13px; font-weight: 600; color: #0828cc;
-    text-decoration: underline; cursor: pointer; display: inline-block;
-    margin-top: 4px; margin-bottom: 10px;
+  /* Reason summary block */
+  .reason-summary {
+    font-size: 12px; color: #98a2b3; line-height: 1.6;
+    padding: 8px 12px; background: #fafafa; border-radius: 6px; width: 100%;
   }
-  .no-doc-link.active-state {
-    background: #eef2ff; color: #1e40af; padding: 4px 12px; border-radius: 6px;
-    text-decoration: underline; display: inline-flex; align-items: center; gap: 6px;
+  .reason-summary-row {
+    display: flex; align-items: baseline; gap: 4px; margin-bottom: 2px;
+  }
+  .reason-summary-label {
+    font-size: 11px; font-weight: 600; color: #b45309; white-space: nowrap;
+    text-transform: uppercase; letter-spacing: 0.3px;
+  }
+  .reason-summary-value {
+    font-size: 12px; color: #6b7280;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 380px;
+  }
+  .reason-summary-eta { color: #101828; font-weight: 500; }
+  .edit-link {
+    color: #0828cc; font-weight: 600; font-size: 12px; text-decoration: none;
+    cursor: pointer; margin-left: 8px; white-space: nowrap;
   }
 
-  /* ── Reason + ETA inline expansion ── */
-  .reason-eta-section {
-    background: #fafbfc; border: 1px solid #e5e7eb; border-radius: 10px;
-    padding: 16px 18px; margin-top: 4px;
-  }
-  .reason-eta-label {
-    font-size: 12px; font-weight: 600; color: #6a6a6a; text-transform: uppercase;
-    letter-spacing: 0.4px; margin-bottom: 14px;
-    display: flex; align-items: center; gap: 6px;
-  }
-  .confirm-btn {
-    background: #0828cc; color: #fff; border: none;
-    padding: 8px 22px; border-radius: 8px; font-size: 13px; font-weight: 600;
-    cursor: pointer; font-family: inherit; margin-top: 4px;
+  /* ── All resolved success box ── */
+  .all-resolved-box {
+    background: #f0fdf4; border: 1px solid #86efac; border-radius: 10px;
+    padding: 12px 16px; display: flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 500; color: #166534; margin-bottom: 16px;
   }
 
   /* ── Optional docs ── */
   .opt-group { margin-bottom: 16px; }
   .opt-group h4 { font-size: 13px; font-weight: 600; color: #6a6a6a; margin-bottom: 6px; }
   .opt-list { font-size: 13px; color: #98a2b3; line-height: 1.8; }
-
-  /* ── Warning banner (amber) ── */
-  .warn-banner {
-    background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px;
-    padding: 14px 16px; font-size: 13px; color: #92400e;
-    display: flex; align-items: flex-start; gap: 10px; margin-bottom: 16px; line-height: 1.6;
-  }
-  .warn-banner-icon { flex-shrink: 0; margin-top: 1px; }
 
   /* ── Proceed button ── */
   .proceed-row { display: flex; justify-content: flex-end; margin-top: 8px; }
@@ -296,13 +310,13 @@
 </head>
 <body>
 
-<div class="banner">PROPOSED DESIGN — Candidate BGV Revamp Form: Mandatory Document — Reason &amp; ETA (Scenario 11)</div>
+<div class="banner">PROPOSED DESIGN — Candidate BGV Revamp Form: Mandatory Document — Reason Provided (Scenario 19)</div>
 
 <div class="sc-desc">
-  <strong>State:</strong> Hero document (Experience Letter) has been uploaded. For the mandatory non-hero document (Relieving Letter), candidate clicked "I don't have this document" — the inline reason + ETA fields are now expanded. The ETA date field shows a validation error ("ETA cannot be in past."). Proceed remains disabled until the candidate provides both reason and a future ETA date.
+  <strong>State:</strong> AFTER state of Scenario 11. The candidate has uploaded the hero document (Experience Letter) and provided a reason + ETA for the mandatory non-hero document (Relieving Letter). The Relieving Letter now shows a "Reason provided" amber pill. The mandatory group border and header turn amber to reflect the resolved-but-not-uploaded state. An "All mandatory documents have been resolved" success banner appears above the optional documents section. The Proceed button is now <strong>enabled</strong>.
 </div>
 <div class="eng-note">
-  <strong>Engineering note:</strong> Inline reason + ETA expansion is for mandatory NON-hero documents only. Hero doc exit flow uses the 2-step modal (Scenarios 8–9). When the candidate clicks "I don't have this document" for a mandatory non-hero doc, expand the reason + ETA fields inline. Candidate cannot proceed until they either upload the doc or provide both reason and a valid future ETA.
+  <strong>Engineering note:</strong> When a candidate successfully confirms reason + ETA for a mandatory non-hero document, collapse the inline form and show the reason summary instead. Transition the mandatory group from red (<code>border: #fecaca</code>) to amber (<code>border: #fde68a</code>) to signal the resolved state. The status pill on the document row changes from "Pending" to "Reason provided". The Proceed button becomes enabled once all mandatory documents are either uploaded or have a confirmed reason + ETA. The candidate can re-expand and edit via the "Edit" link.
 </div>
 
 <!-- ── Header ── -->
@@ -315,7 +329,7 @@
     </div>
   </div>
   <div class="header-right">
-    <button class="review-submit-btn" onclick="window.location.href='candidate-scenario-12-review.html'" style="cursor:pointer; opacity:1;">Review &amp; Submit</button>
+    <button class="review-submit-btn" onclick="window.location.href='candidate-scenario-12-review.html'">Review &amp; Submit</button>
   </div>
 </div>
 
@@ -377,7 +391,7 @@
           </div>
         </div>
       </div>
-      <!-- Employment — active, one done dot + one warn dot -->
+      <!-- Employment — active, 1 green check (hero done) + 1 amber dot (reason provided) -->
       <div class="sb-item active">
         <div class="sb-item-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -389,9 +403,9 @@
         <div class="sb-item-label">Employment</div>
         <div class="sb-item-progress">
           <div class="sb-status-dots">
-            <!-- hero done -->
+            <!-- hero uploaded — green check -->
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#0f973d"/><path d="M5 8l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <!-- mandatory pending -->
+            <!-- mandatory reason provided — amber dot -->
             <div class="sb-warn-dot"></div>
           </div>
         </div>
@@ -437,7 +451,9 @@
     <div class="section-title-card">
       <h2>Employment</h2>
       <div class="section-title-dots">
+        <!-- hero uploaded dot -->
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" fill="#0f973d"/><path d="M3.5 6l1.5 1.5 3-3" stroke="#fff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <!-- reason provided amber dot -->
         <div class="sb-warn-dot" style="width:12px; height:12px;"></div>
       </div>
     </div>
@@ -456,7 +472,7 @@
           <select class="fs"><option>Full time</option></select>
         </div>
 
-        <!-- Hero doc: Experience Letter UPLOADED -->
+        <!-- Hero doc: Experience Letter — UPLOADED -->
         <div class="pref-label-row">
           <span class="pref-label"><strong>Preferred:</strong> Experience Letter</span>
           <span class="mand-badge">Mandatory</span>
@@ -484,67 +500,54 @@
           Preferred document uploaded
         </div>
 
-        <!-- Mandatory group: Relieving Letter -->
-        <div class="mand-group">
+        <!-- Mandatory group — RESOLVED / AMBER state -->
+        <div class="mand-group resolved">
           <div class="mand-group-header">
+            <!-- Amber info icon -->
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M8 1.5L1 13.5h14L8 1.5z" fill="#fef2f2" stroke="#fecaca" stroke-width="1" stroke-linejoin="round"/>
-              <path d="M8 6v4" stroke="#dc2626" stroke-width="1.3" stroke-linecap="round"/>
-              <circle cx="8" cy="11.5" r="0.6" fill="#dc2626"/>
+              <circle cx="8" cy="8" r="6.5" fill="#fffbeb" stroke="#fde68a" stroke-width="1"/>
+              <path d="M8 5.5v.5" stroke="#92400e" stroke-width="1.4" stroke-linecap="round"/>
+              <path d="M8 8v3" stroke="#92400e" stroke-width="1.4" stroke-linecap="round"/>
             </svg>
             <h4>Other mandatory documents</h4>
+            <div class="mand-count-badge">1</div>
           </div>
 
-          <!-- Relieving Letter — Pending -->
+          <!-- Relieving Letter — Reason provided -->
           <div class="mand-doc-item">
-            <div class="md-doc-icon">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M2.5 1.5h6l3 3v8.5a.5.5 0 01-.5.5h-8a.5.5 0 01-.5-.5v-11a.5.5 0 01.5-.5z" fill="#fef2f2" stroke="#fecaca" stroke-width="1"/>
-                <path d="M8.5 1.5v3.5h3" stroke="#fecaca" stroke-width="1" stroke-linecap="round"/>
-              </svg>
+            <div class="mand-doc-item-top">
+              <div class="md-doc-icon">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path d="M2.5 1.5h6l3 3v8.5a.5.5 0 01-.5.5h-8a.5.5 0 01-.5-.5v-11a.5.5 0 01.5-.5z" fill="#fffbeb" stroke="#fde68a" stroke-width="1"/>
+                  <path d="M8.5 1.5v3.5h3" stroke="#fde68a" stroke-width="1" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <span class="md-label">Relieving Letter</span>
+              <span class="status-pill reason-provided">Reason provided</span>
             </div>
-            <span class="md-label">Relieving Letter</span>
-            <span class="status-pill pending">Pending</span>
+
+            <!-- Collapsed reason + ETA summary -->
+            <div class="reason-summary">
+              <div class="reason-summary-row">
+                <span class="reason-summary-label">Reason:</span>
+                <span class="reason-summary-value">I resigned recently and my employer hasn't issued the relieving letter yet. I've requested it from HR&hellip;</span>
+                <a class="edit-link">Edit</a>
+              </div>
+              <div class="reason-summary-row">
+                <span class="reason-summary-label">ETA:</span>
+                <span class="reason-summary-value reason-summary-eta">15 Mar 2026</span>
+              </div>
+            </div>
           </div>
+        </div>
 
-          <!-- "I don't have" link — active/selected state -->
-          <div style="margin-top: 10px;">
-            <span class="no-doc-link active-state">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <circle cx="7" cy="7" r="6" stroke="#1e40af" stroke-width="1.2"/>
-                <path d="M7 5v.5" stroke="#1e40af" stroke-width="1.4" stroke-linecap="round"/>
-                <path d="M7 7.5v3" stroke="#1e40af" stroke-width="1.4" stroke-linecap="round"/>
-              </svg>
-              I don't have this document
-            </span>
-          </div>
-
-          <!-- Inline reason + ETA expansion -->
-          <div class="reason-eta-section">
-            <div class="reason-eta-label">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M9.5 2L12 4.5l-7 7H2.5V9L9.5 2z" stroke="#6a6a6a" stroke-width="1.2" stroke-linejoin="round"/>
-              </svg>
-              Tell us why you can't upload this document
-            </div>
-
-            <!-- Reason textarea -->
-            <div class="fg">
-              <label class="fl">Explain the reason in detail <span class="req">*</span></label>
-              <textarea class="ft" placeholder="e.g., I resigned recently and my employer hasn't issued the relieving letter yet. I've requested it from HR and expect it within 2 weeks." style="min-height: 80px;"></textarea>
-              <div class="fhint">A detailed reason helps us verify your background faster. Otherwise, we may have to reach out to you, causing delays.</div>
-            </div>
-
-            <!-- ETA field with validation error -->
-            <div class="fg" style="margin-bottom: 12px;">
-              <label class="fl">When can you expect the document? <span class="req">*</span></label>
-              <input type="text" class="fi error" value="15 Jan 2026" placeholder="Select a date" />
-              <div class="ferr">ETA cannot be in past.</div>
-            </div>
-
-            <!-- Confirm button -->
-            <button class="confirm-btn">Confirm</button>
-          </div>
+        <!-- All mandatory resolved — green success box -->
+        <div class="all-resolved-box">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <circle cx="9" cy="9" r="8" fill="#0f973d"/>
+            <path d="M5.5 9l2.5 2.5 5-5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          All mandatory documents have been resolved. You can now proceed.
         </div>
 
         <!-- Optional documents -->
@@ -553,19 +556,7 @@
           <div class="opt-list">Offer Letter, Appointment Letter, Payslips, Resignation Acceptance Letter, Full and Final Settlement, Form 16, Form 26AS, Bank Statement</div>
         </div>
 
-        <!-- Warning banner -->
-        <div class="warn-banner">
-          <div class="warn-banner-icon">
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-              <path d="M9 1.5L1.5 15h15L9 1.5z" fill="#fde68a" stroke="#f59e0b" stroke-width="1.2" stroke-linejoin="round"/>
-              <path d="M9 7v4" stroke="#92400e" stroke-width="1.4" stroke-linecap="round"/>
-              <circle cx="9" cy="12.5" r="0.7" fill="#92400e"/>
-            </svg>
-          </div>
-          <span>You must either upload the Relieving Letter or provide a reason and expected date before you can proceed.</span>
-        </div>
-
-        <!-- Proceed button -->
+        <!-- Proceed button — ENABLED -->
         <div class="proceed-row">
           <button class="proceed-btn" onclick="window.location.href='candidate-scenario-12-review.html'">Proceed</button>
         </div>
@@ -580,35 +571,35 @@
   <a href="index.html" class="nav-home" title="Back to Index">&#9776; Index</a>
   <span class="nav-sep"></span>
   <span class="nav-label">Identity</span>
-  <a href="candidate-scenario-1.html" title="S1: Identity Base">1</a>
-  <a href="candidate-scenario-6.html" title="S6: Identity Mandatory">6</a>
+  <a href="candidate-scenario-1.html" title="S1: Identity — Base State">1</a>
+  <a href="candidate-scenario-6.html" title="S6: Identity — Mandatory &amp; Optional">6</a>
   <span class="nav-sep"></span>
   <span class="nav-label">Education</span>
-  <a href="candidate-scenario-2.html" title="S2: Education All Levels">2</a>
-  <a href="candidate-scenario-5.html" title="S5: Education Mandatory">5</a>
+  <a href="candidate-scenario-2.html" title="S2: Education — All 4 Levels">2</a>
+  <a href="candidate-scenario-5.html" title="S5: Education — Mandatory Documents">5</a>
   <a href="candidate-scenario-14-education-skipped.html" title="S14: Education — Skipped Level">14</a>
   <span class="nav-sep"></span>
   <span class="nav-label">Address</span>
-  <a href="candidate-scenario-7.html" title="S7: Address">7</a>
+  <a href="candidate-scenario-7.html" title="S7: Address — Permanent &amp; Current">7</a>
   <span class="nav-sep"></span>
   <span class="nav-label">Employment</span>
-  <a href="candidate-scenario-3.html" title="S3: Employment Hero">3</a>
-  <a href="candidate-scenario-4.html" title="S4: Employment Done">4</a>
-  <a href="candidate-scenario-10.html" title="S10: Non-Preferred">10</a>
-  <a href="candidate-scenario-11.html" class="active" title="S11: Reason & ETA">11</a>
+  <a href="candidate-scenario-3.html" title="S3: Employment — Hero Uploaded">3</a>
+  <a href="candidate-scenario-4.html" title="S4: Employment — All Mandatory Done">4</a>
+  <a href="candidate-scenario-10.html" title="S10: Non-Preferred First Warning">10</a>
+  <a href="candidate-scenario-11.html" title="S11: Mandatory Doc — Reason &amp; ETA">11</a>
   <a href="candidate-scenario-13-fresher.html" title="S13: Employment — Fresher">13</a>
   <a href="candidate-scenario-15-multi-employment.html" title="S15: Employment — Multiple Records">15</a>
-  <a href="candidate-scenario-16-at-least-one.html" title="S16: At Least One Required">16</a>
-  <a href="candidate-scenario-17-fresher-warning.html" title="S17: Fresher Warning Modal">17</a>
-  <a href="candidate-scenario-18-cascading-skip.html" title="S18: Cascading Skip Modal">18</a>
-  <a href="candidate-scenario-19-reason-provided.html" title="S19: Reason Provided">19</a>
+  <a href="candidate-scenario-16.html" title="S16">16</a>
+  <a href="candidate-scenario-17.html" title="S17">17</a>
+  <a href="candidate-scenario-18.html" title="S18">18</a>
+  <a href="candidate-scenario-19-reason-provided.html" class="active" title="S19: Mandatory Doc — Reason Provided">19</a>
   <span class="nav-sep"></span>
   <span class="nav-label">Exit</span>
-  <a href="candidate-scenario-8.html" title="S8: Exit Step 1">8</a>
-  <a href="candidate-scenario-9.html" title="S9: Exit Step 2">9</a>
+  <a href="candidate-scenario-8.html" title="S8: Exit Flow — Step 1">8</a>
+  <a href="candidate-scenario-9.html" title="S9: Exit Flow — Step 2">9</a>
   <span class="nav-sep"></span>
   <span class="nav-label">Review</span>
-  <a href="candidate-scenario-12-review.html" title="S12: Review">12</a>
+  <a href="candidate-scenario-12-review.html" title="S12: Review &amp; Submit">12</a>
 </div>
 
 </body>

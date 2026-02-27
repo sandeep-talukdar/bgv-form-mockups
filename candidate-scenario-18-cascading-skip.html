@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=1280">
-<title>BGV Revamp Form — Scenario 15: Employment — Multiple Records</title>
+<title>BGV Revamp Form — Scenario 18: Employment — Cascading Skip</title>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 <style>
@@ -151,142 +151,19 @@
   }
   .form-select { cursor: pointer; }
 
-  /* ── Preferred doc label + mandatory badge ── */
-  .pref-label-row {
-    display: flex; align-items: center; gap: 8px; margin-bottom: 10px; margin-top: 4px;
+  /* ── "I don't have this employment" checkbox row ── */
+  .skip-checkbox-row {
+    display: flex; align-items: flex-start; gap: 10px;
+    background: #fff7ed; border: 1px solid #fed7aa; border-radius: 10px;
+    padding: 14px 16px; margin-top: 4px; margin-bottom: 4px;
   }
-  .pref-label { font-size: 14px; color: #6a6a6a; }
-  .pref-label strong { color: #101828; font-weight: 600; }
-  .mand-badge {
-    display: inline-flex; align-items: center; gap: 4px;
-    background: #fef2f2; color: #dc2626; font-size: 12px; font-weight: 600;
-    padding: 3px 12px; border-radius: 12px; border: 1px solid #fecaca;
-  }
-
-  /* ── Uploaded file row ── */
-  .uploaded-file-row {
-    display: flex; align-items: center; justify-content: space-between;
-    background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px;
-    padding: 12px 16px; margin-bottom: 8px;
-  }
-  .uploaded-file-left { display: flex; align-items: center; gap: 12px; }
-  .uploaded-file-icon {
-    width: 36px; height: 36px; background: #fee2e2; border-radius: 8px;
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    font-size: 9px; font-weight: 700; color: #dc2626;
-  }
-  .uploaded-file-info {}
-  .uploaded-file-name { font-size: 14px; font-weight: 600; color: #101828; }
-  .uploaded-file-meta { font-size: 12px; color: #6a6a6a; margin-top: 2px; }
-  .uploaded-file-right { display: flex; align-items: center; gap: 10px; }
-  .uploaded-file-check {
-    width: 24px; height: 24px; background: #dcfce7; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .uploaded-file-delete {
-    width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;
+  .skip-checkbox {
+    width: 18px; height: 18px; accent-color: #0828cc; flex-shrink: 0; margin-top: 1px;
     cursor: pointer;
   }
-
-  /* ── Upload success message ── */
-  .upload-success-msg {
-    display: flex; align-items: center; gap: 6px;
-    font-size: 13px; font-weight: 600; color: #0f973d; margin-bottom: 16px;
-  }
-
-  /* ── Mandatory documents group ── */
-  .mandatory-group {
-    border: 1.5px solid #fca5a5; border-radius: 12px; overflow: hidden; margin-bottom: 16px;
-  }
-  .mandatory-group.completed {
-    border-color: #86efac;
-  }
-  .mandatory-group-header {
-    display: flex; align-items: center; justify-content: space-between;
-    background: #fef2f2; padding: 12px 16px;
-  }
-  .mandatory-group.completed .mandatory-group-header {
-    background: #f0fdf4;
-  }
-  .mandatory-group-title {
-    display: flex; align-items: center; gap: 8px;
-    font-size: 14px; font-weight: 600; color: #dc2626;
-  }
-  .mandatory-group.completed .mandatory-group-title { color: #0f973d; }
-  .mandatory-count-badge {
-    background: #dc2626; color: #fff;
-    font-size: 11px; font-weight: 700;
-    width: 22px; height: 22px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .mandatory-group.completed .mandatory-count-badge { background: #0f973d; }
-  .mandatory-group-body { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
-
-  /* ── Mandatory doc item row ── */
-  .mand-doc-item {
-    display: flex; align-items: center; justify-content: space-between;
-    padding-bottom: 12px; border-bottom: 1px solid #f3f4f6;
-  }
-  .mand-doc-item:last-of-type { border-bottom: none; padding-bottom: 0; }
-  .mand-doc-name { font-size: 14px; font-weight: 500; color: #101828; }
-  .status-pill {
-    font-size: 12px; font-weight: 600; padding: 3px 12px; border-radius: 20px;
-  }
-  .status-pill.pending {
-    background: #fef9c3; color: #92400e; border: 1px solid #fde68a;
-  }
-  .status-pill.uploaded {
-    background: #dcfce7; color: #166534; border: 1px solid #86efac;
-  }
-
-  /* ── Upload Zone ── */
-  .upload-zone {
-    border: 1.5px dashed rgba(8, 40, 204, 0.4);
-    border-radius: 16px; height: 140px;
-    display: flex; align-items: center; justify-content: center;
-    gap: 32px; padding: 0 32px; margin-top: 12px;
-  }
-  .upload-zone-digilocker { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-  .digilocker-btn {
-    width: 231px; height: 44px; background: #fff; border: 1px solid #6334fa;
-    border-radius: 8px; display: flex; align-items: center; justify-content: center;
-    gap: 8px; font-size: 16px; font-weight: 600; color: #6334fa;
-    cursor: pointer; font-family: inherit;
-  }
-  .digilocker-recommended {
-    font-size: 12px; font-weight: 600; color: #0f973d;
-    background: rgba(15, 151, 61, 0.1); padding: 2px 10px; border-radius: 10px;
-  }
-  .upload-zone-divider {
-    display: flex; flex-direction: column; align-items: center; gap: 8px;
-  }
-  .upload-zone-divider .line { width: 1px; height: 28px; background: #d9d9d9; }
-  .upload-zone-divider .or-text { font-size: 18px; font-weight: 400; color: #6a6a6a; }
-  .upload-zone-upload { display: flex; align-items: center; gap: 14px; }
-  .upload-cloud-icon {
-    width: 56px; height: 56px; border-radius: 50%; background: #f5f7ff;
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  }
-  .upload-text-main { font-size: 14px; color: #101828; }
-  .upload-text-main a { font-weight: 600; color: #0828cc; text-decoration: none; cursor: pointer; }
-  .upload-text-sub { font-size: 12px; font-weight: 400; color: #98a2b3; margin-top: 2px; }
-
-  /* ── Optional documents list ── */
-  .optional-docs-section { margin-top: 4px; }
-  .optional-docs-label {
-    font-size: 12px; font-weight: 600; color: #6a6a6a; margin-bottom: 10px;
-    text-transform: uppercase; letter-spacing: 0.5px;
-  }
-  .optional-doc-item {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 10px 0; border-bottom: 1px solid #f3f4f6;
-  }
-  .optional-doc-item:last-child { border-bottom: none; }
-  .optional-doc-name { font-size: 14px; font-weight: 500; color: #101828; }
-  .upload-opt-btn {
-    background: #fff; border: 1px solid #d9d9d9; border-radius: 6px;
-    padding: 6px 14px; font-size: 13px; font-weight: 500; color: #0828cc;
-    cursor: pointer; font-family: inherit;
+  .skip-checkbox-label {
+    font-size: 14px; font-weight: 500; color: #9a3412;
+    line-height: 1.4; cursor: pointer;
   }
 
   /* ── Proceed button ── */
@@ -310,6 +187,32 @@
     font-size: 11px; color: #6b7280; line-height: 1.6;
   }
   .eng-note strong { color: #374151; font-weight: 600; }
+
+  /* ── Modal overlay ── */
+  .modal-overlay {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.5); z-index: 1000;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .modal-card {
+    background: #fff; border-radius: 16px; padding: 32px;
+    width: 480px; max-width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    text-align: center;
+  }
+  .modal-icon { margin-bottom: 16px; }
+  .modal-title { font-size: 18px; font-weight: 600; color: #101828; margin-bottom: 12px; }
+  .modal-body { font-size: 14px; color: #6b7280; line-height: 1.6; margin-bottom: 8px; }
+  .modal-helper { font-size: 12px; color: #98a2b3; font-style: italic; margin-bottom: 24px; }
+  .modal-btn-primary {
+    width: 100%; padding: 12px; background: #0828cc; color: #fff;
+    border: none; border-radius: 8px; font-size: 14px; font-weight: 600;
+    cursor: pointer; font-family: inherit; margin-bottom: 10px;
+  }
+  .modal-btn-secondary {
+    width: 100%; padding: 12px; background: #fff; color: #101828;
+    border: 1px solid #d9d9d9; border-radius: 8px; font-size: 14px; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+  }
 
   /* ── Floating Scenario Navigator ── */
   .scenario-nav {
@@ -342,13 +245,13 @@
 </head>
 <body>
 
-<div class="banner">PROPOSED DESIGN — Candidate BGV Revamp Form: Employment — Multiple Records (Scenario 15)</div>
+<div class="banner">PROPOSED DESIGN — Candidate BGV Revamp Form: Employment — Cascading Skip (Scenario 18)</div>
 
 <div class="sc-desc">
-  <strong>State:</strong> Candidate has 3 employment records. Employment 1 is fully complete (all docs uploaded). Employment 2 is active — hero document uploaded, mandatory doc still pending. Employment 3 is collapsed (not yet started). The sidebar shows 3 status dots for Employment: 1 green check, 2 empty circles.
+  <strong>State:</strong> Candidate has 3 employment records. Employment 1 is complete (green). Candidate is on Employment 2 and has checked "I don't have this employment." A confirmation modal is shown asking whether to skip remaining employments. If confirmed, Employment 2 and Employment 3 will be marked as skipped and disabled.
 </div>
 <div class="eng-note">
-  <strong>Engineering note:</strong> The number of employment sub-sections is driven by the candidate's declared employment count (set during Basic Details). Each sub-section tracks its own progress independently. A sub-section is "complete" when all mandatory documents are uploaded. The section-level Proceed button is not shown — each sub-section has its own Proceed. The overall Employment section is complete only when ALL sub-sections are done.
+  <strong>Engineering note:</strong> When the candidate checks "I don't have this employment" on Employment 2, the system shows a confirmation modal before taking action. The modal body mentions which prior employment they would be claiming to have no experience before ("Tata Consultancy Services") and also lists how many subsequent records will be auto-disabled ("Employment 3"). On confirmation, all subsequent employment sub-sections are automatically marked skipped and rendered in a disabled/dimmed state. The candidate can undo this by unchecking the box on Employment 2.
 </div>
 
 <!-- ── Header ── -->
@@ -365,8 +268,8 @@
   </div>
 </div>
 
-<!-- ── Main Layout ── -->
-<div class="main-layout">
+<!-- ── Main Layout (dimmed behind modal) ── -->
+<div class="main-layout" style="filter: brightness(0.6); pointer-events: none; user-select: none;">
 
   <!-- ── Sidebar ── -->
   <div class="sidebar">
@@ -393,7 +296,7 @@
       </div>
 
       <!-- Identity -->
-      <div class="sb-item" onclick="window.location.href='candidate-scenario-1.html'">
+      <div class="sb-item">
         <div class="sb-item-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="2" y="4" width="20" height="16" rx="2" stroke="#101828" stroke-width="1.5"/>
@@ -413,7 +316,7 @@
       </div>
 
       <!-- Education -->
-      <div class="sb-item" onclick="window.location.href='candidate-scenario-2.html'">
+      <div class="sb-item">
         <div class="sb-item-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z" fill="#101828" opacity="0.7"/>
@@ -430,7 +333,7 @@
       </div>
 
       <!-- Address -->
-      <div class="sb-item" onclick="window.location.href='candidate-scenario-7.html'">
+      <div class="sb-item">
         <div class="sb-item-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#101828" opacity="0.6"/>
@@ -486,14 +389,13 @@
     <div class="section-title-card">
       <h2>Employment</h2>
       <div class="section-title-dots">
-        <!-- 3 dots: 1 green check, 2 empty circles -->
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" fill="#0f973d"/><path d="M3.5 6l1.5 1.5L9 4" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#98a2b3" stroke-width="1.5"/></svg>
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#98a2b3" stroke-width="1.5"/></svg>
       </div>
     </div>
 
-    <!-- ═══════════ Employment 1 — COMPLETED (collapsed) ═══════════ -->
+    <!-- ═══════════ Employment 1 — COMPLETED (collapsed, green border) ═══════════ -->
     <div class="subsection-card" style="border-color: #86efac;">
       <div class="subsection-header" style="border-bottom: none;">
         <div style="display:flex; align-items:center; gap:10px;">
@@ -505,7 +407,7 @@
       </div>
     </div>
 
-    <!-- ═══════════ Employment 2 — ACTIVE (expanded, partially filled) ═══════════ -->
+    <!-- ═══════════ Employment 2 — EXPANDED, "I don't have this employment" CHECKED ═══════════ -->
     <div class="subsection-card">
       <div class="subsection-header">
         <div style="display:flex; align-items:center; gap:10px;">
@@ -525,113 +427,15 @@
           </select>
         </div>
 
-        <!-- Preferred doc label -->
-        <div class="pref-label-row">
-          <span class="pref-label"><strong>Preferred:</strong> Experience Letter</span>
-          <span class="mand-badge">Mandatory</span>
+        <!-- "I don't have this employment" checkbox — CHECKED -->
+        <div class="skip-checkbox-row">
+          <input type="checkbox" class="skip-checkbox" checked id="skip-emp2">
+          <label class="skip-checkbox-label" for="skip-emp2">
+            I don't have this employment
+          </label>
         </div>
 
-        <!-- Hero doc uploaded — file row replaces upload zone -->
-        <div class="uploaded-file-row">
-          <div class="uploaded-file-left">
-            <div class="uploaded-file-icon">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <rect x="3" y="2" width="14" height="16" rx="2" fill="#fff" stroke="#fca5a5" stroke-width="1.2"/>
-                <path d="M6 7h8M6 10h6M6 13h4" stroke="#fca5a5" stroke-width="1.2" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <div class="uploaded-file-info">
-              <div class="uploaded-file-name">Experience_Letter_Infosys.pdf</div>
-              <div class="uploaded-file-meta">245 KB &middot; Uploaded just now</div>
-            </div>
-          </div>
-          <div class="uploaded-file-right">
-            <div class="uploaded-file-check">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7l2.5 2.5L11 4.5" stroke="#0f973d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <div class="uploaded-file-delete">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 4h10M6 4V3h4v1M5 4v8a1 1 0 001 1h4a1 1 0 001-1V4" stroke="#98a2b3" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-          </div>
-        </div>
-
-        <!-- Success message -->
-        <div class="upload-success-msg">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#0f973d"/><path d="M5 8l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Preferred document uploaded
-        </div>
-
-        <!-- Other mandatory documents group — pending (red) -->
-        <div class="mandatory-group">
-          <div class="mandatory-group-header">
-            <div class="mandatory-group-title">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#dc2626" stroke-width="1.5"/><path d="M8 5v3.5M8 10.5v.5" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round"/></svg>
-              Other mandatory documents
-            </div>
-            <div class="mandatory-count-badge">1</div>
-          </div>
-          <div class="mandatory-group-body">
-            <!-- Relieving Letter — Pending -->
-            <div class="mand-doc-item">
-              <div class="mand-doc-name">Relieving Letter</div>
-              <span class="status-pill pending">Pending</span>
-            </div>
-            <!-- Upload zone for Relieving Letter -->
-            <div class="upload-zone">
-              <div class="upload-zone-digilocker">
-                <button class="digilocker-btn">
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="4" width="16" height="12" rx="2" stroke="#6334fa" stroke-width="1.5"/><path d="M6 10h8M10 7v6" stroke="#6334fa" stroke-width="1.5" stroke-linecap="round"/></svg>
-                  Fetch from DigiLocker
-                </button>
-                <span class="digilocker-recommended">Recommended</span>
-              </div>
-              <div class="upload-zone-divider">
-                <div class="line"></div>
-                <span class="or-text">or</span>
-                <div class="line"></div>
-              </div>
-              <div class="upload-zone-upload">
-                <div class="upload-cloud-icon">
-                  <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-                    <path d="M14 18V10m0 0l-3 3m3-3l3 3" stroke="#0828cc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M7 16.5A5 5 0 017.5 7a6 6 0 0111.3-.5A5 5 0 0121 16.5" stroke="#0828cc" stroke-width="1.5" stroke-linecap="round"/>
-                  </svg>
-                </div>
-                <div class="upload-text-group">
-                  <div class="upload-text-main"><a>Click to upload</a> or drag and drop</div>
-                  <div class="upload-text-sub">PDF, JPG, PNG up to 10 MB</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Optional documents -->
-        <div class="optional-docs-section">
-          <div class="optional-docs-label">Optional documents</div>
-          <div class="optional-doc-item">
-            <span class="optional-doc-name">Offer Letter</span>
-            <button class="upload-opt-btn">+ Upload</button>
-          </div>
-          <div class="optional-doc-item">
-            <span class="optional-doc-name">Appointment Letter</span>
-            <button class="upload-opt-btn">+ Upload</button>
-          </div>
-          <div class="optional-doc-item">
-            <span class="optional-doc-name">Payslips (last 3 months)</span>
-            <button class="upload-opt-btn">+ Upload</button>
-          </div>
-          <div class="optional-doc-item">
-            <span class="optional-doc-name">Form 16</span>
-            <button class="upload-opt-btn">+ Upload</button>
-          </div>
-          <div class="optional-doc-item">
-            <span class="optional-doc-name">Bank Statement</span>
-            <button class="upload-opt-btn">+ Upload</button>
-          </div>
-        </div>
-
-        <!-- Proceed — disabled (mandatory doc still pending) -->
+        <!-- Proceed — disabled -->
         <div class="proceed-row">
           <button class="proceed-btn" disabled>Proceed</button>
         </div>
@@ -639,8 +443,8 @@
       </div>
     </div>
 
-    <!-- ═══════════ Employment 3 — NOT STARTED (collapsed) ═══════════ -->
-    <div class="subsection-card" style="opacity: 0.7;">
+    <!-- ═══════════ Employment 3 — NOT STARTED (collapsed, dimmed) ═══════════ -->
+    <div class="subsection-card" style="opacity: 0.5;">
       <div class="subsection-header" style="border-bottom: none;">
         <div style="display:flex; align-items:center; gap:10px;">
           <h3>Employment 3</h3>
@@ -653,39 +457,64 @@
   </div>
 </div>
 
+<!-- ── CONFIRMATION MODAL (on top of dimmed page) ── -->
+<div class="modal-overlay">
+  <div class="modal-card">
+
+    <!-- Info icon -->
+    <div class="modal-icon">
+      <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="28" cy="28" r="28" fill="#eef2ff"/>
+        <circle cx="28" cy="28" r="18" stroke="#0828cc" stroke-width="2"/>
+        <path d="M28 24v8" stroke="#0828cc" stroke-width="2.2" stroke-linecap="round"/>
+        <circle cx="28" cy="20.5" r="1.5" fill="#0828cc"/>
+      </svg>
+    </div>
+
+    <div class="modal-title">Skip remaining employment?</div>
+    <div class="modal-body">
+      Are you sure you don't have work experience before Tata Consultancy Services? This will also skip Employment 3.
+    </div>
+    <div class="modal-helper">You can undo this later by unchecking the box.</div>
+
+    <button class="modal-btn-primary">Yes, skip remaining</button>
+    <button class="modal-btn-secondary">Cancel</button>
+
+  </div>
+</div>
+
 <div class="scenario-nav">
   <a href="index.html" class="nav-home" title="Back to Index">&#9776; Index</a>
   <span class="nav-sep"></span>
   <span class="nav-label">Identity</span>
   <a href="candidate-scenario-1.html" title="S1: Identity — Base State">1</a>
-  <a href="candidate-scenario-6.html" title="S6: Identity — Mandatory & Optional">6</a>
+  <a href="candidate-scenario-6.html" title="S6: Identity — Mandatory &amp; Optional">6</a>
   <span class="nav-sep"></span>
   <span class="nav-label">Education</span>
   <a href="candidate-scenario-2.html" title="S2: Education — All 4 Levels">2</a>
   <a href="candidate-scenario-5.html" title="S5: Education — Mandatory Documents">5</a>
-  <a href="candidate-scenario-14.html" title="S14: Education — Skipped Level">14</a>
+  <a href="candidate-scenario-14-education-skipped.html" title="S14: Education — Skipped Level">14</a>
   <span class="nav-sep"></span>
   <span class="nav-label">Address</span>
-  <a href="candidate-scenario-7.html" title="S7: Address — Permanent & Current">7</a>
+  <a href="candidate-scenario-7.html" title="S7: Address — Permanent &amp; Current">7</a>
   <span class="nav-sep"></span>
   <span class="nav-label">Employment</span>
   <a href="candidate-scenario-3.html" title="S3: Employment — Hero Uploaded">3</a>
   <a href="candidate-scenario-4.html" title="S4: Employment — All Mandatory Done">4</a>
   <a href="candidate-scenario-10.html" title="S10: Non-Preferred First Warning">10</a>
-  <a href="candidate-scenario-11.html" title="S11: Mandatory Doc — Reason & ETA">11</a>
-  <a href="candidate-scenario-13.html" title="S13: Employment — Fresher">13</a>
-  <a href="candidate-scenario-15-multi-employment.html" class="active" title="S15: Employment — Multiple Records">15</a>
-  <a href="candidate-scenario-16-at-least-one.html" title="S16: At Least One Required">16</a>
-  <a href="candidate-scenario-17-fresher-warning.html" title="S17: Fresher Warning Modal">17</a>
-  <a href="candidate-scenario-18-cascading-skip.html" title="S18: Cascading Skip Modal">18</a>
-  <a href="candidate-scenario-19-reason-provided.html" title="S19: Reason Provided">19</a>
+  <a href="candidate-scenario-11.html" title="S11: Mandatory Doc — Reason &amp; ETA">11</a>
+  <a href="candidate-scenario-13-fresher.html" title="S13: Employment — Fresher">13</a>
+  <a href="candidate-scenario-15-multi-employment.html" title="S15: Employment — Multiple Records">15</a>
+  <a href="candidate-scenario-16.html" title="S16">16</a>
+  <a href="candidate-scenario-17.html" title="S17">17</a>
+  <a href="candidate-scenario-18-cascading-skip.html" class="active" title="S18: Employment — Cascading Skip">18</a>
   <span class="nav-sep"></span>
   <span class="nav-label">Exit</span>
   <a href="candidate-scenario-8.html" title="S8: Exit Flow — Step 1">8</a>
   <a href="candidate-scenario-9.html" title="S9: Exit Flow — Step 2">9</a>
   <span class="nav-sep"></span>
   <span class="nav-label">Review</span>
-  <a href="candidate-scenario-12-review.html" title="S12: Review & Submit">12</a>
+  <a href="candidate-scenario-12-review.html" title="S12: Review &amp; Submit">12</a>
 </div>
 
 </body>
