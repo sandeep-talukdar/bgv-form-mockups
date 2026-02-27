@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BGV Form Config - Identity - Aadhaar Toggle Consolidation</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Poppins', sans-serif; background: #f8f9fa; color: #1a1a2e; }
+
+  /* ── SA Portal Sidebar ── */
+  .sa-layout { display: flex; min-height: 100vh; }
+  .sa-sidebar {
+    width: 290px; background: #0844a6; color: #fff; display: flex;
+    flex-direction: column; flex-shrink: 0; min-height: 100vh;
+    font-family: 'Poppins', sans-serif;
+  }
+  .sa-sidebar-header {
+    padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.15);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .sa-logo { font-size: 18px; font-weight: 800; }
+  .sa-badge {
+    background: #088077; color: #fff; font-size: 10px; font-weight: 600;
+    padding: 2px 8px; border-radius: 10px;
+  }
+  .sa-sidebar-nav { flex: 1; padding: 12px 0; overflow-y: auto; }
+  .sa-nav-item {
+    padding: 10px 20px; font-size: 13px; font-weight: 400; color: rgba(255,255,255,0.7);
+    cursor: pointer; transition: all 0.15s;
+  }
+  .sa-nav-item:hover { background: rgba(255,255,255,0.1); color: #fff; }
+  .sa-nav-active {
+    background: #088077 !important; color: #fff !important; font-weight: 600;
+    border-radius: 4px; margin: 0 8px; padding: 10px 12px;
+  }
+  .sa-sidebar-footer {
+    padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.15);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .sa-user { font-size: 13px; font-weight: 600; }
+  .sa-role {
+    background: #f59e0b; color: #fff; font-size: 10px; font-weight: 600;
+    padding: 1px 8px; border-radius: 8px;
+  }
+
+  /* ── SA Main area ── */
+  .sa-main { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
+
+  /* ── Banners ── */
+  .banner {
+    background: #fef9c3; border: 1px solid #f59e0b; padding: 10px 20px;
+    font-size: 13px; font-weight: 600; color: #92400e; text-align: center;
+  }
+  .scenario-strip {
+    background: #e8efff; border-bottom: 1px solid #c7d2fe;
+    padding: 9px 24px; font-size: 12px; color: #1e40af;
+  }
+
+  /* ── Topbar / breadcrumb ── */
+  .topbar {
+    background: #fff; border-bottom: 1px solid #ccc; padding: 16px 24px;
+    display: flex; align-items: center; gap: 12px; font-size: 13px; color: #6b7280;
+    position: sticky; top: 0; z-index: 99;
+  }
+  .topbar .breadcrumb-link { color: #0844a6; text-decoration: none; cursor: pointer; }
+  .topbar .breadcrumb-sep { color: #d1d5db; }
+
+  /* ── Page layout ── */
+  .page-container { display: flex; min-height: calc(100vh - 90px); }
+
+  .company-sidebar {
+    width: 180px; background: #fff; border-right: 1px solid #e5e7eb;
+    padding: 16px 0; overflow-y: auto; flex-shrink: 0;
+  }
+  .company-sidebar .tab-item {
+    padding: 8px 14px; font-size: 12px; color: #6b7280; cursor: pointer;
+    border-left: 3px solid transparent;
+  }
+  .company-sidebar .tab-item:hover { background: #f9fafb; }
+  .company-sidebar .tab-item.active {
+    color: #088077; font-weight: 600; background: #e6f7f5; border-left-color: #088077;
+  }
+
+  .main-content { flex: 1; overflow-y: auto; padding: 20px 24px; }
+
+  /* ── Config header ── */
+  .config-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .config-header h2 { font-size: 18px; font-weight: 600; }
+  .config-header p { font-size: 12px; color: #6b7280; margin-top: 2px; }
+
+  /* ── Scope bar ── */
+  .scope-bar {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+    padding: 12px 16px; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px;
+  }
+  .scope-bar label { font-size: 12px; font-weight: 600; color: #374151; }
+  .scope-bar select {
+    padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px;
+    font-size: 12px; font-family: inherit; background: #fff; cursor: pointer;
+  }
+  .scope-tag {
+    font-size: 11px; padding: 3px 10px; border-radius: 12px; font-weight: 500;
+  }
+  .scope-tag.default { background: #dbeafe; color: #1e40af; }
+
+  /* ── Check type navigation ── */
+  .check-nav {
+    display: flex; background: #fff; border: 1px solid #e5e7eb;
+    border-radius: 8px 8px 0 0; overflow: hidden;
+  }
+  .check-nav-item {
+    padding: 10px 16px; font-size: 12px; font-weight: 500; color: #6b7280;
+    cursor: pointer; border-bottom: 2px solid transparent; position: relative;
+    display: flex; align-items: center; gap: 6px; white-space: nowrap;
+  }
+  .check-nav-item:hover { background: #f9fafb; color: #374151; }
+  .check-nav-item.active {
+    color: #088077; border-bottom-color: #088077; font-weight: 600; background: #e6f7f5;
+  }
+
+  /* ── Document table ── */
+  .doc-table {
+    width: 100%; background: #fff; border: 1px solid #e5e7eb; border-top: none;
+    border-collapse: collapse;
+  }
+  .doc-table th {
+    text-align: left; padding: 8px 16px; font-size: 11px; font-weight: 600;
+    color: #6b7280; text-transform: uppercase; letter-spacing: .5px;
+    background: #f9fafb; border-bottom: 1px solid #e5e7eb;
+  }
+  .doc-table th.ctr { text-align: center; width: 90px; }
+  .doc-table td { padding: 10px 16px; font-size: 13px; border-bottom: 1px solid #f3f4f6; }
+  .doc-table td.ctr { text-align: center; }
+  .doc-table tr:hover { background: #f0f4ff; }
+  .doc-table tr.hero-row { background: #fffbeb; }
+  .doc-table tr.hero-row td:first-child { font-weight: 600; }
+  .doc-table tr.aadhaar-row { background: #fafafa; }
+
+  /* ── Hero badge ── */
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: #fef3c7; color: #92400e; font-size: 10px; font-weight: 600;
+    padding: 2px 8px; border-radius: 10px; margin-left: 8px;
+  }
+
+  /* ── Drag handle ── */
+  .drag-handle {
+    color: #d1d5db; cursor: grab; margin-right: 8px; font-size: 14px;
+    user-select: none;
+  }
+
+  /* ── Checkboxes ── */
+  .cb {
+    width: 16px; height: 16px; border: 2px solid #d1d5db; border-radius: 4px;
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all .15s; flex-shrink: 0;
+  }
+  .cb.checked { background: #0844a6; border-color: #0844a6; }
+  .cb.checked::after { content: '\2713'; color: #fff; font-size: 11px; font-weight: 700; }
+  .cb.locked {
+    background: #e5e7eb; border-color: #d1d5db; cursor: not-allowed; opacity: .7;
+  }
+  .cb.locked.checked { background: #6486ff; border-color: #6486ff; }
+  .cb.disabled { opacity: .4; cursor: not-allowed; }
+
+  /* ── Tooltip wrapper ── */
+  .cb-wrap { position: relative; display: inline-flex; align-items: center; justify-content: center; }
+  .cb-wrap .cb-tooltip {
+    display: none; position: absolute; top: calc(100% + 8px); right: -4px;
+    background: #1f2937; color: #fff; font-size: 11px; font-weight: 500;
+    padding: 6px 10px; border-radius: 6px; white-space: nowrap; z-index: 50;
+    pointer-events: none;
+  }
+  .cb-wrap .cb-tooltip::before {
+    content: ''; position: absolute; bottom: 100%; right: 10px;
+    border: 5px solid transparent; border-bottom-color: #1f2937;
+  }
+  .cb-wrap:hover .cb-tooltip { display: block; }
+
+  /* ── Info callout ── */
+  .info-callout {
+    background: #e8efff; border: 1px solid #c7d2fe; border-radius: 0 0 8px 8px;
+    padding: 10px 16px; font-size: 12px; color: #063785;
+    line-height: 1.6;
+    border-top: none;
+  }
+  .info-callout strong { font-weight: 600; }
+
+  /* ── Engineering annotation (outside UI frame) ── */
+  .eng-annotation {
+    background: #f9fafb; border-left: 3px solid #d1d5db; border-radius: 4px;
+    padding: 12px 16px; font-size: 11px; color: #6b7280;
+    margin-top: 24px; line-height: 1.6;
+  }
+  .eng-annotation strong { color: #374151; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<!-- PROPOSED DESIGN banner -->
+<div class="banner">PROPOSED DESIGN — Super Admin Portal: BGV Form Config — Identity Check (Aadhaar Toggle Consolidation)</div>
+
+<!-- Scenario description strip -->
+<div class="scenario-strip">
+  <strong>Identity check — Aadhaar toggle consolidation:</strong> Company where Aadhaar was previously disabled via the old toggle. Aadhaar row appears unchecked in the new config.
+</div>
+
+<div class="sa-layout">
+
+  <!-- SA Portal Main Sidebar -->
+  <div class="sa-sidebar">
+    <div class="sa-sidebar-header">
+      <span class="sa-logo">SpringVerify</span>
+      <span class="sa-badge">Super Admin Portal</span>
+    </div>
+    <div class="sa-sidebar-nav">
+      <div class="sa-nav-item">Dashboard</div>
+      <div class="sa-nav-item">Tasks</div>
+      <div class="sa-nav-item">Performance</div>
+      <div class="sa-nav-item">Analytics</div>
+      <div class="sa-nav-item sa-nav-active">Companies</div>
+      <div class="sa-nav-item">Candidates</div>
+      <div class="sa-nav-item">Credit &amp; Billing</div>
+      <div class="sa-nav-item">Employment</div>
+      <div class="sa-nav-item">Vendors</div>
+      <div class="sa-nav-item">Settings</div>
+    </div>
+    <div class="sa-sidebar-footer">
+      <span class="sa-user">Sandeep T.</span>
+      <span class="sa-role">Product</span>
+    </div>
+  </div>
+
+  <!-- SA Main content area -->
+  <div class="sa-main">
+
+    <!-- Breadcrumb topbar -->
+    <div class="topbar">
+      <a class="breadcrumb-link">Companies</a>
+      <span class="breadcrumb-sep">›</span>
+      <a class="breadcrumb-link">Jaguar Pvt Ltd</a>
+      <span class="breadcrumb-sep">›</span>
+      <span style="color:#374151;font-weight:500;">Settings</span>
+    </div>
+
+    <div class="page-container">
+
+      <!-- Company settings sidebar -->
+      <div class="company-sidebar">
+        <div class="tab-item">General</div>
+        <div class="tab-item">Packages</div>
+        <div class="tab-item">Custom Fields</div>
+        <div class="tab-item active">BGV Form Config</div>
+        <div class="tab-item">Webhooks</div>
+        <div class="tab-item">Billing</div>
+      </div>
+
+      <!-- Main content -->
+      <div class="main-content">
+
+        <!-- Page header -->
+        <div class="config-header">
+          <div>
+            <h2>BGV Form Config</h2>
+            <p>Configure which documents to collect and which are mandatory for each check type</p>
+          </div>
+        </div>
+
+        <!-- Scope selector -->
+        <div class="scope-bar">
+          <label>Scope:</label>
+          <select>
+            <option selected>Company Default</option>
+            <option>Standard Package (override)</option>
+            <option>Premium Package (override)</option>
+            <option>Blue Collar Package</option>
+            <option>Enterprise Package</option>
+            <option>Contractor Screening</option>
+          </select>
+          <span class="scope-tag default">Company Default</span>
+        </div>
+
+        <!-- Check type navigation -->
+        <div class="check-nav">
+          <div class="check-nav-item active">Identity</div>
+          <div class="check-nav-item">Address</div>
+          <div class="check-nav-item">Education</div>
+          <div class="check-nav-item">Employment</div>
+        </div>
+
+        <!-- Document table -->
+        <table class="doc-table">
+          <thead>
+            <tr>
+              <th style="width:40px;"></th>
+              <th>Document</th>
+              <th class="ctr">Collect</th>
+              <th class="ctr">Mandatory</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <!-- Row 1: PAN Card — Hero, locked -->
+            <tr class="hero-row">
+              <td><span class="drag-handle">&#x2630;</span></td>
+              <td>PAN Card<span class="hero-badge">&#x2B50; Hero</span></td>
+              <td class="ctr">
+                <div class="cb-wrap">
+                  <div class="cb locked checked"></div>
+                  <span class="cb-tooltip">Hero document is always collected</span>
+                </div>
+              </td>
+              <td class="ctr">
+                <div class="cb-wrap">
+                  <div class="cb locked checked"></div>
+                  <span class="cb-tooltip">Hero document is always mandatory</span>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Row 2: Driving License — checked, not mandatory -->
+            <tr>
+              <td><span class="drag-handle">&#x2630;</span></td>
+              <td>Driving License</td>
+              <td class="ctr"><div class="cb checked"></div></td>
+              <td class="ctr"><div class="cb"></div></td>
+            </tr>
+
+            <!-- Row 3: Voter ID — checked, not mandatory -->
+            <tr>
+              <td><span class="drag-handle">&#x2630;</span></td>
+              <td>Voter ID</td>
+              <td class="ctr"><div class="cb checked"></div></td>
+              <td class="ctr"><div class="cb"></div></td>
+            </tr>
+
+            <!-- Row 4: Aadhaar — UNCHECKED (key scenario), mandatory disabled -->
+            <tr class="aadhaar-row">
+              <td><span class="drag-handle" style="color:#e5e7eb;">&#x2630;</span></td>
+              <td style="color:#6b7280;">Aadhaar</td>
+              <td class="ctr">
+                <div class="cb-wrap">
+                  <div class="cb"></div>
+                  <span class="cb-tooltip">Check to include Aadhaar in the background verification form</span>
+                </div>
+              </td>
+              <td class="ctr">
+                <div class="cb-wrap">
+                  <div class="cb disabled"></div>
+                  <span class="cb-tooltip">Enable collection first</span>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Row 5: Passport — checked, not mandatory -->
+            <tr>
+              <td><span class="drag-handle">&#x2630;</span></td>
+              <td>Passport</td>
+              <td class="ctr"><div class="cb checked"></div></td>
+              <td class="ctr"><div class="cb"></div></td>
+            </tr>
+
+          </tbody>
+        </table>
+
+        <!-- Info callout below the document table -->
+        <div class="info-callout">
+          <strong>Aadhaar in identity check</strong> — This replaces the previous "Include Aadhaar in identity check" toggle from the Add Candidate page. If Aadhaar is checked here, it will appear on the candidate's background verification form. For existing companies, this setting has been migrated from the old toggle value.
+        </div>
+
+        <!-- Engineering annotation — outside the UI frame -->
+        <div class="eng-annotation">
+          <strong>Migration note:</strong> The old <code>include_aadhaar_in_id_check</code> boolean field on <code>IBGVConfig</code> maps to whether Aadhaar is checked in this Identity document list. Companies with <code>include_aadhaar_in_id_check = 1</code> → Aadhaar checked. Companies with <code>include_aadhaar_in_id_check = 0</code> → Aadhaar unchecked. The toggle in the Add Candidate flow should be removed once this config page is live.
+        </div>
+
+      </div><!-- /.main-content -->
+    </div><!-- /.page-container -->
+
+  </div><!-- /.sa-main -->
+</div><!-- /.sa-layout -->
+
+</body>
+</html>
